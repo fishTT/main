@@ -2137,7 +2137,7 @@ for <code>RemarkCommandParser</code>.</p>
 <p>User requests to list all books in his reading list.</p>
 </li>
 <li>
-<p>Bibliotek shows a list the books.</p>
+<p>Bibliotek shows a list of the books.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -2207,6 +2207,164 @@ for <code>RemarkCommandParser</code>.</p>
 <p>2b1. Bibliotek shows an error message.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-uc3-view-a-specific-book" class="discrete">Use case: UC3 - View a specific book</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User obtains a list of books by listing (<a href="#use-case-uc1-view-my-reading-list"><strong>UC1</strong></a>)
+or searching (<a href="#use-case-uc2-search-for-books"><strong>UC2</strong></a>).</p>
+</li>
+<li>
+<p>User requests to view more information on a specific book in the list.</p>
+</li>
+<li>
+<p>Bibliotek shows detailed information of the book.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a. User does not find the intended book in the list.</p>
+<div class="paragraph">
+<p>Use case restarts from step 1.</p>
+</div>
+</li>
+<li>
+<p>2b. User gives an invalid index.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2b1. Bibliotek shows an error message.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>3a. Bibliotek cannot fetch the details of the book within 5s.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>3a1. Bibliotek shows an error message.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-uc4-add-a-book-to-my-reading-list" class="discrete">Use case: UC4 - Add a book to my reading list</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User obtains a list of books by listing (<a href="#use-case-uc1-view-my-reading-list"><strong>UC1</strong></a>)
+or searching (<a href="#use-case-uc2-search-for-books"><strong>UC2</strong></a>).</p>
+</li>
+<li>
+<p>User requests to add a specific book from the list to his reading list.</p>
+</li>
+<li>
+<p>Bibliotek adds the book to the user&#8217;s reading list.</p>
+</li>
+<li>
+<p>Bibliotek shows a success message.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a. User gives an invalid index.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. Bibliotek shows an error message.</p>
+<div class="paragraph">
+<p>Use case resume at step 2.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>2b. The book is already in user&#8217;s reading list.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2b1. Bibliotek tells user that the book is already in his reading list.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-uc5-rate-a-book" class="discrete">Use case: UC5 - Rate a book</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User obtains a list of books by listing (<a href="#use-case-uc1-view-my-reading-list"><strong>UC1</strong></a>)
+or searching (<a href="#use-case-uc2-search-for-books"><strong>UC2</strong></a>).</p>
+</li>
+<li>
+<p>User requests to give a rating to a specific book in the list.</p>
+</li>
+<li>
+<p>Bibliotek shows a success message.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a. The given rating is out of range.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. Bibliotek says that the rating is invalid and asks user to try again.</p>
+<div class="paragraph">
+<p>Use case resumes at step 2</p>
 </div>
 </li>
 </ul>
@@ -2429,7 +2587,7 @@ Expected: Similar to previous.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-08 14:57:19 UTC
+Last updated 2018-03-08 16:38:47 UTC
 </div>
 </div>
 </body>

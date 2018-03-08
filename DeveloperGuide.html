@@ -1903,7 +1903,7 @@ for <code>RemarkCommandParser</code>.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>has a need to manage a significant number of contacts</p>
+<p>has a need to catalogue a significant number of books</p>
 </li>
 <li>
 <p>prefer desktop apps over other types</p>
@@ -1920,7 +1920,7 @@ for <code>RemarkCommandParser</code>.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Value proposition</strong>: manage contacts faster than a typical mouse/GUI driven app</p>
+<p><strong>Value proposition</strong>: manage books faster than a typical mouse/GUI driven app</p>
 </div>
 </div>
 </div>
@@ -2125,25 +2125,19 @@ for <code>RemarkCommandParser</code>.</p>
 <h2 id="use-cases"><a class="link" href="#use-cases">Appendix D: Use Cases</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>(For all use cases below, the <strong>System</strong> is the <code>AddressBook</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
+<p>(For all use cases below, the <strong>System</strong> is <code>Bibliotek</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
 </div>
-<h3 id="use-case-delete-person" class="discrete">Use case: Delete person</h3>
+<h3 id="use-case-uc1-view-my-reading-list" class="discrete">Use case: UC1 - View my reading list</h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to list persons</p>
+<p>User requests to list all books in his reading list.</p>
 </li>
 <li>
-<p>AddressBook shows a list of persons</p>
-</li>
-<li>
-<p>User requests to delete a specific person in the list</p>
-</li>
-<li>
-<p>AddressBook deletes the person</p>
+<p>Bibliotek shows a list the books.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
@@ -2157,18 +2151,62 @@ for <code>RemarkCommandParser</code>.</p>
 <ul class="none">
 <li>
 <p>2a. The list is empty.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. Bibliotek shows an empty list.</p>
 <div class="paragraph">
 <p>Use case ends.</p>
 </div>
 </li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-uc2-search-for-books" class="discrete">Use case: UC2 - Search for books</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>3a. The given index is invalid.</p>
+<p>User performs a search with some constraints (title, author, etc.).</p>
+</li>
+<li>
+<p>Bibliotek lists books satisfying all the constraints.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>3a1. AddressBook shows an error message.</p>
+<p>2a. Bibliotek doesn’t find any books satisfying all the constraints.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2a1. Bibliotek shows an empty list.</p>
 <div class="paragraph">
-<p>Use case resumes at step 2.</p>
+<p>Use case ends.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>2b. Bibliotek cannot fetch the list of books within 5s.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>2b1. Bibliotek shows an error message.</p>
+<div class="paragraph">
+<p>Use case ends.</p>
 </div>
 </li>
 </ul>
@@ -2190,7 +2228,25 @@ for <code>RemarkCommandParser</code>.</p>
 <p>Should work on any <a href="#mainstream-os">mainstream OS</a> as long as it has Java <code>1.8.0_60</code> or higher installed.</p>
 </li>
 <li>
-<p>Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.</p>
+<p>Should work on both 32-bit and 64-bit environments.</p>
+</li>
+<li>
+<p>Should come with automated unit tests and open source code.</p>
+</li>
+<li>
+<p>Should come with a user guide and a developer guide.</p>
+</li>
+<li>
+<p>Should favor <a href="#dos-style-commands">DOS style commands</a> over Unix-style commands.</p>
+</li>
+<li>
+<p>Should be able to hold up to 1000 books without a noticeable sluggishness in performance for typical usage.</p>
+</li>
+<li>
+<p>Should respond to user commands within 50ms if no external API calls are required. Otherwise, respond within 5s.</p>
+</li>
+<li>
+<p>Should be intuitive such that a new user can learn to search and add books within 10 minutes.</p>
 </li>
 <li>
 <p>A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.</p>
@@ -2210,6 +2266,10 @@ for <code>RemarkCommandParser</code>.</p>
 <dt class="hdlist1"><a id="mainstream-os"></a> Mainstream OS</dt>
 <dd>
 <p>Windows, Linux, Unix, OS-X</p>
+</dd>
+<dt class="hdlist1"><a id="dos-style-commands"></a> DOS style commands</dt>
+<dd>
+<p>The use of backslashes '/' to indicate command parameters</p>
 </dd>
 <dt class="hdlist1"><a id="private-contact-detail"></a> Private contact detail</dt>
 <dd>
@@ -2369,7 +2429,7 @@ Expected: Similar to previous.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-07 14:46:16 UTC
+Last updated 2018-03-08 08:26:49 UTC
 </div>
 </div>
 </body>

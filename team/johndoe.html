@@ -16,13 +16,13 @@
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="project-bibliotek"><a class="link" href="#project-bibliotek">PROJECT: Bibliotek</a></h2>
+<h2 id="project-bibliotek"><a class="anchor" href="#project-bibliotek"></a>PROJECT: Bibliotek</h2>
 <div class="sectionbody">
 <hr>
 </div>
 </div>
 <div class="sect1">
-<h2 id="overview"><a class="link" href="#overview">Overview</a></h2>
+<h2 id="overview"><a class="anchor" href="#overview"></a>Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>AddressBook - Level 4 is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.</p>
@@ -30,7 +30,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="summary-of-contributions"><a class="link" href="#summary-of-contributions">Summary of contributions</a></h2>
+<h2 id="summary-of-contributions"><a class="anchor" href="#summary-of-contributions"></a>Summary of contributions</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -139,7 +139,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="contributions-to-the-user-guide"><a class="link" href="#contributions-to-the-user-guide">Contributions to the User Guide</a></h2>
+<h2 id="contributions-to-the-user-guide"><a class="anchor" href="#contributions-to-the-user-guide"></a>Contributions to the User Guide</h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -152,7 +152,7 @@
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="undoing-previous-command-code-undo-code"><a class="link" href="#undoing-previous-command-code-undo-code">Undoing previous command : <code>undo</code></a></h3>
+<h3 id="undoing-previous-command-code-undo-code"><a class="anchor" href="#undoing-previous-command-code-undo-code"></a>Undoing previous command : <code>undo</code></h3>
 <div class="paragraph">
 <p>Restores the address book to the state before the previous <em>undoable</em> command was executed.<br>
 Format: <code>undo</code></p>
@@ -197,7 +197,7 @@ The <code>undo</code> command fails as there are no undoable commands executed p
 </div>
 </div>
 <div class="sect2">
-<h3 id="redoing-the-previously-undone-command-code-redo-code"><a class="link" href="#redoing-the-previously-undone-command-code-redo-code">Redoing the previously undone command : <code>redo</code></a></h3>
+<h3 id="redoing-the-previously-undone-command-code-redo-code"><a class="anchor" href="#redoing-the-previously-undone-command-code-redo-code"></a>Redoing the previously undone command : <code>redo</code></h3>
 <div class="paragraph">
 <p>Reverses the most recent <code>undo</code> command.<br>
 Format: <code>redo</code></p>
@@ -229,7 +229,7 @@ The <code>redo</code> command fails as there are no <code>undo</code> commands e
 </div>
 </div>
 <div class="sect2">
-<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="link" href="#encrypting-data-files-code-coming-in-v2-0-code">Encrypting data files <code>[coming in v2.0]</code></a></h3>
+<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="anchor" href="#encrypting-data-files-code-coming-in-v2-0-code"></a>Encrypting data files <code>[coming in v2.0]</code></h3>
 <div class="paragraph">
 <p><em>{explain how the user can enable/disable data encryption}</em></p>
 </div>
@@ -237,7 +237,7 @@ The <code>redo</code> command fails as there are no <code>undo</code> commands e
 </div>
 </div>
 <div class="sect1">
-<h2 id="contributions-to-the-developer-guide"><a class="link" href="#contributions-to-the-developer-guide">Contributions to the Developer Guide</a></h2>
+<h2 id="contributions-to-the-developer-guide"><a class="anchor" href="#contributions-to-the-developer-guide"></a>Contributions to the Developer Guide</h2>
 <div class="sectionbody">
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -250,9 +250,9 @@ The <code>redo</code> command fails as there are no <code>undo</code> commands e
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="undo-redo-feature"><a class="link" href="#undo-redo-feature">Undo/Redo feature</a></h3>
+<h3 id="undo-redo-feature"><a class="anchor" href="#undo-redo-feature"></a>Undo/Redo feature</h3>
 <div class="sect3">
-<h4 id="current-implementation"><a class="link" href="#current-implementation">Current Implementation</a></h4>
+<h4 id="current-implementation"><a class="anchor" href="#current-implementation"></a>Current Implementation</h4>
 <div class="paragraph">
 <p>The undo/redo mechanism is facilitated by an <code>UndoRedoStack</code>, which resides inside <code>LogicManager</code>. It supports undoing and redoing of commands that modifies the state of the address book (e.g. <code>add</code>, <code>edit</code>). Such commands will inherit from <code>UndoableCommand</code>.</p>
 </div>
@@ -405,9 +405,9 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations"><a class="link" href="#design-considerations">Design Considerations</a></h4>
+<h4 id="design-considerations"><a class="anchor" href="#design-considerations"></a>Design Considerations</h4>
 <div class="sect4">
-<h5 id="aspect-implementation-of-code-undoablecommand-code"><a class="link" href="#aspect-implementation-of-code-undoablecommand-code">Aspect: Implementation of <code>UndoableCommand</code></a></h5>
+<h5 id="aspect-implementation-of-code-undoablecommand-code"><a class="anchor" href="#aspect-implementation-of-code-undoablecommand-code"></a>Aspect: Implementation of <code>UndoableCommand</code></h5>
 <div class="ulist">
 <ul>
 <li>
@@ -440,7 +440,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect4">
-<h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
+<h5 id="aspect-how-undo-redo-executes"><a class="anchor" href="#aspect-how-undo-redo-executes"></a>Aspect: How undo &amp; redo executes</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -473,7 +473,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect4">
-<h5 id="aspect-type-of-commands-that-can-be-undone-redone"><a class="link" href="#aspect-type-of-commands-that-can-be-undone-redone">Aspect: Type of commands that can be undone/redone</a></h5>
+<h5 id="aspect-type-of-commands-that-can-be-undone-redone"><a class="anchor" href="#aspect-type-of-commands-that-can-be-undone-redone"></a>Aspect: Type of commands that can be undone/redone</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -507,7 +507,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect4">
-<h5 id="aspect-data-structure-to-support-the-undo-redo-commands"><a class="link" href="#aspect-data-structure-to-support-the-undo-redo-commands">Aspect: Data structure to support the undo/redo commands</a></h5>
+<h5 id="aspect-data-structure-to-support-the-undo-redo-commands"><a class="anchor" href="#aspect-data-structure-to-support-the-undo-redo-commands"></a>Aspect: Data structure to support the undo/redo commands</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -542,7 +542,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">[Proposed] Data Encryption</a></h3>
+<h3 id="proposed-data-encryption"><a class="anchor" href="#proposed-data-encryption"></a>[Proposed] Data Encryption</h3>
 <div class="paragraph">
 <p><em>{Explain here how the data encryption feature will be implemented}</em></p>
 </div>
@@ -550,7 +550,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect1">
-<h2 id="project-powerpointlabs"><a class="link" href="#project-powerpointlabs">PROJECT: PowerPointLabs</a></h2>
+<h2 id="project-powerpointlabs"><a class="anchor" href="#project-powerpointlabs"></a>PROJECT: PowerPointLabs</h2>
 <div class="sectionbody">
 <hr>
 <div class="paragraph">
@@ -561,7 +561,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-09 05:49:25 UTC
+Last updated 2018-03-09 16:14:31 UTC
 </div>
 </div>
 </body>

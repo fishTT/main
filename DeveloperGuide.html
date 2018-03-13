@@ -387,7 +387,7 @@ The <code>.pptx</code> files used to create diagrams in this document can be fou
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/SDforDeletePerson.png" alt="SDforDeletePerson" width="800">
+<img src="images/SDforDeleteBook.png" alt="SDforDeleteBook" width="800">
 </div>
 <div class="title">Figure 3. Component interactions for <code>delete 1</code> command (part 1)</div>
 </div>
@@ -408,7 +408,7 @@ Note how the <code>Model</code> simply raises a <code>AddressBookChangedEvent</c
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/SDforDeletePersonEventHandling.png" alt="SDforDeletePersonEventHandling" width="800">
+<img src="images/SDforDeleteBookEventHandling.png" alt="SDforDeleteBookEventHandling" width="800">
 </div>
 <div class="title">Figure 4. Component interactions for <code>delete 1</code> command (part 2)</div>
 </div>
@@ -440,7 +440,7 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 <p><strong>API</strong> : <a href="https://github.com/CS2103JAN2018-F14-B4/main/tree/master/src/main/java/seedu/address/ui/Ui.java"><code>Ui.java</code></a></p>
 </div>
 <div class="paragraph">
-<p>The UI consists of a <code>MainWindow</code> that is made up of parts e.g.<code>CommandBox</code>, <code>ResultDisplay</code>, <code>PersonListPanel</code>, <code>StatusBarFooter</code>, <code>BrowserPanel</code> etc. All these, including the <code>MainWindow</code>, inherit from the abstract <code>UiPart</code> class.</p>
+<p>The UI consists of a <code>MainWindow</code> that is made up of parts e.g.<code>CommandBox</code>, <code>ResultDisplay</code>, <code>BookListPanel</code>, <code>StatusBarFooter</code>, <code>BrowserPanel</code> etc. All these, including the <code>MainWindow</code>, inherit from the abstract <code>UiPart</code> class.</p>
 </div>
 <div class="paragraph">
 <p>The <code>UI</code> component uses JavaFx UI framework. The layout of these UI parts are defined in matching <code>.fxml</code> files that are in the <code>src/main/resources/view</code> folder. For example, the layout of the <a href="https://github.com/CS2103JAN2018-F14-B4/main/tree/master/src/main/java/seedu/address/ui/MainWindow.java"><code>MainWindow</code></a> is specified in <a href="https://github.com/CS2103JAN2018-F14-B4/main/tree/master/src/main/resources/view/MainWindow.fxml"><code>MainWindow.fxml</code></a></p>
@@ -483,13 +483,13 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>Logic</code> uses the <code>AddressBookParser</code> class to parse the user command.</p>
+<p><code>Logic</code> uses the <code>BookShelfParser</code> class to parse the user command.</p>
 </li>
 <li>
 <p>This results in a <code>Command</code> object which is executed by the <code>LogicManager</code>.</p>
 </li>
 <li>
-<p>The command execution can affect the <code>Model</code> (e.g. adding a person) and/or raise events.</p>
+<p>The command execution can affect the <code>Model</code> (e.g. adding a book) and/or raise events.</p>
 </li>
 <li>
 <p>The result of the command execution is encapsulated as a <code>CommandResult</code> object which is passed back to the <code>Ui</code>.</p>
@@ -501,7 +501,7 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/DeletePersonSdForLogic.png" alt="DeletePersonSdForLogic" width="800">
+<img src="images/DeleteBookSdForLogic.png" alt="DeleteBookSdForLogic" width="800">
 </div>
 <div class="title">Figure 8. Interactions Inside the Logic Component for the <code>delete 1</code> Command</div>
 </div>
@@ -526,10 +526,10 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 <p>stores a <code>UserPref</code> object that represents the user&#8217;s preferences.</p>
 </li>
 <li>
-<p>stores the Address Book data.</p>
+<p>stores the Book Shelf data.</p>
 </li>
 <li>
-<p>exposes an unmodifiable <code>ObservableList&lt;Person&gt;</code> that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.</p>
+<p>exposes an unmodifiable <code>ObservableList&lt;Book&gt;</code> that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.</p>
 </li>
 <li>
 <p>does not depend on any of the other three components.</p>
@@ -592,7 +592,7 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 </div>
 </div>
 <div class="paragraph">
-<p>As you can see from the diagram, <code>UndoableCommand</code> adds an extra layer between the abstract <code>Command</code> class and concrete commands that can be undone, such as the <code>DeleteCommand</code>. Note that extra tasks need to be done when executing a command in an <em>undoable</em> way, such as saving the state of the address book before execution. <code>UndoableCommand</code> contains the high-level algorithm for those extra tasks while the child classes implements the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the <a href="https://www.tutorialspoint.com/design_pattern/template_pattern.htm">template pattern</a>.</p>
+<p>As you can see from the diagram, <code>UndoableCommand</code> adds an extra layer between the abstract <code>Command</code> class and concrete commands that can be undone, such as the <code>DeleteCommand</code>. Note that extra tasks need to be done when executing a command in an <em>undoable</em> way, such as saving the state of the book shelf before execution. <code>UndoableCommand</code> contains the high-level algorithm for those extra tasks while the child classes implements the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the <a href="https://www.tutorialspoint.com/design_pattern/template_pattern.htm">template pattern</a>.</p>
 </div>
 <div class="paragraph">
 <p>Commands that are not undoable are implemented this way:</p>
@@ -633,7 +633,7 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 <p>Suppose that the user has just launched the application. The <code>UndoRedoStack</code> will be empty at the beginning.</p>
 </div>
 <div class="paragraph">
-<p>The user executes a new <code>UndoableCommand</code>, <code>delete 5</code>, to delete the 5th person in the address book. The current state of the address book is saved before the <code>delete 5</code> command executes. The <code>delete 5</code> command will then be pushed onto the <code>undoStack</code> (the current state is saved together with the command).</p>
+<p>The user executes a new <code>UndoableCommand</code>, <code>delete 5</code>, to delete the 5th book in the book shelf. The current state of the book shelf is saved before the <code>delete 5</code> command executes. The <code>delete 5</code> command will then be pushed onto the <code>undoStack</code> (the current state is saved together with the command).</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -641,7 +641,7 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 </div>
 </div>
 <div class="paragraph">
-<p>As the user continues to use the program, more commands are added into the <code>undoStack</code>. For example, the user may execute <code>add n/David &#8230;&#8203;</code> to add a new person.</p>
+<p>As the user continues to use the program, more commands are added into the <code>undoStack</code>. For example, the user may execute <code>add t/Artemis &#8230;&#8203;</code> to add a new book.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -661,10 +661,10 @@ If a command fails its execution, it will not be pushed to the <code>UndoRedoSta
 </table>
 </div>
 <div class="paragraph">
-<p>The user now decides that adding the person was a mistake, and decides to undo that action using <code>undo</code>.</p>
+<p>The user now decides that adding the book was a mistake, and decides to undo that action using <code>undo</code>.</p>
 </div>
 <div class="paragraph">
-<p>We will pop the most recent command out of the <code>undoStack</code> and push it back to the <code>redoStack</code>. We will restore the address book to the state before the <code>add</code> command executed.</p>
+<p>We will pop the most recent command out of the <code>undoStack</code> and push it back to the <code>redoStack</code>. We will restore the book shelf to the state before the <code>add</code> command executed.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -692,7 +692,7 @@ If the <code>undoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="paragraph">
-<p>The redo does the exact opposite (pops from <code>redoStack</code>, push to <code>undoStack</code>, and restores the address book to the state after the command is executed).</p>
+<p>The redo does the exact opposite (pops from <code>redoStack</code>, push to <code>undoStack</code>, and restores the book shelf to the state after the command is executed).</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -707,7 +707,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </table>
 </div>
 <div class="paragraph">
-<p>The user now decides to execute a new command, <code>clear</code>. As before, <code>clear</code> will be pushed into the <code>undoStack</code>. This time the <code>redoStack</code> is no longer empty. It will be purged as it no longer make sense to redo the <code>add n/David</code> command (this is the behavior that most modern desktop applications follow).</p>
+<p>The user now decides to execute a new command, <code>clear</code>. As before, <code>clear</code> will be pushed into the <code>undoStack</code>. This time the <code>redoStack</code> is no longer empty. It will be purged as it no longer make sense to redo the <code>add t/Artemis</code> command (this is the behavior that most modern desktop applications follow).</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -771,7 +771,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Saves the entire address book.</p>
+<p><strong>Alternative 1 (current choice):</strong> Saves the entire book shelf.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -788,7 +788,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Will use less memory (e.g. for <code>delete</code>, just save the person being deleted).</p>
+<p>Pros: Will use less memory (e.g. for <code>delete</code>, just save the book being deleted).</p>
 </li>
 <li>
 <p>Cons: We must ensure that the implementation of each individual command are correct.</p>
@@ -804,7 +804,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Only include commands that modifies the address book (<code>add</code>, <code>clear</code>, <code>edit</code>).</p>
+<p><strong>Alternative 1 (current choice):</strong> Only include commands that modifies the book fetch (<code>add</code>, <code>clear</code>, <code>edit</code>).</p>
 <div class="ulist">
 <ul>
 <li>
@@ -824,7 +824,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 <p>Pros: Might be more intuitive for the user.</p>
 </li>
 <li>
-<p>Cons: User have no way of skipping such commands if he or she just want to reset the state of the address * book and not the view.
+<p>Cons: User have no way of skipping such commands if he or she just want to reset the state of the book  shelf and not the view.
 <strong>Additional Info:</strong> See our discussion  <a href="https://github.com/se-edu/addressbook-level4/issues/390#issuecomment-298936672">here</a>.</p>
 </li>
 </ul>
@@ -842,10 +842,10 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Easy to understand for new Computer Science student undergraduates to understand, who are likely to be * the new incoming developers of our project.</p>
+<p>Pros: Easy to understand for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.</p>
 </li>
 <li>
-<p>Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update * both <code>HistoryManager</code> and <code>UndoRedoStack</code>.</p>
+<p>Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update both <code>HistoryManager</code> and <code>UndoRedoStack</code>.</p>
 </li>
 </ul>
 </div>
@@ -858,7 +858,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 <p>Pros: We do not need to maintain a separate stack, and just reuse what is already in the codebase.</p>
 </li>
 <li>
-<p>Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as <code>HistoryManager</code> now needs to do two * different things.</p>
+<p>Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as <code>HistoryManager</code> now needs to do two different things.</p>
 </li>
 </ul>
 </div>
@@ -2583,7 +2583,7 @@ Expected: Similar to previous.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-12 12:48:34 UTC
+Last updated 2018-03-13 08:02:37 UTC
 </div>
 </div>
 </body>

@@ -16,25 +16,36 @@
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#introduction">1. Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#what-is-bibliotek">1.1. What is Bibliotek</a></li>
+<li><a href="#using-this-guide">1.2. Using this guide</a></li>
+<li><a href="#features-and-capabilities">1.3. Features and Capabilities</a></li>
+</ul>
+</li>
 <li><a href="#quick-start">2. Quick Start</a></li>
 <li><a href="#Features">3. Features</a>
 <ul class="sectlevel2">
 <li><a href="#viewing-help-code-help-code">3.1. Viewing help : <code>help</code></a></li>
 <li><a href="#searching-for-books-online-code-search-code">3.2. Searching for books online: <code>search</code></a></li>
-<li><a href="#adding-a-person-code-add-code">3.3. Adding a person: <code>add</code></a></li>
-<li><a href="#listing-all-persons-code-list-code">3.4. Listing all persons : <code>list</code></a></li>
-<li><a href="#editing-a-person-code-edit-code">3.5. Editing a person : <code>edit</code></a></li>
-<li><a href="#locating-persons-by-name-code-find-code">3.6. Locating persons by name: <code>find</code></a></li>
-<li><a href="#deleting-a-person-code-delete-code">3.7. Deleting a person : <code>delete</code></a></li>
-<li><a href="#selecting-a-person-code-select-code">3.8. Selecting a person : <code>select</code></a></li>
-<li><a href="#listing-entered-commands-code-history-code">3.9. Listing entered commands : <code>history</code></a></li>
-<li><a href="#undoing-previous-command-code-undo-code">3.10. Undoing previous command : <code>undo</code></a></li>
-<li><a href="#redoing-the-previously-undone-command-code-redo-code">3.11. Redoing the previously undone command : <code>redo</code></a></li>
-<li><a href="#clearing-all-entries-code-clear-code">3.12. Clearing all entries : <code>clear</code></a></li>
-<li><a href="#exiting-the-program-code-exit-code">3.13. Exiting the program : <code>exit</code></a></li>
-<li><a href="#saving-the-data">3.14. Saving the data</a></li>
-<li><a href="#encrypting-data-files-code-coming-in-v2-0-code">3.15. Encrypting data files <code>[coming in v2.0]</code></a></li>
+<li><a href="#adding-a-book-code-add-code">3.3. Adding a book: <code>add</code></a></li>
+<li><a href="#listing-your-book-shelf-code-list-code">3.4. Listing your book shelf : <code>list</code></a></li>
+<li><a href="#selecting-a-book-code-select-code">3.5. Selecting a book : <code>select</code></a></li>
+<li><a href="#editing-a-book-code-edit-code-code-coming-in-v1-2-code">3.6. Editing a book : <code>edit</code> <code>[coming in v1.2]</code></a></li>
+<li><a href="#deleting-a-book-code-delete-code">3.7. Deleting a book : <code>delete</code></a></li>
+<li><a href="#viewing-book-reviews-code-reviews-code-code-coming-in-v1-3-code">3.8. Viewing book reviews: <code>reviews</code> <code>[coming in v1.3]</code></a></li>
+<li><a href="#listing-recently-viewed-books-code-recent-code-code-coming-in-v1-3-code">3.9. Listing recently viewed books: <code>recent</code> <code>[coming in v1.3]</code></a></li>
+<li><a href="#finding-a-book-in-the-library-code-library-code-code-coming-in-v1-4-code">3.10. Finding a book in the library: <code>library</code> <code>[coming in v1.4]</code></a></li>
+<li><a href="#placing-a-book-on-watchlist-code-watch-code-code-coming-in-v1-4-code">3.11. Placing a book on watchlist: <code>watch</code> <code>[coming in v1.4]</code></a></li>
+<li><a href="#ordering-a-book-online-code-order-code-code-coming-in-v1-5-code">3.12. Ordering a book online: <code>order</code> <code>[coming in v1.5]</code></a></li>
+<li><a href="#listing-entered-commands-code-history-code">3.13. Listing entered commands : <code>history</code></a></li>
+<li><a href="#undoing-previous-command-code-undo-code">3.14. Undoing previous command : <code>undo</code></a></li>
+<li><a href="#clearing-all-entries-code-clear-code">3.15. Clearing all entries : <code>clear</code></a></li>
+<li><a href="#changing-settings-code-settings-code-code-coming-in-v1-4-code">3.16. Changing settings: <code>settings</code> <code>[coming in v1.4]</code></a></li>
+<li><a href="#closing-the-program-code-exit-code">3.17. Closing the program : <code>exit</code></a></li>
+<li><a href="#saving-the-data">3.18. Saving the data</a></li>
+<li><a href="#getting-book-recommendations-code-suggest-code-code-coming-in-v2-0-code">3.19. Getting book recommendations: <code>suggest</code> <code>[coming in v2.0]</code></a></li>
+<li><a href="#importing-books-from-other-e-readers-code-import-code-code-coming-in-v2-0-code">3.20. Importing books from other E-Readers: <code>import</code> <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -53,8 +64,54 @@
 <div class="sect1">
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="what-is-bibliotek"><a class="anchor" href="#what-is-bibliotek"></a>1.1. What is Bibliotek</h3>
 <div class="paragraph">
-<p>Bibliotek is for those who <strong>prefer to use a desktop app for managing contacts</strong>. More importantly, Bibliotek is <strong>optimized for those who prefer to work with a Command Line Interface</strong> (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, Bibliotek can get your contact management tasks done faster than traditional GUI apps. Interested? Jump to the <a href="#quick-start">Section 2, &#8220;Quick Start&#8221;</a> to get started. Enjoy!</p>
+<p>Bibliotek is a free book cataloguing application that is simple, fast and easy to use.
+You can use Bibliotek to search for books, manage your reading list and track the availability of your books.</p>
+</div>
+<div class="paragraph">
+<p>If you <strong>prefer to use a desktop app</strong>, like <strong>working with a Command Line Interface</strong> (CLI)
+while still having the benefits of a Graphical User Interface (GUI) or can <strong>type fast</strong>, Bibliotek is just for you!</p>
+</div>
+<div class="paragraph">
+<p>Interested? Jump to the <a href="#quick-start">Section 2, &#8220;Quick Start&#8221;</a> to get started. Enjoy!</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-this-guide"><a class="anchor" href="#using-this-guide"></a>1.2. Using this guide</h3>
+<div class="paragraph">
+<p>This document is a reference for installing and using Bibliotek.
+It can be accessed using the <code>help</code> command in the application.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="features-and-capabilities"><a class="anchor" href="#features-and-capabilities"></a>1.3. Features and Capabilities</h3>
+<div class="paragraph">
+<p>Below are some features and capabilities that Bibliotek supports:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search for new books</p>
+</li>
+<li>
+<p>View book reviews</p>
+</li>
+<li>
+<p>Track the books you are reading, have read and want to read</p>
+</li>
+<li>
+<p>Update you when books in your watchlist become available in the library</p>
+</li>
+<li>
+<p>Recommend new books based on your reading list</p>
+</li>
+<li>
+<p>Undo your previous actions</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -83,7 +140,7 @@ This app will not work with earlier versions of Java 8.
 <p>Download the latest <code>bibliotek.jar</code> <a href="https://github.com/CS2103JAN2018-F14-B4/main/releases">here</a>.</p>
 </li>
 <li>
-<p>Copy the file to the folder you want to use as the home folder for your Address Book.</p>
+<p>Copy the file to the folder you want to use as the home folder for your Book Shelf.</p>
 </li>
 <li>
 <p>Double-click the file to start the app. The GUI should appear in a few seconds.</p>
@@ -102,13 +159,13 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <div class="ulist">
 <ul>
 <li>
-<p><strong><code>list</code></strong> : lists all contacts</p>
+<p><strong><code>list</code></strong> : lists all books</p>
 </li>
 <li>
-<p><strong><code>add</code></strong><code>n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01</code> : adds a contact named <code>John Doe</code> to the Address Book.</p>
+<p><strong><code>search</code></strong><code>t/Babylon&#8217;s Ashes c/Science Fiction</code> : searches for books with <code>Babylon&#8217;s Ashes</code> in their title, belonging to the category <code>Science Fiction</code>.</p>
 </li>
 <li>
-<p><strong><code>delete</code></strong><code>3</code> : deletes the 3rd contact shown in the current list</p>
+<p><strong><code>delete</code></strong><code>3</code> : deletes the 3rd book shown in the current list</p>
 </li>
 <li>
 <p><strong><code>exit</code></strong> : exits the app</p>
@@ -134,16 +191,16 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <div class="ulist">
 <ul>
 <li>
-<p>Words in <code>UPPER_CASE</code> are the parameters to be supplied by the user e.g. in <code>add n/NAME</code>, <code>NAME</code> is a parameter which can be used as <code>add n/John Doe</code>.</p>
+<p>Words in <code>UPPER_CASE</code> are the parameters you supply e.g. in <code>search t/TITLE</code>, <code>TITLE</code> is a parameter which you can use as <code>search t/Harry Potter</code>.</p>
 </li>
 <li>
-<p>Items in square brackets are optional e.g <code>n/NAME [t/TAG]</code> can be used as <code>n/John Doe t/friend</code> or as <code>n/John Doe</code>.</p>
+<p>Items in square brackets are optional e.g you can use <code>[t/TITLE] [a/AUTHOR]</code> as <code>t/Harry Potter a/Rowling</code> or as <code>t/Harry Potter</code> (but there cannot be no parameters).</p>
 </li>
 <li>
-<p>Items with <code>…</code>​ after them can be used multiple times including zero times e.g. <code>[t/TAG]&#8230;&#8203;</code> can be used as <code>&#160;</code> (i.e. 0 times), <code>t/friend</code>, <code>t/friend t/family</code> etc.</p>
+<p>Items with <code>…</code>​ after them can be used multiple times including zero times e.g. you can use <code>[a/AUTHOR]&#8230;&#8203;</code> as <code>&#160;</code> (i.e. 0 times), <code>a/Dubner</code>, <code>a/Dubner a/Steven Levitt</code> etc.</p>
 </li>
 <li>
-<p>Parameters can be in any order e.g. if the command specifies <code>n/NAME p/PHONE_NUMBER</code>, <code>p/PHONE_NUMBER n/NAME</code> is also acceptable.</p>
+<p>Parameters can be in any order e.g. if the command specifies <code>a/AUTHOR t/TITLE</code>, <code>t/TITLE a/AUTHOR</code> is acceptable.</p>
 </li>
 </ul>
 </div>
@@ -152,13 +209,14 @@ e.g. typing <strong><code>help</code></strong> and pressing <kbd>Enter</kbd> wil
 <div class="sect2">
 <h3 id="viewing-help-code-help-code"><a class="anchor" href="#viewing-help-code-help-code"></a>3.1. Viewing help : <code>help</code></h3>
 <div class="paragraph">
-<p>Format: <code>help</code></p>
+<p>If you are unsure of some commands, use the <code>help</code> command to open this document.<br>
+Format: <code>help</code></p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="searching-for-books-online-code-search-code"><a class="anchor" href="#searching-for-books-online-code-search-code"></a>3.2. Searching for books online: <code>search</code></h3>
 <div class="paragraph">
-<p>Searches for books online<br>
+<p>Want to lookup for a specific book? Browsing for new books? Use the <code>search</code> command.<br>
 Format: <code>search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]</code></p>
 </div>
 <div class="sidebarblock">
@@ -166,7 +224,7 @@ Format: <code>search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]</c
 <div class="ulist">
 <ul>
 <li>
-<p>Searches online for books containing the specified <code>SEARCH_TERM</code>, and matches the specified constraints on its <code>ISBN</code>, <code>TITLE</code>, <code>AUTHOR</code>, and <code>CATEGORY</code>.</p>
+<p>Searches online for books using the specified <code>SEARCH_TERM</code> and constraints on its <code>ISBN</code>, <code>TITLE</code>, <code>AUTHOR</code>, and <code>CATEGORY</code>.</p>
 </li>
 <li>
 <p>At least one of the fields must be provided.</p>
@@ -175,36 +233,14 @@ Format: <code>search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]</c
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>search Artemis a/Andy Weir</code><br>
-Searches online for books related to <code>Artemis</code>, where <code>Andy Weir</code> matches one of the authors.</p>
-</li>
-<li>
-<p><code>search t/Babylon&#8217;s Ashes c/Science Fiction</code><br>
-Searches online for <code>Science Fiction</code> books that contains <code>Babylon&#8217;s Ashes</code> in the title.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="adding-a-person-code-add-code"><a class="anchor" href="#adding-a-person-code-add-code"></a>3.3. Adding a person: <code>add</code></h3>
-<div class="paragraph">
-<p>Adds a person to the address book<br>
-Format: <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;</code></p>
-</div>
-<div class="admonitionblock tip">
+<div class="admonitionblock warning">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
+<i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-A person can have any number of tags (including 0)
+You can only perform <code>search</code> with Internet connection.
 </td>
 </tr>
 </table>
@@ -215,33 +251,164 @@ A person can have any number of tags (including 0)
 <div class="ulist">
 <ul>
 <li>
-<p><code>add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01</code></p>
+<p><code>search Artemis a/Andy Weir</code><br>
+Returns a list of books related to <code>Artemis</code>, where <code>Andy Weir</code> matches one of the authors.</p>
 </li>
 <li>
-<p><code>add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal</code></p>
+<p><code>search t/Babylon&#8217;s Ashes c/Science Fiction</code><br>
+Returns a list of <code>Science Fiction</code> books that contains <code>Babylon&#8217;s Ashes</code> in the title.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-all-persons-code-list-code"><a class="anchor" href="#listing-all-persons-code-list-code"></a>3.4. Listing all persons : <code>list</code></h3>
+<h3 id="adding-a-book-code-add-code"><a class="anchor" href="#adding-a-book-code-add-code"></a>3.3. Adding a book: <code>add</code></h3>
 <div class="paragraph">
-<p>Shows a list of all persons in the address book.<br>
-Format: <code>list</code></p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="editing-a-person-code-edit-code"><a class="anchor" href="#editing-a-person-code-edit-code"></a>3.5. Editing a person : <code>edit</code></h3>
-<div class="paragraph">
-<p>Edits an existing person in the address book.<br>
-Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;&#8203;</code></p>
+<p>If you find a book you wish to read in your search results, you can add this book into your book shelf. Use the <code>add</code> command.<br>
+Format: <code>add INDEX</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Edits the person at the specified <code>INDEX</code>. The index refers to the index number shown in the last person listing. The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+<p>Adds the book at the specified <code>INDEX</code>.</p>
+</li>
+<li>
+<p>The index refers to the index number shown in your search results.</p>
+</li>
+<li>
+<p>The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can only perform <code>add</code> when the list shown is a search result.<br>
+You also need Internet connection.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>search t/Babylon&#8217;s Ashes c/Science Fiction</code><br>
+<code>add 1</code><br>
+Adds the 1st book in the search results.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-your-book-shelf-code-list-code"><a class="anchor" href="#listing-your-book-shelf-code-list-code"></a>3.4. Listing your book shelf : <code>list</code></h3>
+<div class="paragraph">
+<p>If you want to view a portion of the books in your book shelf, use the <code>list</code> command.<br>
+Format: <code>list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [p/PRIORITY] [s/STATUS]</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Lists all books in your book shelf that satisfies all the constraints on <code>TITLE</code>, <code>AUTHOR</code>, <code>CATEGORY</code>, <code>PRIORITY</code> and <code>STATUS</code>.</p>
+</li>
+<li>
+<p>If no parameters are provided, all books will be listed.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>list</code><br>
+Lists all books in your book shelf.</p>
+</li>
+<li>
+<p><code>list a/Andy Weir</code><br>
+Lists books in your book shelf where <code>Andy Weir</code> matches one of the authors.</p>
+</li>
+<li>
+<p><code>list t/Babylon&#8217;s Ashes c/Science Fiction</code><br>
+Lists <code>Science Fiction</code> books in your book shelf that contains <code>Babylon&#8217;s Ashes</code> in the title.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selecting-a-book-code-select-code"><a class="anchor" href="#selecting-a-book-code-select-code"></a>3.5. Selecting a book : <code>select</code></h3>
+<div class="paragraph">
+<p>If you are interested in a book and want to view more information about it, use <code>select</code>.<br>
+Format: <code>select INDEX</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Selects the book at the specified <code>INDEX</code> and displays detailed information about it.</p>
+</li>
+<li>
+<p>The index refers to the index number shown in the most recent listing.</p>
+</li>
+<li>
+<p>The index <strong>must be a positive integer</strong> <code>1, 2, 3, &#8230;&#8203;</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>list</code><br>
+<code>select 2</code><br>
+Selects the 2nd book in your book shelf.</p>
+</li>
+<li>
+<p><code>list p/HIGH</code><br>
+<code>select 1</code><br>
+Selects the 1st book among books with <code>HIGH</code> priority in your book shelf.</p>
+</li>
+<li>
+<p><code>search Artemis a/Andy Weir</code><br>
+<code>select 1</code><br>
+Selects the 1st book in the search results.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="editing-a-book-code-edit-code-code-coming-in-v1-2-code"><a class="anchor" href="#editing-a-book-code-edit-code-code-coming-in-v1-2-code"></a>3.6. Editing a book : <code>edit</code> <code>[coming in v1.2]</code></h3>
+<div class="paragraph">
+<p>After reading a book, you may want to give the book a rating or set the book as read. Or, you may want
+to change the priority of books to remind yourself what you should read next. These can be done using <code>edit</code>.<br>
+Format: <code>edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Edits the book at the specified <code>INDEX</code>. The index refers to the index number shown in the last book shelf listing. The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
 </li>
 <li>
 <p>At least one of the optional fields must be provided.</p>
@@ -249,15 +416,21 @@ Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;
 <li>
 <p>Existing values will be updated to the input values.</p>
 </li>
-<li>
-<p>When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.</p>
-</li>
-<li>
-<p>You can remove all the person&#8217;s tags by typing <code>t/</code> without specifying any tags after it.</p>
-</li>
 </ul>
 </div>
 </div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can only perform <code>edit</code> when the list shown is from your book shelf.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -265,65 +438,20 @@ Format: <code>edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;
 <div class="ulist">
 <ul>
 <li>
-<p><code>edit 1 p/91234567 e/johndoe@example.com</code><br>
-Edits the phone number and email address of the 1st person to be <code>91234567</code> and <code>johndoe@example.com</code> respectively.</p>
+<p><code>edit 1 p/HIGH</code><br>
+Changes the priority of the 1st book to <code>HIGH</code>.</p>
 </li>
 <li>
-<p><code>edit 2 n/Betsy Crower t/</code><br>
-Edits the name of the 2nd person to be <code>Betsy Crower</code> and clears all existing tags.</p>
+<p><code>edit 2 s/READ r/5</code><br>
+Marks the 2nd book as <code>READ</code> and changes its rating to <code>5</code>.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="locating-persons-by-name-code-find-code"><a class="anchor" href="#locating-persons-by-name-code-find-code"></a>3.6. Locating persons by name: <code>find</code></h3>
+<h3 id="deleting-a-book-code-delete-code"><a class="anchor" href="#deleting-a-book-code-delete-code"></a>3.7. Deleting a book : <code>delete</code></h3>
 <div class="paragraph">
-<p>Finds persons whose names contain any of the given keywords.<br>
-Format: <code>find KEYWORD [MORE_KEYWORDS]</code></p>
-</div>
-<div class="sidebarblock">
-<div class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>The search is case insensitive. e.g <code>hans</code> will match <code>Hans</code></p>
-</li>
-<li>
-<p>The order of the keywords does not matter. e.g. <code>Hans Bo</code> will match <code>Bo Hans</code></p>
-</li>
-<li>
-<p>Only the name is searched.</p>
-</li>
-<li>
-<p>Only full words will be matched e.g. <code>Han</code> will not match <code>Hans</code></p>
-</li>
-<li>
-<p>Persons matching at least one keyword will be returned (i.e. <code>OR</code> search). e.g. <code>Hans Bo</code> will return <code>Hans Gruber</code>, <code>Bo Yang</code></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>find John</code><br>
-Returns <code>john</code> and <code>John Doe</code></p>
-</li>
-<li>
-<p><code>find Betsy Tim John</code><br>
-Returns any person having names <code>Betsy</code>, <code>Tim</code>, or <code>John</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="deleting-a-person-code-delete-code"><a class="anchor" href="#deleting-a-person-code-delete-code"></a>3.7. Deleting a person : <code>delete</code></h3>
-<div class="paragraph">
-<p>Deletes the specified person from the address book.<br>
+<p>No longer want a book in your book shelf? Remove it using <code>delete</code>.<br>
 Format: <code>delete INDEX</code></p>
 </div>
 <div class="sidebarblock">
@@ -331,7 +459,7 @@ Format: <code>delete INDEX</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p>Deletes the person at the specified <code>INDEX</code>.</p>
+<p>Deletes the book at the specified <code>INDEX</code>.</p>
 </li>
 <li>
 <p>The index refers to the index number shown in the most recent listing.</p>
@@ -342,6 +470,31 @@ Format: <code>delete INDEX</code></p>
 </ul>
 </div>
 </div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can only perform <code>delete</code> if the list shown is from your book shelf.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+You don&#8217;t have to delete books after reading them. Simply mark them as read.
+They may serve as useful reference in the future.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -362,27 +515,111 @@ Deletes the 1st person in the results of the <code>find</code> command.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="selecting-a-person-code-select-code"><a class="anchor" href="#selecting-a-person-code-select-code"></a>3.8. Selecting a person : <code>select</code></h3>
+<h3 id="viewing-book-reviews-code-reviews-code-code-coming-in-v1-3-code"><a class="anchor" href="#viewing-book-reviews-code-reviews-code-code-coming-in-v1-3-code"></a>3.8. Viewing book reviews: <code>reviews</code> <code>[coming in v1.3]</code></h3>
 <div class="paragraph">
-<p>Selects the person identified by the index number used in the last person listing.<br>
-Format: <code>select INDEX</code></p>
+<p>If a book catches your eyes but you are not sure whether it&#8217;s worth the read, use
+<code>reviews</code> to find out what other readers think.<br>
+Format: <code>reviews INDEX</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Selects the person and loads the Google search page the person at the specified <code>INDEX</code>.</p>
+<p>Loads reviews of the book at the specified <code>INDEX</code>.</p>
 </li>
 <li>
 <p>The index refers to the index number shown in the most recent listing.</p>
 </li>
 <li>
-<p>The index <strong>must be a positive integer</strong> <code>1, 2, 3, &#8230;&#8203;</code></p>
+<p>The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
 </li>
 </ul>
 </div>
 </div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can only perform <code>reviews</code> with Internet connection.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>search t/Babylon&#8217;s Ashes c/Science Fiction</code><br>
+<code>reviews 1</code><br>
+Shows online reviews of 1st book in the search results.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-recently-viewed-books-code-recent-code-code-coming-in-v1-3-code"><a class="anchor" href="#listing-recently-viewed-books-code-recent-code-code-coming-in-v1-3-code"></a>3.9. Listing recently viewed books: <code>recent</code> <code>[coming in v1.3]</code></h3>
+<div class="paragraph">
+<p>You recently selected a book in one of your searches but did not add it into your
+book shelf, and now you have trouble searching up that book again. No worries, <code>recent</code>
+is designed to take care of this.<br>
+Format: <code>recent</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Lists the books you recently selected in reverse chronological order.</p>
+</li>
+<li>
+<p>Limited to books selected since the last start-up of Bibliotek.</p>
+</li>
+<li>
+<p>Limited to the last 50 books.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="finding-a-book-in-the-library-code-library-code-code-coming-in-v1-4-code"><a class="anchor" href="#finding-a-book-in-the-library-code-library-code-code-coming-in-v1-4-code"></a>3.10. Finding a book in the library: <code>library</code> <code>[coming in v1.4]</code></h3>
+<div class="paragraph">
+<p>If you want to know whether a book is available in a library, use <code>library</code>.<br>
+Format: <code>library INDEX</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Check for the availability of a book in a <a href="#settings-library">pre-configured library</a>.</p>
+</li>
+<li>
+<p>Default library searched is National Library Board.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can only perform <code>library</code> with Internet connection.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -391,22 +628,120 @@ Format: <code>select INDEX</code></p>
 <ul>
 <li>
 <p><code>list</code><br>
-<code>select 2</code><br>
-Selects the 2nd person in the address book.</p>
-</li>
-<li>
-<p><code>find Betsy</code><br>
-<code>select 1</code><br>
-Selects the 1st person in the results of the <code>find</code> command.</p>
+<code>library 1</code><br>
+Search your chosen library for the 1st book in your book shelf.</p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-entered-commands-code-history-code"><a class="anchor" href="#listing-entered-commands-code-history-code"></a>3.9. Listing entered commands : <code>history</code></h3>
+<h3 id="placing-a-book-on-watchlist-code-watch-code-code-coming-in-v1-4-code"><a class="anchor" href="#placing-a-book-on-watchlist-code-watch-code-code-coming-in-v1-4-code"></a>3.11. Placing a book on watchlist: <code>watch</code> <code>[coming in v1.4]</code></h3>
 <div class="paragraph">
-<p>Lists all the commands that you have entered in reverse chronological order.<br>
+<p>Interested in so many books that searching them up using <code>library</code> is time consuming?
+With <code>watch</code>, you can automatically get notified when a book in your watchlist
+becomes available at the library, saving you the trouble!<br>
+Format: <code>watch INDEX</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Adds the book at the specified <code>INDEX</code> into your watchlist.</p>
+</li>
+<li>
+<p>The index refers to the index number shown in the most recent listing.</p>
+</li>
+<li>
+<p>The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Bibliotek informs you of the availability of your watchlisted books in the library
+everytime you start up the application.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ordering-a-book-online-code-order-code-code-coming-in-v1-5-code"><a class="anchor" href="#ordering-a-book-online-code-order-code-code-coming-in-v1-5-code"></a>3.12. Ordering a book online: <code>order</code> <code>[coming in v1.5]</code></h3>
+<div class="paragraph">
+<p>If you wish to purchase a book, use <code>order</code>.<br>
+Format: <code>order INDEX</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Navigates to the purchase page for the book at the specified <code>INDEX</code>.</p>
+</li>
+<li>
+<p>The online shopping site used is the <a href="#settings-order">pre-configured site</a>.</p>
+</li>
+<li>
+<p>The index refers to the index number shown in the most recent listing.</p>
+</li>
+<li>
+<p>The index <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can only perform <code>order</code> with Internet connection.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>list</code><br>
+<code>order 1</code><br>
+Opens the purchase page of the 1st book in your book shelf in your chosen site.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-entered-commands-code-history-code"><a class="anchor" href="#listing-entered-commands-code-history-code"></a>3.13. Listing entered commands : <code>history</code></h3>
+<div class="paragraph">
+<p>If you want to view the commands that you have entered previously, use <code>history</code>.<br>
 Format: <code>history</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Lists the previous commands in reverse chronological order.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -424,10 +759,21 @@ Format: <code>history</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="undoing-previous-command-code-undo-code"><a class="anchor" href="#undoing-previous-command-code-undo-code"></a>3.10. Undoing previous command : <code>undo</code></h3>
+<h3 id="undoing-previous-command-code-undo-code"><a class="anchor" href="#undoing-previous-command-code-undo-code"></a>3.14. Undoing previous command : <code>undo</code></h3>
 <div class="paragraph">
-<p>Restores the address book to the state before the previous <em>undoable</em> command was executed.<br>
+<p>If you regret executing a command, use <code>undo</code> to reverse your action.<br>
 Format: <code>undo</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Restores the book shelf to the state before the previous <em>undoable</em> command was executed.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -437,7 +783,7 @@ Format: <code>undo</code></p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Undoable commands: those commands that modify the address book&#8217;s content (<code>add</code>, <code>delete</code>, <code>edit</code> and <code>clear</code>).</p>
+<p>Undoable commands: those commands that modify the book shelf&#8217;s content (<code>add</code>, <code>delete</code>, <code>edit</code> and <code>clear</code>).</p>
 </div>
 </td>
 </tr>
@@ -469,10 +815,121 @@ The <code>undo</code> command fails as there are no undoable commands executed p
 </div>
 </div>
 <div class="sect2">
-<h3 id="redoing-the-previously-undone-command-code-redo-code"><a class="anchor" href="#redoing-the-previously-undone-command-code-redo-code"></a>3.11. Redoing the previously undone command : <code>redo</code></h3>
+<h3 id="clearing-all-entries-code-clear-code"><a class="anchor" href="#clearing-all-entries-code-clear-code"></a>3.15. Clearing all entries : <code>clear</code></h3>
 <div class="paragraph">
-<p>Reverses the most recent <code>undo</code> command.<br>
-Format: <code>redo</code></p>
+<p>Don&#8217;t need the data in your book shelf anymore? Remove them using <code>clear</code>.<br>
+Format: <code>clear</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="changing-settings-code-settings-code-code-coming-in-v1-4-code"><a class="anchor" href="#changing-settings-code-settings-code-code-coming-in-v1-4-code"></a>3.16. Changing settings: <code>settings</code> <code>[coming in v1.4]</code></h3>
+<div class="sect3">
+<h4 id="settings-library"><a class="anchor" href="#settings-library"></a>3.16.1. Library <code>[coming in v1.4]</code></h4>
+<div class="paragraph">
+<p>If you want to search for books in other libraries, you can change your settings.<br>
+Format: <code>settings lib/LIBRARY</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Change the library searched when you perform <code>library</code>.</p>
+</li>
+<li>
+<p>Default library searched is National Library Board.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Only some libraries are supported. Do <a href="https://f14-b4.netlify.com/contactus">contact us</a>
+if there are other libraries you wish are supported.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="settings-order"><a class="anchor" href="#settings-order"></a>3.16.2. Online shopping site <code>[coming in v1.5]</code></h4>
+<div class="paragraph">
+<p>If you want to purchase books on other online booksellers, you can change your settings.<br>
+Format: <code>settings order/SITE</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Change the online bookseller searched when you perform <code>order</code>.</p>
+</li>
+<li>
+<p>Default online book selling site is Book Depository.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Only some sites are supported. Do <a href="https://f14-b4.netlify.com/contactus">contact us</a>
+if there are other sites you wish are supported.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="command-alias-code-coming-in-v1-5-code"><a class="anchor" href="#command-alias-code-coming-in-v1-5-code"></a>3.16.3. Command alias <code>[coming in v1.5]</code></h4>
+<div class="paragraph">
+<p>If you don&#8217;t like the word for a command or think it is too long, you can add a
+command alias to make the command more intuitive or reduce typing.<br>
+Format: <code>settings alias/COMMAND: ALIAS</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Change the alias of the given command.</p>
+</li>
+<li>
+<p>Each command can have 1 alias.</p>
+</li>
+<li>
+<p>By default, all commands have no alias.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Remove the alias using <code>settings alias/COMMAND:</code>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -480,51 +937,107 @@ Format: <code>redo</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>delete 1</code><br>
-<code>undo</code> (reverses the <code>delete 1</code> command)<br>
-<code>redo</code> (reapplies the <code>delete 1</code> command)<br></p>
+<p><code>settings alias/add: a</code><br>
+Change the command alias of <code>add</code> to <code>a</code>.</p>
 </li>
 <li>
-<p><code>delete 1</code><br>
-<code>redo</code><br>
-The <code>redo</code> command fails as there are no <code>undo</code> commands executed previously.</p>
-</li>
-<li>
-<p><code>delete 1</code><br>
-<code>clear</code><br>
-<code>undo</code> (reverses the <code>clear</code> command)<br>
-<code>undo</code> (reverses the <code>delete 1</code> command)<br>
-<code>redo</code> (reapplies the <code>delete 1</code> command)<br>
-<code>redo</code> (reapplies the <code>clear</code> command)<br></p>
+<p><code>settings alias/add:</code><br>
+Remove the command alias of <code>add</code>.</p>
 </li>
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="clearing-all-entries-code-clear-code"><a class="anchor" href="#clearing-all-entries-code-clear-code"></a>3.12. Clearing all entries : <code>clear</code></h3>
+<div class="sect3">
+<h4 id="theme-code-coming-in-v2-0-code"><a class="anchor" href="#theme-code-coming-in-v2-0-code"></a>3.16.4. Theme <code>[coming in v2.0]</code></h4>
 <div class="paragraph">
-<p>Clears all entries from the address book.<br>
-Format: <code>clear</code></p>
+<p>Don&#8217;t like the default theme of the application? You can choose from the various
+themes that Bibliotek provides.<br>
+Format: <code>settings theme/THEME</code></p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="exiting-the-program-code-exit-code"><a class="anchor" href="#exiting-the-program-code-exit-code"></a>3.13. Exiting the program : <code>exit</code></h3>
+<div class="sect3">
+<h4 id="font-size-code-coming-in-v2-0-code"><a class="anchor" href="#font-size-code-coming-in-v2-0-code"></a>3.16.5. Font size <code>[coming in v2.0]</code></h4>
 <div class="paragraph">
-<p>Exits the program.<br>
+<p>Think the font size is too small or large for your liking? You can customize the
+font size to your own needs.<br>
+Format: <code>settings fontsize/FONTSIZE</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="password-code-coming-in-v2-0-code"><a class="anchor" href="#password-code-coming-in-v2-0-code"></a>3.16.6. Password <code>[coming in v2.0]</code></h4>
+<div class="paragraph">
+<p>If you want to keep your data secure, you can opt to set a password for the application.<br>
+Format: <code>settings password/PASSWORD</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You will be prompted for the password upon starting up the application. You will
+not need to enter it again thereafter (ie. when using commands).</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Remove your password using <code>settings password/</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="closing-the-program-code-exit-code"><a class="anchor" href="#closing-the-program-code-exit-code"></a>3.17. Closing the program : <code>exit</code></h3>
+<div class="paragraph">
+<p>Use <code>exit</code> to close the program.<br>
 Format: <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="saving-the-data"><a class="anchor" href="#saving-the-data"></a>3.14. Saving the data</h3>
+<h3 id="saving-the-data"><a class="anchor" href="#saving-the-data"></a>3.18. Saving the data</h3>
 <div class="paragraph">
-<p>Address book data are saved in the hard disk automatically after any command that changes the data.<br>
+<p>Bibliotek saves data in the hard disk automatically after any command that changes the data.<br>
 There is no need to save manually.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="encrypting-data-files-code-coming-in-v2-0-code"><a class="anchor" href="#encrypting-data-files-code-coming-in-v2-0-code"></a>3.15. Encrypting data files <code>[coming in v2.0]</code></h3>
+<h3 id="getting-book-recommendations-code-suggest-code-code-coming-in-v2-0-code"><a class="anchor" href="#getting-book-recommendations-code-suggest-code-code-coming-in-v2-0-code"></a>3.19. Getting book recommendations: <code>suggest</code> <code>[coming in v2.0]</code></h3>
 <div class="paragraph">
-<p><em>{explain how the user can enable/disable data encryption}</em></p>
+<p>Having problems deciding what to read next? Bibliotek can give you book recommendations
+based on the books in your book shelf. Use <code>suggest</code> to obtain your personalized recommendations!<br>
+Format: <code>suggest</code></p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Give appropriate ratings to books you have read to obtain recommendations that are closer to your preferences.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="importing-books-from-other-e-readers-code-import-code-code-coming-in-v2-0-code"><a class="anchor" href="#importing-books-from-other-e-readers-code-import-code-code-coming-in-v2-0-code"></a>3.20. Importing books from other E-Readers: <code>import</code> <code>[coming in v2.0]</code></h3>
+<div class="paragraph">
+<p>If you are using other E-Readers and have many books in your collection that you wish to
+add into your Bibliotek book shelf, <code>import</code> is the command you are looking for.<br>
+Format: <code>import SOURCE</code></p>
 </div>
 </div>
 </div>
@@ -534,7 +1047,15 @@ There is no need to save manually.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Q</strong>: How do I transfer my data to another Computer?<br>
-<strong>A</strong>: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.</p>
+<strong>A</strong>: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Bibliotek folder.</p>
+</div>
+<div class="paragraph">
+<p><strong>Q</strong>: Why do my commands keep timing out?<br>
+<strong>A</strong>: The external service may be down at the moment. You should try again after some time.</p>
+</div>
+<div class="paragraph">
+<p><strong>Q</strong>: I have a problem and this guide did not help.<br>
+<strong>A</strong>: Post in our <a href="https://github.com/CS2103JAN2018-F14-B4/main/issues">issues page</a> and we will try our best to answer your queries.</p>
 </div>
 </div>
 </div>
@@ -544,42 +1065,36 @@ There is no need to save manually.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Add</strong> <code>add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]&#8230;&#8203;</code><br>
-e.g. <code>add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague</code></p>
+<p><strong>Add</strong> <code>add INDEX</code><br>
+e.g. <code>add 1</code></p>
 </li>
 <li>
 <p><strong>Clear</strong> : <code>clear</code></p>
 </li>
 <li>
-<p><strong>Delete</strong> : <code>delete INDEX</code><br>
-e.g. <code>delete 3</code></p>
+<p><strong>Delete</strong> : <code>delete INDEX</code><br></p>
 </li>
 <li>
-<p><strong>Edit</strong> : <code>edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]&#8230;&#8203;</code><br>
-e.g. <code>edit 2 n/James Lee e/jameslee@example.com</code></p>
-</li>
-<li>
-<p><strong>Find</strong> : <code>find KEYWORD [MORE_KEYWORDS]</code><br>
-e.g. <code>find James Jake</code></p>
-</li>
-<li>
-<p><strong>List</strong> : <code>list</code></p>
+<p><strong>Exit</strong> : <code>exit</code></p>
 </li>
 <li>
 <p><strong>Help</strong> : <code>help</code></p>
 </li>
 <li>
-<p><strong>Select</strong> : <code>select INDEX</code><br>
-e.g.<code>select 2</code></p>
-</li>
-<li>
 <p><strong>History</strong> : <code>history</code></p>
 </li>
 <li>
-<p><strong>Undo</strong> : <code>undo</code></p>
+<p><strong>List</strong> : <code>list</code></p>
 </li>
 <li>
-<p><strong>Redo</strong> : <code>redo</code></p>
+<p><strong>Search</strong> : <code>search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]</code><br>
+e.g. <code>search t/Babylon&#8217;s Ashes c/Science Fiction</code></p>
+</li>
+<li>
+<p><strong>Select</strong> : <code>select INDEX</code><br></p>
+</li>
+<li>
+<p><strong>Undo</strong> : <code>undo</code></p>
 </li>
 </ul>
 </div>
@@ -588,7 +1103,7 @@ e.g.<code>select 2</code></p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-15 02:47:21 UTC
+Last updated 2018-03-15 11:53:19 UTC
 </div>
 </div>
 </body>

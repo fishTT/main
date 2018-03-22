@@ -37,9 +37,10 @@
 <li><a href="#implementation">3. Implementation</a>
 <ul class="sectlevel2">
 <li><a href="#undo-redo-feature">3.1. Undo/Redo feature</a></li>
-<li><a href="#proposed-data-encryption">3.2. [Proposed] Data Encryption</a></li>
-<li><a href="#logging">3.3. Logging</a></li>
-<li><a href="#Implementation-Configuration">3.4. Configuration</a></li>
+<li><a href="#view-recently-selected-books-code-recent-code-command">3.2. View recently selected books: <code>recent</code> command</a></li>
+<li><a href="#proposed-data-encryption">3.3. [Proposed] Data Encryption</a></li>
+<li><a href="#logging">3.4. Logging</a></li>
+<li><a href="#Implementation-Configuration">3.5. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">4. Documentation</a>
@@ -873,20 +874,259 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="anchor" href="#proposed-data-encryption"></a>3.2. [Proposed] Data Encryption</h3>
+<h3 id="view-recently-selected-books-code-recent-code-command"><a class="anchor" href="#view-recently-selected-books-code-recent-code-command"></a>3.2. View recently selected books: <code>recent</code> command</h3>
+<div class="sect3">
+<h4 id="current-implementation-2"><a class="anchor" href="#current-implementation-2"></a>3.2.1. Current implementation</h4>
+<div class="paragraph">
+<p>When <code>recent</code> command is entered, eventually <code>SwitchToRecentBooksRequestEvent</code> is posted to the
+<code>EventCenter</code>. The interaction between components is shown in the diagram below.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SequenceDiagramRecentCommandLogic.png" alt="SequenceDiagramRecentCommandLogic" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p><code>SwitchToRecentBooksRequestEvent</code> is handled by <code>LogicManager</code> and <code>MainWindow</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SequenceDiagramRecentCommandEvent.png" alt="SequenceDiagramRecentCommandEvent" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p><code>LogicManager</code> sets the <code>ActiveListType</code> to <code>RECENT_BOOKS</code>. The commands that users can perform on this list may differ from others, for example users
+cannot delete books from this list.<br>
+<code>MainWindow</code> hides the currently shown Panel and shows <code>RecentBooksPanel</code> which is populated by the
+stored recently selected books.</p>
+</div>
+<div class="paragraph">
+<p>Recently selected books are stored in a <code>UniqueBookCircularList</code> which resides in <code>ModelManager</code>.
+Whenever a new book is selected, <code>ModelManager</code> handles the <code>xxxSelectionChangedEvent</code>
+and adds the book into the list.</p>
+</div>
+<div class="paragraph">
+<p><code>UniqueBookCircularList</code> has size 50 by default. For illustration purposes, assume we have a
+<code>UniqueBookCircularList</code> of size 3 that is empty at the start. <code>ActiveListType</code> is <code>BOOK_SHELF</code>.</p>
+</div>
+<div class="paragraph">
+<p>The user performs <code>select 1</code> to view information on the 1st book in the book shelf. The
+selected book is added onto the <code>UniqueBookCircularList</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RecentCommandListOne.png" alt="RecentCommandListOne" width="800">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If select fails to execute (eg. given index is invalid), the list will remain unchanged.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The user then selects another book with <code>select 2</code>. The book is added to the front of the <code>UniqueBookCircularList</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RecentCommandListTwo.png" alt="RecentCommandListTwo" width="800">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Selecting a book directly from the UI (without using <code>select</code> command) will also update the list according.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now if the user performs <code>select 1</code> again, the book <code>One</code>, which already exists in the list, will be removed
+from the list and added again so that it is in the first index of the list (most recently selected).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RecentCommandListThree.png" alt="RecentCommandListThree" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p>The user continues to select books, and the same operations will apply.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RecentCommandListFour.png" alt="RecentCommandListFour" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>UniqueBookCircularList</code> is now full (<code>size = 3</code>). When user performs <code>select 4</code>, since the book
+<code>Four</code> is not in the list, the book at the last index is removed to make space for book <code>Four</code>.
+This is because the book at the last index is the least recent selection.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RecentCommandListFive.png" alt="RecentCommandListFive" width="800">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>UniqueBookCircularList::equals</code> is order sensitive since the order determines the recency.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When Bibliotek is exited, the data in the <code>UniqueBookCircularList</code> is stored in the format
+of <code>BookShelf</code>. This data is read and converted to <code>UniqueBookCircularList</code> upon opening Bibliotek.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Since <code>UniqueBookCircularList</code> only supports <code>addToFront(book)</code>, take note to add books in reverse
+order when converting from other data structures such as <code>BookShelf</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-2"><a class="anchor" href="#design-considerations-2"></a>3.2.2. Design considerations</h4>
+<div class="sect4">
+<h5 id="aspect-whether-to-store-recently-selected-books"><a class="anchor" href="#aspect-whether-to-store-recently-selected-books"></a>Aspect: Whether to store recently selected books</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Stores the recently selected books upon closing Bibliotek.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Users can look up books selected in the last session.</p>
+</li>
+<li>
+<p>Cons: Extra file dependency and data clutter if unused.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Don&#8217;t store recently selected books.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Eliminate the need to modify <code>Storage</code> component.</p>
+</li>
+<li>
+<p>Cons: Recently selected books list is limited to selections in the current session.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-type-of-selected-books-that-are-shown"><a class="anchor" href="#aspect-type-of-selected-books-that-are-shown"></a>Aspect: Type of selected books that are shown</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> All books selected from the user&#8217;s book shelf or search results.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: More intuitive for the user.</p>
+</li>
+<li>
+<p>Cons: Users can easily find books in his book shelf. Including these books in <code>recent</code> list
+may not be useful and take up space.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Only books selected from the user&#8217;s search results.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Users are more likely to need <code>recent</code> to find these books. We can reduce clutter
+by only showing these books.</p>
+</li>
+<li>
+<p>Cons: Less intuitive for the user. We also need to deal with books that are added or deleted after selection.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-data-structure-to-hold-the-recently-selected-books-data"><a class="anchor" href="#aspect-data-structure-to-hold-the-recently-selected-books-data"></a>Aspect: Data structure to hold the recently selected books data</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Make a new type of book list <code>UniqueBookCircularList</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Can make the size limit and add mechanism as a property of the new list.</p>
+</li>
+<li>
+<p>Cons: Have to deal with multiple data structures to hold data for different purposes.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Use <code>BookShelf</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Re-use of existing data structure.</p>
+</li>
+<li>
+<p>Cons: BookShelf supports functionalities that are not needed to store recently selected books.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="proposed-data-encryption"><a class="anchor" href="#proposed-data-encryption"></a>3.3. [Proposed] Data Encryption</h3>
 <div class="paragraph">
 <p><em>{Explain here how the data encryption feature will be implemented}</em></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="anchor" href="#logging"></a>3.3. Logging</h3>
+<h3 id="logging"><a class="anchor" href="#logging"></a>3.4. Logging</h3>
 <div class="paragraph">
 <p>We are using <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.4, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.5, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -917,7 +1157,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="anchor" href="#Implementation-Configuration"></a>3.4. Configuration</h3>
+<h3 id="Implementation-Configuration"><a class="anchor" href="#Implementation-Configuration"></a>3.5. Configuration</h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file (default: <code>config.json</code>).</p>
 </div>
@@ -2721,7 +2961,7 @@ Expected: Similar to previous.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-22 11:59:09 UTC
+Last updated 2018-03-22 19:48:12 UTC
 </div>
 </div>
 </body>

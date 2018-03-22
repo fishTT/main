@@ -34,7 +34,7 @@
 <li><a href="#editing-a-book-code-edit-code-code-coming-in-v1-2-code">3.6. Editing a book : <code>edit</code> <code>[coming in v1.2]</code></a></li>
 <li><a href="#deleting-a-book-code-delete-code">3.7. Deleting a book : <code>delete</code></a></li>
 <li><a href="#viewing-book-reviews-code-reviews-code-code-coming-in-v1-3-code">3.8. Viewing book reviews: <code>reviews</code> <code>[coming in v1.3]</code></a></li>
-<li><a href="#listing-recently-viewed-books-code-recent-code-code-coming-in-v1-3-code">3.9. Listing recently viewed books: <code>recent</code> <code>[coming in v1.3]</code></a></li>
+<li><a href="#listing-recently-viewed-books-code-recent-code-code-since-v1-2-code">3.9. Listing recently viewed books: <code>recent</code> <code>[since v1.2]</code></a></li>
 <li><a href="#finding-a-book-in-the-library-code-library-code-code-coming-in-v1-4-code">3.10. Finding a book in the library: <code>library</code> <code>[coming in v1.4]</code></a></li>
 <li><a href="#placing-a-book-on-watchlist-code-watch-code-code-coming-in-v1-4-code">3.11. Placing a book on watchlist: <code>watch</code> <code>[coming in v1.4]</code></a></li>
 <li><a href="#ordering-a-book-online-code-order-code-code-coming-in-v1-5-code">3.12. Ordering a book online: <code>order</code> <code>[coming in v1.5]</code></a></li>
@@ -292,7 +292,7 @@ Format: <code>add INDEX</code></p>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-You can only perform <code>add</code> when the list shown is a search result.<br>
+You cannot perform <code>add</code> when the list shown is your book shelf.<br>
 You also need Internet connection.
 </td>
 </tr>
@@ -565,10 +565,10 @@ Shows online reviews of 1st book in the search results.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-recently-viewed-books-code-recent-code-code-coming-in-v1-3-code"><a class="anchor" href="#listing-recently-viewed-books-code-recent-code-code-coming-in-v1-3-code"></a>3.9. Listing recently viewed books: <code>recent</code> <code>[coming in v1.3]</code></h3>
+<h3 id="listing-recently-viewed-books-code-recent-code-code-since-v1-2-code"><a class="anchor" href="#listing-recently-viewed-books-code-recent-code-code-since-v1-2-code"></a>3.9. Listing recently viewed books: <code>recent</code> <code>[since v1.2]</code></h3>
 <div class="paragraph">
 <p>You recently selected a book in one of your searches but did not add it into your
-book shelf, and now you have trouble searching up that book again. No worries, <code>recent</code>
+book shelf, and now you have trouble searching up that book again? No worries, <code>recent</code>
 is designed to take care of this.<br>
 Format: <code>recent</code></p>
 </div>
@@ -580,14 +580,25 @@ Format: <code>recent</code></p>
 <p>Lists the books you recently selected in reverse chronological order.</p>
 </li>
 <li>
-<p>Limited to books selected since the last start-up of Bibliotek.</p>
-</li>
-<li>
 <p>Limited to the last 50 books.</p>
 </li>
 </ul>
 </div>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can select books in the <code>recent</code> list, but this will not count as a newest selection.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -1101,6 +1112,9 @@ e.g. <code>add 1</code></p>
 <p><strong>List</strong> : <code>list</code></p>
 </li>
 <li>
+<p><strong>Recent</strong> : <code>recent</code></p>
+</li>
+<li>
 <p><strong>Search</strong> : <code>search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]</code><br>
 e.g. <code>search t/Babylon&#8217;s Ashes c/Science Fiction</code></p>
 </li>
@@ -1120,7 +1134,7 @@ e.g. <code>search t/Babylon&#8217;s Ashes c/Science Fiction</code></p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-22 11:30:55 UTC
+Last updated 2018-03-22 11:32:07 UTC
 </div>
 </div>
 </body>

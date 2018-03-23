@@ -31,16 +31,18 @@
 <li><a href="#Design-Logic">2.3. Logic component</a></li>
 <li><a href="#Design-Model">2.4. Model component</a></li>
 <li><a href="#Design-Storage">2.5. Storage component</a></li>
-<li><a href="#Design-Commons">2.6. Common classes</a></li>
+<li><a href="#Design-Network">2.6. Network component</a></li>
+<li><a href="#Design-Commons">2.7. Common classes</a></li>
 </ul>
 </li>
 <li><a href="#implementation">3. Implementation</a>
 <ul class="sectlevel2">
-<li><a href="#undo-redo-feature">3.1. Undo/Redo feature</a></li>
-<li><a href="#view-recently-selected-books-code-recent-code-command">3.2. View recently selected books: <code>recent</code> command</a></li>
-<li><a href="#proposed-data-encryption">3.3. [Proposed] Data Encryption</a></li>
-<li><a href="#logging">3.4. Logging</a></li>
-<li><a href="#Implementation-Configuration">3.5. Configuration</a></li>
+<li><a href="#search-feature">3.1. Search feature</a></li>
+<li><a href="#undo-redo-feature">3.2. Undo/Redo feature</a></li>
+<li><a href="#view-recently-selected-books-code-recent-code-command">3.3. View recently selected books: <code>recent</code> command</a></li>
+<li><a href="#proposed-data-encryption">3.4. [Proposed] Data Encryption</a></li>
+<li><a href="#logging">3.5. Logging</a></li>
+<li><a href="#Implementation-Configuration">3.6. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">4. Documentation</a>
@@ -362,6 +364,9 @@ The <code>.pptx</code> files used to create diagrams in this document can be fou
 <li>
 <p><a href="#Design-Storage"><strong><code>Storage</code></strong></a>: Reads data from, and writes data to, the hard disk.</p>
 </li>
+<li>
+<p><a href="#Design-Network"><strong><code>Network</code></strong></a>: Makes web API calls to online services.</p>
+</li>
 </ul>
 </div>
 <div class="paragraph">
@@ -403,7 +408,7 @@ The <code>.pptx</code> files used to create diagrams in this document can be fou
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Note how the <code>Model</code> simply raises a <code>AddressBookChangedEvent</code> when the Address Book data are changed, instead of asking the <code>Storage</code> to save the updates to the hard disk.
+Note how the <code>Model</code> simply raises a <code>BookShelfChangedEvent</code> when the Book Shelf data are changed, instead of asking the <code>Storage</code> to save the updates to the hard disk.
 </td>
 </tr>
 </table>
@@ -537,7 +542,7 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 <p>exposes an unmodifiable <code>ObservableList&lt;Book&gt;</code> that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.</p>
 </li>
 <li>
-<p>does not depend on any of the other three components.</p>
+<p>does not depend on any of the other four components.</p>
 </li>
 </ul>
 </div>
@@ -568,9 +573,34 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Commons"><a class="anchor" href="#Design-Commons"></a>2.6. Common classes</h3>
+<h3 id="Design-Network"><a class="anchor" href="#Design-Network"></a>2.6. Network component</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/NetworkClassDiagram.png" alt="NetworkClassDiagram" width="800">
+</div>
+<div class="title">Figure 11. Structure of the Network Component</div>
+</div>
 <div class="paragraph">
-<p>Classes used by multiple components are in the <code>seedu.addressbook.commons</code> package.</p>
+<p><strong>API</strong>: <a href="https://github.com/CS2103JAN2018-F14-B4/main/tree/master/src/main/java/seedu/address/network/Network.java"><code>Network.java</code></a></p>
+</div>
+<div class="paragraph">
+<p>The <code>Network</code> component,</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>can make asynchronous web API calls to Google Books API.</p>
+</li>
+<li>
+<p>does not depend on any of the other four components.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="Design-Commons"><a class="anchor" href="#Design-Commons"></a>2.7. Common classes</h3>
+<div class="paragraph">
+<p>Classes used by multiple components are in the <code>seedu.address.commons</code> package.</p>
 </div>
 </div>
 </div>
@@ -582,9 +612,210 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 <p>This section describes some noteworthy details on how certain features are implemented.</p>
 </div>
 <div class="sect2">
-<h3 id="undo-redo-feature"><a class="anchor" href="#undo-redo-feature"></a>3.1. Undo/Redo feature</h3>
+<h3 id="search-feature"><a class="anchor" href="#search-feature"></a>3.1. Search feature</h3>
 <div class="sect3">
 <h4 id="current-implementation"><a class="anchor" href="#current-implementation"></a>3.1.1. Current Implementation</h4>
+<div class="sect4">
+<h5 id="Search-Network"><a class="anchor" href="#Search-Network"></a>Network component</h5>
+<div class="paragraph">
+<p>As part of the implementation of the search feature, the network component was added to allow for communicating with online services.
+An overview of the network component can be found in <a href="#Design-Network">Section 2.6, &#8220;Network component&#8221;</a>.</p>
+</div>
+<div class="paragraph">
+<p>The network component makes heavy use of events in the way it interacts with other components.
+The <code>Network</code> API exposes a single method <code>stop</code> that allows for graceful shutdown of the internal asynchronous HTTP client.
+All requests for web API calls should be made by raising the relevant <code>Api*RequestEvent</code>.
+To retrieve the results of the web API calls, interested classes should subscribe to the respective <code>Api*ResultEvent</code>.</p>
+</div>
+<div class="paragraph">
+<p>For example, to retrieve search results from Google Books API, an <code>ApiSearchRequestEvent</code> can be raised.
+The following sequence diagram shows how an <code>ApiSearchRequestEvent</code> will be handled:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchRequestSequenceDiagram.png" alt="SearchRequestSequenceDiagram" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p>The methods shown above are asynchronous - they will not wait for the completion of the HTTP request.
+In particular, note that when <code>handleApiSearchRequestEvent</code> finishes execution, the HTTP request might not have completed yet.
+This is accomplished through the use of a chain of <code>CompletableFuture</code> objects, which holds the operations that the above methods wish to apply to the data.
+This is most evident in the <code>executeGetAndApply</code> method, as shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="directive">private</span> &lt;T&gt; CompletableFuture&lt;T&gt; executeGetAndApply(<span class="predefined-type">String</span> url, Function&lt;<span class="predefined-type">String</span>, ? <span class="directive">extends</span> T&gt; fn) {
+        <span class="keyword">return</span> httpClient
+                .makeGetRequest(url)
+                .thenApply(GoogleBooksApi::requireJsonContentType)
+                .thenApply(GoogleBooksApi::requireHttpStatusOk)
+                .thenApply(HttpResponse::getResponseBody)
+                .thenApply(fn);
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the HTTP request completes, the operations in the <code>CompletableFuture</code> objects will be executed. These operations are summarized by the following activity diagram:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchRequestActivityDiagram.png" alt="SearchRequestActivityDiagram" width="650">
+</div>
+</div>
+<div class="paragraph">
+<p>If the HTTP request fails, the response is unexpected, or the conversion to <code>BookShelf</code> fails, then the proceeding operations added by the calls to <code>thenApply</code> will be skipped,
+and the resulting <code>ApiSearchResultEvent</code> that is raised will have a <code>ResultOutcome</code> of <code>FAILURE</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Subscribe</span>
+    <span class="directive">protected</span> <span class="type">void</span> handleGoogleApiSearchRequestEvent(ApiSearchRequestEvent event) {
+        googleBooksApi.searchBooks(event.searchParameters)
+                .thenApply(bookShelf -&gt; {
+                    raise(<span class="keyword">new</span> ApiSearchResultEvent(ResultOutcome.SUCCESS, bookShelf));
+                    <span class="keyword">return</span> bookShelf;
+                })
+                .exceptionally(e -&gt; {
+                    raise(<span class="keyword">new</span> ApiSearchResultEvent(ResultOutcome.FAILURE, <span class="predefined-constant">null</span>));
+                    <span class="keyword">return</span> <span class="predefined-constant">null</span>;
+                });
+    }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="search-command"><a class="anchor" href="#search-command"></a>Search command</h5>
+<div class="paragraph">
+<p>With the network component in place, the <code>search</code> command can now be implemented.
+The <code>search</code> command allows the user to search for books on Google Books that matches some user-specified parameters.</p>
+</div>
+<div class="paragraph">
+<p>When a <code>search</code> command is entered, a <code>SearchCommand</code> will be created if the parsing of the command was successful, which will raise an <code>ApiSearchRequestEvent</code>, as shown in the sequence diagram below:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchCommandSequenceDiagram.png" alt="SearchCommandSequenceDiagram" width="800">
+</div>
+</div>
+<div class="paragraph">
+<p>As described in <a href="#Search-Network">Section 3.1.1.1, &#8220;Network component&#8221;</a>, when the event is handled by <code>NetworkManager</code>, this will result in an asynchronous HTTP request being made to Google Books API.
+Once the request and the parsing of the response completes successfully, an <code>ApiSearchResultEvent</code> will be raised, which will be handled in <code>LogicManager</code>.
+The below sequence diagram shows how the <code>ApiSearchResultEvent</code> will be handled:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchCommandResultSequenceDiagram.png" alt="SearchCommandResultSequenceDiagram" width="650">
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations"><a class="anchor" href="#design-considerations"></a>3.1.2. Design Considerations</h4>
+<div class="sect4">
+<h5 id="aspect-asynchronous-vs-synchronous"><a class="anchor" href="#aspect-asynchronous-vs-synchronous"></a>Aspect: Asynchronous vs synchronous</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> HTTP requests are made asynchronously.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: The application will be more responsive, as potentially long-running HTTP requests will not block the application thread.</p>
+</li>
+<li>
+<p>Cons: Not straightforward to implement, especially considering that changes to the UI has to be made on the JavaFX application thread.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> HTTP requests are made synchronously (on the JavaFX application thread).</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: More straightforward to implement, as well as to understand the implementation.</p>
+</li>
+<li>
+<p>Cons: The UI will be unresponsive for the duration of the HTTP requests, and this can degrade the user experience.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-design-of-network-api"><a class="anchor" href="#aspect-design-of-network-api"></a>Aspect: Design of network API</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Use events to request for web API calls and retrieve the results.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Less coupling - no component will be directly depending on the network component.</p>
+</li>
+<li>
+<p>Cons: The flow of data can become less explicit and clear, and it becomes more complicated to use a single web API call for multiple purposes.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Call methods on the <code>Network</code> API directly, which return <code>Future</code> objects.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: More explicit flow of data, making it easier to understand and debug.</p>
+</li>
+<li>
+<p>Cons: Since web API calls are made by certain commands, the <code>NetworkManager</code> will have to be passed from <code>MainApp</code> all the way into each <code>Command</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-converting-json-responses-to-model-types"><a class="anchor" href="#aspect-converting-json-responses-to-model-types"></a>Aspect: Converting JSON responses to model types</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Convert to a temporary data holder before converting to model type.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Easier and more straightforward implementation - a large part of the conversion work is done by the Jackson library.</p>
+</li>
+<li>
+<p>Cons: Slower and less efficient - due to the double conversion and the use of the Reflection API (in the Jackson library).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Convert parsed JSON directly to model type.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Faster and more efficient.</p>
+</li>
+<li>
+<p>Cons: Code will be more complicated and tedious - we will need to traverse through the JSON node tree manually.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="undo-redo-feature"><a class="anchor" href="#undo-redo-feature"></a>3.2. Undo/Redo feature</h3>
+<div class="sect3">
+<h4 id="current-implementation-2"><a class="anchor" href="#current-implementation-2"></a>3.2.1. Current Implementation</h4>
 <div class="paragraph">
 <p>The undo/redo mechanism is facilitated by an <code>UndoRedoStack</code>, which resides inside <code>LogicManager</code>. It supports undoing and redoing of commands that modifies the state of the address book (e.g. <code>add</code>, <code>edit</code>). Such commands will inherit from <code>UndoableCommand</code>.</p>
 </div>
@@ -737,7 +968,7 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations"><a class="anchor" href="#design-considerations"></a>3.1.2. Design Considerations</h4>
+<h4 id="design-considerations-2"><a class="anchor" href="#design-considerations-2"></a>3.2.2. Design Considerations</h4>
 <div class="sect4">
 <h5 id="aspect-implementation-of-code-undoablecommand-code"><a class="anchor" href="#aspect-implementation-of-code-undoablecommand-code"></a>Aspect: Implementation of <code>UndoableCommand</code></h5>
 <div class="ulist">
@@ -874,9 +1105,9 @@ If the <code>redoStack</code> is empty, then there are no other commands left to
 </div>
 </div>
 <div class="sect2">
-<h3 id="view-recently-selected-books-code-recent-code-command"><a class="anchor" href="#view-recently-selected-books-code-recent-code-command"></a>3.2. View recently selected books: <code>recent</code> command</h3>
+<h3 id="view-recently-selected-books-code-recent-code-command"><a class="anchor" href="#view-recently-selected-books-code-recent-code-command"></a>3.3. View recently selected books: <code>recent</code> command</h3>
 <div class="sect3">
-<h4 id="current-implementation-2"><a class="anchor" href="#current-implementation-2"></a>3.2.1. Current implementation</h4>
+<h4 id="current-implementation-3"><a class="anchor" href="#current-implementation-3"></a>3.3.1. Current implementation</h4>
 <div class="paragraph">
 <p>When <code>recent</code> command is entered, eventually <code>SwitchToRecentBooksRequestEvent</code> is posted to the
 <code>EventCenter</code>. The interaction between components is shown in the diagram below.</p>
@@ -1008,7 +1239,7 @@ order when converting from other data structures such as <code>BookShelf</code>.
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-2"><a class="anchor" href="#design-considerations-2"></a>3.2.2. Design considerations</h4>
+<h4 id="design-considerations-3"><a class="anchor" href="#design-considerations-3"></a>3.3.2. Design considerations</h4>
 <div class="sect4">
 <h5 id="aspect-whether-to-store-recently-selected-books"><a class="anchor" href="#aspect-whether-to-store-recently-selected-books"></a>Aspect: Whether to store recently selected books</h5>
 <div class="ulist">
@@ -1113,20 +1344,20 @@ by only showing these books.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="anchor" href="#proposed-data-encryption"></a>3.3. [Proposed] Data Encryption</h3>
+<h3 id="proposed-data-encryption"><a class="anchor" href="#proposed-data-encryption"></a>3.4. [Proposed] Data Encryption</h3>
 <div class="paragraph">
 <p><em>{Explain here how the data encryption feature will be implemented}</em></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="anchor" href="#logging"></a>3.4. Logging</h3>
+<h3 id="logging"><a class="anchor" href="#logging"></a>3.5. Logging</h3>
 <div class="paragraph">
 <p>We are using <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.5, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.6, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -1157,7 +1388,7 @@ by only showing these books.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="anchor" href="#Implementation-Configuration"></a>3.5. Configuration</h3>
+<h3 id="Implementation-Configuration"><a class="anchor" href="#Implementation-Configuration"></a>3.6. Configuration</h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file (default: <code>config.json</code>).</p>
 </div>
@@ -1223,7 +1454,7 @@ Alternatively, you can download the AsciiDoc plugin for IntelliJ, which allows y
 <div class="content">
 <img src="images/chrome_save_as_pdf.png" alt="chrome save as pdf" width="300">
 </div>
-<div class="title">Figure 11. Saving documentation as PDF files in Chrome</div>
+<div class="title">Figure 12. Saving documentation as PDF files in Chrome</div>
 </div>
 </div>
 </div>
@@ -2961,7 +3192,7 @@ Expected: Similar to previous.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-22 19:48:12 UTC
+Last updated 2018-03-23 05:22:55 UTC
 </div>
 </div>
 </body>

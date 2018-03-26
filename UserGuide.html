@@ -29,7 +29,7 @@
 <li><a href="#viewing-help-code-help-code">3.1. Viewing help : <code>help</code></a></li>
 <li><a href="#searching-for-books-online-code-search-code">3.2. Searching for books online: <code>search</code></a></li>
 <li><a href="#adding-a-book-code-add-code">3.3. Adding a book: <code>add</code></a></li>
-<li><a href="#listing-your-book-shelf-code-list-code">3.4. Listing your book shelf : <code>list</code></a></li>
+<li><a href="#listing-filtering-and-sorting-your-books-code-list-code">3.4. Listing, filtering, and sorting your books : <code>list</code></a></li>
 <li><a href="#selecting-a-book-code-select-code">3.5. Selecting a book : <code>select</code></a></li>
 <li><a href="#editing-a-book-code-edit-code-code-coming-in-v1-3-code">3.6. Editing a book : <code>edit</code> <code>[coming in v1.3]</code></a></li>
 <li><a href="#deleting-a-book-code-delete-code">3.7. Deleting a book : <code>delete</code></a></li>
@@ -383,27 +383,105 @@ Adds the 1st book in the search results.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="listing-your-book-shelf-code-list-code"><a class="anchor" href="#listing-your-book-shelf-code-list-code"></a>3.4. Listing your book shelf : <code>list</code></h3>
+<h3 id="listing-filtering-and-sorting-your-books-code-list-code"><a class="anchor" href="#listing-filtering-and-sorting-your-books-code-list-code"></a>3.4. Listing, filtering, and sorting your books : <code>list</code></h3>
 <div class="paragraph">
 <p>If you want to view a portion of the books in your book shelf, use the <code>list</code> command.<br>
-Format: <code>list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [p/PRIORITY] [s/STATUS]</code></p>
+Format: <code>list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [s/STATUS] [p/PRIORITY] [r/RATING] [by/SORT_BY]</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Lists all books in your book shelf that satisfies all the constraints on <code>TITLE</code>, <code>AUTHOR</code>, <code>CATEGORY</code>, <code>PRIORITY</code> and <code>STATUS</code>.</p>
+<p>Lists all books in your book shelf that satisfies all the constraints on <code>TITLE</code>, <code>AUTHOR</code>, <code>CATEGORY</code>, <code>STATUS</code>, <code>PRIORITY</code> and <code>RATING</code>, and sort them according to <code>SORT_BY</code>.</p>
 </li>
 <li>
-<p>If no parameters are provided, all books will be listed.</p>
+<p>All parameters are case-insensitive.</p>
+</li>
+<li>
+<p><code>STATUS</code> must be one of the following (items in parenthesis are aliases): <code>read</code> (<code>r</code>), <code>unread</code> (<code>u</code>), or <code>reading</code> (<code>rd</code>).</p>
+</li>
+<li>
+<p><code>PRIORITY</code> must be one of the following (items in parenthesis are aliases): <code>none</code> (<code>n</code>), <code>low</code> (<code>l</code>), <code>medium</code> (<code>m</code>), or <code>high</code> (<code>h</code>).</p>
+</li>
+<li>
+<p><code>RATING</code> must be a valid rating from 0 to 5, or -1, to select unrated books.</p>
+</li>
+<li>
+<p><code>SORT_BY</code> must be one of the following:</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">To sort by &#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">Sort Mode</th>
+<th class="tableblock halign-left valign-top">Aliases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title (ascending)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>titleA</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tA</code>, <code>title</code>, <code>t</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Title (descending)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>titleD</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tD</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status (order by <code>READ</code>, <code>UNREAD</code>, <code>READING</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusA</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sA</code>, <code>status</code>, <code>s</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status (reverse order)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusD</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sD</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Priority (order by <code>NONE</code>, <code>LOW</code>, <code>MEDIUM</code>, <code>HIGH</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>priorityA</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pA</code>, <code>priority</code>, <code>p</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Priority (reverse order)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>priorityD</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pD</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rating (ascending)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ratingA</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rA</code>, <code>rating</code>, <code>r</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rating (descending)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ratingD</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rD</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<ul>
+<li>
+<p>If no <code>SORT_BY</code> is provided, the default sorting order will be used, which sorts by status (ordered by <code>READING</code>, <code>UNREAD</code>, <code>READ</code>). Within books of the same status, they will be sorted by priority (ordered by <code>HIGH</code>, <code>MEDIUM</code>, <code>LOW</code>, <code>NONE</code>). Finally, within books of the same priority, they will be sorted in alphabetical order according to their titles.</p>
+</li>
+<li>
+<p>If no constraints are provided, all books will be listed.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="paragraph">
-<p>If you want to view all books in your book shelf, enter <code>list</code></p>
+<p>If you want to view all books in your book shelf, you can simply enter <code>list</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -411,7 +489,7 @@ Format: <code>list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [p/PRIORITY] [s/STATUS]</co
 </div>
 </div>
 <div class="paragraph">
-<p>Bibliotek shows <code>Listed all books</code> to indicate that your <code>list</code> is successful.
+<p>Bibliotek shows <code>Listed xx books.</code> to indicate that the command was successful.
 The left panel will show all the books in your book shelf.</p>
 </div>
 <div class="paragraph">
@@ -420,8 +498,8 @@ The left panel will show all the books in your book shelf.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>list a/Andy Weir</code><br>
-Lists books in your book shelf where <code>Andy Weir</code> matches one of the authors.</p>
+<p><code>list a/Andy Weir by/title</code><br>
+Lists books in your book shelf that contains <code>Andy Weir</code> in one of the authors' name, and sort them in alphabetical order according to their titles.</p>
 </li>
 <li>
 <p><code>list t/Babylon&#8217;s Ashes c/Science Fiction</code><br>
@@ -1379,7 +1457,7 @@ e.g. <code>search t/Babylon&#8217;s Ashes c/Science Fiction</code></p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-26 17:42:23 UTC
+Last updated 2018-03-26 17:52:21 UTC
 </div>
 </div>
 </body>

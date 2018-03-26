@@ -31,7 +31,7 @@
 <li><a href="#adding-a-book-code-add-code">3.3. Adding a book: <code>add</code></a></li>
 <li><a href="#listing-your-book-shelf-code-list-code">3.4. Listing your book shelf : <code>list</code></a></li>
 <li><a href="#selecting-a-book-code-select-code">3.5. Selecting a book : <code>select</code></a></li>
-<li><a href="#editing-a-book-code-edit-code-code-coming-in-v1-2-code">3.6. Editing a book : <code>edit</code> <code>[coming in v1.2]</code></a></li>
+<li><a href="#editing-a-book-code-edit-code-code-coming-in-v1-3-code">3.6. Editing a book : <code>edit</code> <code>[coming in v1.3]</code></a></li>
 <li><a href="#deleting-a-book-code-delete-code">3.7. Deleting a book : <code>delete</code></a></li>
 <li><a href="#viewing-book-reviews-code-reviews-code-code-coming-in-v1-3-code">3.8. Viewing book reviews: <code>reviews</code> <code>[coming in v1.3]</code></a></li>
 <li><a href="#listing-recently-viewed-books-code-recent-code-code-since-v1-2-code">3.9. Listing recently viewed books: <code>recent</code> <code>[since v1.2]</code></a></li>
@@ -247,7 +247,41 @@ You can only perform <code>search</code> with Internet connection.
 </table>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>If you want to find any books with <code>Harry Potter</code> as keyword, you enter <code>search Harry Potter</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchCommandSearching.png" alt="SearchCommandSearching" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Searching for matching books&#8230;&#8203;</code> to indicate that your <code>search</code> is being processed.
+This may take some time since an external service is being called to fetch your search results.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchCommandFound.png" alt="SearchCommandFound" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>When your search results are ready, Bibliotek shows <code>Found xx matching books.</code> and displays your
+search results in the left panel.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If Bibliotek shows <code>Failed to retrieve information from online.</code>, it means your search request has timed out.
+You should try again after some time.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Other examples:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -299,7 +333,44 @@ You also need Internet connection.
 </table>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Suppose you have the following search results.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchCommandFound.png" alt="SearchCommandFound" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>If you want to add <code>Harry Potter and the Classical World</code> to your book shelf, you enter
+<code>add 2</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/AddCommandAdding.png" alt="AddCommandAdding" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Adding the book into your book shelf</code> to indicate that your <code>add</code> is being processed.
+This may take some time since an external service is being called to fetch more detailed information about
+the book before adding it to your book shelf.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/AddCommandAdded.png" alt="AddCommandAdded" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Once the necessary information is fetched and the book is added, Bibliotek shows
+<code>New book added: TITLE - Authors: AUTHORS</code>. You can verify that the book have been added by entering <code>list</code>
+and scrolling to the last entry in your book shelf.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/AddCommandAddedConfirmation.png" alt="AddCommandAddedConfirmation" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Other examples:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -332,14 +403,22 @@ Format: <code>list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [p/PRIORITY] [s/STATUS]</co
 </div>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>If you want to view all books in your book shelf, enter <code>list</code></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ListCommand.png" alt="ListCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Listed all books</code> to indicate that your <code>list</code> is successful.
+The left panel will show all the books in your book shelf.</p>
+</div>
+<div class="paragraph">
+<p>Other examples:</p>
 </div>
 <div class="ulist">
 <ul>
-<li>
-<p><code>list</code><br>
-Lists all books in your book shelf.</p>
-</li>
 <li>
 <p><code>list a/Andy Weir</code><br>
 Lists books in your book shelf where <code>Andy Weir</code> matches one of the authors.</p>
@@ -375,7 +454,41 @@ Format: <code>select INDEX</code></p>
 </div>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Suppose you have the following search results.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SearchCommandFound.png" alt="SearchCommandFound" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>If you are interested in <code>The Ivory Tower and Harry Potter</code> and wish to view more information,
+you enter <code>select 3</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SelectCommand.png" alt="SelectCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Selected Book: 3</code> to indicate that your <code>select</code> is successful. The left panel
+is auto-scrolled to the selected book and the right panel shows detailed information of the book.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, instead of entering <code>select 3</code>, you can directly select <code>The Ivory Tower and Harry Potter</code>
+by clicking on it in the left panel.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SelectCommandUI.png" alt="SelectCommandUI" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows the detailed information of the book in the right panel. Note that no confirmation message
+will be shown in this case.</p>
+</div>
+<div class="paragraph">
+<p>Other examples:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -398,7 +511,7 @@ Selects the 1st book in the search results.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="editing-a-book-code-edit-code-code-coming-in-v1-2-code"><a class="anchor" href="#editing-a-book-code-edit-code-code-coming-in-v1-2-code"></a>3.6. Editing a book : <code>edit</code> <code>[coming in v1.2]</code></h3>
+<h3 id="editing-a-book-code-edit-code-code-coming-in-v1-3-code"><a class="anchor" href="#editing-a-book-code-edit-code-code-coming-in-v1-3-code"></a>3.6. Editing a book : <code>edit</code> <code>[coming in v1.3]</code></h3>
 <div class="paragraph">
 <p>After reading a book, you may want to give the book a rating or set the book as read. Or, you may want
 to change the priority of books to remind yourself what you should read next. These can be done using <code>edit</code>.<br>
@@ -498,19 +611,34 @@ They may serve as useful reference in the future.
 </table>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Suppose you have the following books in your book shelf.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ListCommand.png" alt="ListCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>If you no longer want to read <code>Artemis</code> and wish to remove it from your book shelf, enter <code>delete 1</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/DeleteCommand.png" alt="DeleteCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Deleted Book: TITLE - Authors: AUTHORS</code> to indicate that your <code>delete</code> is successful.
+The book no longer exist in the left panel.</p>
+</div>
+<div class="paragraph">
+<p>Other examples:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>list</code><br>
-<code>delete 2</code><br>
-Deletes the 2nd person in the address book.</p>
-</li>
-<li>
-<p><code>find Betsy</code><br>
+<p><code>list t/Harry Potter</code><br>
 <code>delete 1</code><br>
-Deletes the 1st person in the results of the <code>find</code> command.</p>
+Deletes the 1st book in the results of the <code>list</code> command.</p>
 </li>
 </ul>
 </div>
@@ -596,6 +724,42 @@ Format: <code>recent</code></p>
 <div class="paragraph">
 <p>You can select books in the <code>recent</code> list, but this will not count as a newest selection.</p>
 </div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Suppose you recently selected <code>The Ivory Tower and Harry Potter</code> in your search results.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/SelectCommand.png" alt="SelectCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>You did not add the book into your book shelf. After performing various other selections,
+you regret not adding <code>The Ivory Tower and Harry Potter</code> into your book shelf. Instead of
+performing the search again, you can enter <code>recent</code> to view recently selected books.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/RecentCommand.png" alt="RecentCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Listed all recently selected books</code> to indicate that your <code>recent</code> command
+is successful. You can scroll down the left panel to locate <code>The Ivory Tower and Harry Potter</code>
+(index 4 in this case). You can enter <code>add 4</code> to add the book into your book shelf.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you don&#8217;t see the intended book in the list, then too many book selections have been performed after
+that book.
 </td>
 </tr>
 </table>
@@ -802,15 +966,42 @@ Format: <code>undo</code></p>
 </table>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Suppose you just deleted a book <code>Artemis</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/DeleteCommand.png" alt="DeleteCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>If you regret your deletion and wish to undo it, enter <code>undo</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoCommand.png" alt="UndoCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Undo success!</code> to indicate that your <code>undo</code> is successful. <code>Artemis</code> is back in your
+book shelf as seen in the left panel.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Your entire book shelf is shown in the left panel after performing <code>undo</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Other examples:</p>
 </div>
 <div class="ulist">
 <ul>
-<li>
-<p><code>delete 1</code><br>
-<code>list</code><br>
-<code>undo</code> (reverses the <code>delete 1</code> command)<br></p>
-</li>
 <li>
 <p><code>select 1</code><br>
 <code>list</code><br>
@@ -832,6 +1023,30 @@ The <code>undo</code> command fails as there are no undoable commands executed p
 <p>Don&#8217;t need the data in your book shelf anymore? Remove them using <code>clear</code>.<br>
 Format: <code>clear</code></p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can only perform <code>clear</code> if the list shown is from your book shelf.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you want to delete all books, enter <code>clear</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ClearCommand.png" alt="ClearCommand" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Book shelf has been cleared!</code> to indicate that your <code>clear</code> is successful.
+The left and right panels are now empty.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="changing-application-theme-code-since-v1-2-code"><a class="anchor" href="#changing-application-theme-code-since-v1-2-code"></a>3.16. Changing application theme <code>[since v1.2]</code></h3>
@@ -849,8 +1064,38 @@ Format: <code>theme THEME_NAME</code></p>
 <li>
 <p>The current available themes are: <code>white</code>, <code>light</code>, and <code>dark</code>.</p>
 </li>
+<li>
+<p>The default theme is <code>white</code></p>
+</li>
 </ul>
 </div>
+</div>
+</div>
+<div class="paragraph">
+<p>You can change the application to the white theme using <code>theme white</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ThemeWhite.png" alt="ThemeWhite" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Bibliotek shows <code>Application theme changed to: white</code> to indicate that your theme change is successful.</p>
+</div>
+<div class="paragraph">
+<p>The same goes for <code>theme light</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ThemeLight.png" alt="ThemeLight" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>And <code>theme dark</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ThemeDark.png" alt="ThemeDark" width="700">
 </div>
 </div>
 </div>
@@ -1134,7 +1379,7 @@ e.g. <code>search t/Babylon&#8217;s Ashes c/Science Fiction</code></p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-25 15:29:36 UTC
+Last updated 2018-03-26 14:24:14 UTC
 </div>
 </div>
 </body>

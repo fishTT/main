@@ -502,7 +502,7 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 <p>This results in a <code>Command</code> object which is executed by the <code>LogicManager</code>.</p>
 </li>
 <li>
-<p>The command execution can affect the <code>Model</code> (e.g. adding a book) and/or raise events.</p>
+<p>The command execution can affect the <code>Model</code> (e.g. adding a book), make web API calls using the <code>Network</code>, and/or raise events.</p>
 </li>
 <li>
 <p>The result of the command execution is encapsulated as a <code>CommandResult</code> object which is passed back to the <code>Ui</code>.</p>
@@ -619,6 +619,10 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 </div>
 <div class="sect2">
 <h3 id="search-feature"><a class="anchor" href="#search-feature"></a>3.1. Search feature</h3>
+<div class="paragraph">
+<p>The search feature allows the user to search for books on <a href="https://books.google.com/" target="_blank" rel="noopener">Google Books</a> that matches some user-specified parameters.
+This allows the user to easily search for particular books, and to add them without having to enter all the information manually (using the <code>add</code> command).</p>
+</div>
 <div class="sect3">
 <h4 id="current-implementation"><a class="anchor" href="#current-implementation"></a>3.1.1. Current Implementation</h4>
 <div class="sect4">
@@ -628,23 +632,24 @@ Note how the event is propagated through the <code>EventsCenter</code> to the <c
 An overview of the network component can be found in <a href="#Design-Network">Section 2.6, &#8220;Network component&#8221;</a>.</p>
 </div>
 <div class="paragraph">
-<p>The network component makes heavy use of events in the way it interacts with other components.
-The <code>Network</code> API exposes a single method <code>stop</code> that allows for graceful shutdown of the internal asynchronous HTTP client.
-All requests for web API calls should be made by raising the relevant <code>Api*RequestEvent</code>.
-To retrieve the results of the web API calls, interested classes should subscribe to the respective <code>Api*ResultEvent</code>.</p>
+<p>The <code>Network</code> object is passed by <code>LogicManager</code> into each <code>Command</code>, and is available for use by default, without the need for the <code>Command</code> to override <code>setData</code>.</p>
 </div>
 <div class="paragraph">
-<p>For example, to retrieve search results from Google Books API, an <code>ApiSearchRequestEvent</code> can be raised.
-The following sequence diagram shows how an <code>ApiSearchRequestEvent</code> will be handled:</p>
+<p>The <code>Network</code> API exposes various methods for making web API calls to various endpoints.
+Apart from those, it also provides a <code>stop</code> method that allows for graceful shutdown of the internal asynchronous HTTP client.</p>
+</div>
+<div class="paragraph">
+<p>As an example, if a command needs to retrieve search results from <a href="https://developers.google.com/books/" target="_blank" rel="noopener">Google Books API</a>, it can make a call to the <code>searchBooks</code> method of the <code>Network</code> API.
+The following sequence diagram shows what happens when <code>searchBooks</code> is called:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/SearchRequestSequenceDiagram.png" alt="SearchRequestSequenceDiagram" width="800">
+<img src="images/SearchBooksSequenceDiagram.png" alt="SearchBooksSequenceDiagram" width="750">
 </div>
 </div>
 <div class="paragraph">
 <p>The methods shown above are asynchronous - they will not wait for the completion of the HTTP request.
-In particular, note that when <code>handleApiSearchRequestEvent</code> finishes execution, the HTTP request might not have completed yet.
+In particular, note that when <code>Network#searchBooks</code> finishes execution, the HTTP request might not have completed yet.
 This is accomplished through the use of a chain of <code>CompletableFuture</code> objects, which holds the operations that the above methods wish to apply to the data.
 This is most evident in the <code>executeGetAndApply</code> method, as shown below:</p>
 </div>
@@ -665,38 +670,23 @@ This is most evident in the <code>executeGetAndApply</code> method, as shown bel
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/SearchRequestActivityDiagram.png" alt="SearchRequestActivityDiagram" width="650">
+<img src="images/SearchBooksActivityDiagram.png" alt="SearchBooksActivityDiagram" width="650">
 </div>
 </div>
 <div class="paragraph">
-<p>If the HTTP request fails, the response is unexpected, or the conversion to <code>BookShelf</code> fails, then the proceeding operations added by the calls to <code>thenApply</code> will be skipped,
-and the resulting <code>ApiSearchResultEvent</code> that is raised will have a <code>ResultOutcome</code> of <code>FAILURE</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">    <span class="annotation">@Subscribe</span>
-    <span class="directive">protected</span> <span class="type">void</span> handleGoogleApiSearchRequestEvent(ApiSearchRequestEvent event) {
-        googleBooksApi.searchBooks(event.searchParameters)
-                .thenApply(bookShelf -&gt; {
-                    raise(<span class="keyword">new</span> ApiSearchResultEvent(ResultOutcome.SUCCESS, bookShelf));
-                    <span class="keyword">return</span> bookShelf;
-                })
-                .exceptionally(e -&gt; {
-                    raise(<span class="keyword">new</span> ApiSearchResultEvent(ResultOutcome.FAILURE, <span class="predefined-constant">null</span>));
-                    <span class="keyword">return</span> <span class="predefined-constant">null</span>;
-                });
-    }</code></pre>
-</div>
+<p>If the HTTP request fails, the response is unexpected, or the conversion to <code>BookShelf</code> fails, then the proceeding operations
+added by the calls to <code>thenApply</code> will be skipped, and the <code>CompletableFuture</code> is considered to have completed exceptionally.
+If necessary, the caller can handle the failure by chaining an <code>exceptionally</code> call onto the <code>CompletableFuture</code> it receives.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="search-command"><a class="anchor" href="#search-command"></a>Search command</h5>
+<h5 id="Search-Command"><a class="anchor" href="#Search-Command"></a>Search command</h5>
 <div class="paragraph">
-<p>With the network component in place, the <code>search</code> command can now be implemented.
-The <code>search</code> command allows the user to search for books on Google Books that matches some user-specified parameters.</p>
+<p>With the network component in place, the <code>search</code> command can now be implemented.</p>
 </div>
 <div class="paragraph">
-<p>When a <code>search</code> command is entered, a <code>SearchCommand</code> will be created if the parsing of the command was successful, which will raise an <code>ApiSearchRequestEvent</code>, as shown in the sequence diagram below:</p>
+<p>When a <code>search</code> command is entered, a <code>SearchCommand</code> object will be created if the parsing of the command was successful,
+which will make a call to <code>searchBooks</code> on the <code>Network</code> API, as shown in the sequence diagram below:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -704,14 +694,24 @@ The <code>search</code> command allows the user to search for books on Google Bo
 </div>
 </div>
 <div class="paragraph">
-<p>As described in <a href="#Search-Network">Section 3.1.1.1, &#8220;Network component&#8221;</a>, when the event is handled by <code>NetworkManager</code>, this will result in an asynchronous HTTP request being made to Google Books API.
-Once the request and the parsing of the response completes successfully, an <code>ApiSearchResultEvent</code> will be raised, which will be handled in <code>LogicManager</code>.
-The below sequence diagram shows how the <code>ApiSearchResultEvent</code> will be handled:</p>
+<p>As described in <a href="#Search-Network">Section 3.1.1.1, &#8220;Network component&#8221;</a>, when the event is handled by <code>NetworkManager</code>, this will result in an asynchronous HTTP request being made to <a href="https://developers.google.com/books/" target="_blank" rel="noopener">Google Books API</a>.
+Once the request and the parsing of the response completes successfully, the operation added by the <code>thenAccept</code> call in <code>SearchCommand</code> will be executed.
+This results in the execution of the following method in <code>SearchCommand</code>:</p>
 </div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="images/SearchCommandResultSequenceDiagram.png" alt="SearchCommandResultSequenceDiagram" width="650">
+<pre class="CodeRay highlight"><code data-lang="java">    <span class="directive">private</span> <span class="type">void</span> displaySearchResults(ReadOnlyBookShelf bookShelf) {
+        Platform.runLater(() -&gt; {
+            model.updateSearchResults(bookShelf);
+            EventsCenter.getInstance().post(<span class="keyword">new</span> SwitchToSearchResultsRequestEvent());
+            EventsCenter.getInstance().post(<span class="keyword">new</span> NewResultAvailableEvent(...));
+        });
+    }</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Note that the update to the model must be done on the JavaFX thread (using <code>Platform#runLater</code>),
+since updating the search results will update its observable list, which will cause the UI to be updated.</p>
 </div>
 </div>
 </div>
@@ -729,7 +729,7 @@ The below sequence diagram shows how the <code>ApiSearchResultEvent</code> will 
 <p>Pros: The application will be more responsive, as potentially long-running HTTP requests will not block the application thread.</p>
 </li>
 <li>
-<p>Cons: Not straightforward to implement, especially considering that changes to the UI has to be made on the JavaFX application thread.</p>
+<p>Cons: Not straightforward to implement, especially considering that changes to the UI have to be made on the JavaFX application thread.</p>
 </li>
 </ul>
 </div>
@@ -755,20 +755,7 @@ The below sequence diagram shows how the <code>ApiSearchResultEvent</code> will 
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Use events to request for web API calls and retrieve the results.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Less coupling - no component will be directly depending on the network component.</p>
-</li>
-<li>
-<p>Cons: The flow of data can become less explicit and clear, and it becomes more complicated to use a single web API call for multiple purposes.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong>Alternative 2:</strong> Call methods on the <code>Network</code> API directly, which return <code>Future</code> objects.</p>
+<p><strong>Alternative 1 (current choice):</strong> Call methods on the <code>Network</code> API directly, which return <code>CompletableFuture</code> objects.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -776,6 +763,19 @@ The below sequence diagram shows how the <code>ApiSearchResultEvent</code> will 
 </li>
 <li>
 <p>Cons: Since web API calls are made by certain commands, the <code>NetworkManager</code> will have to be passed from <code>MainApp</code> all the way into each <code>Command</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Use events to request for web API calls and retrieve the results.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Less coupling - no component will be directly depending on the network component.</p>
+</li>
+<li>
+<p>Cons: The flow of data can become less explicit and clear, and it becomes more complicated to use a single web API call for multiple purposes.</p>
 </li>
 </ul>
 </div>
@@ -3148,7 +3148,7 @@ Expected: Similar to previous.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-29 14:04:52 UTC
+Last updated 2018-03-29 14:16:59 UTC
 </div>
 </div>
 </body>

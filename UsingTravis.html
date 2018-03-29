@@ -18,7 +18,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://travis-ci.org/">Travis CI</a> is a <em>Continuous Integration</em> platform for GitHub projects.</p>
+<p><a href="https://travis-ci.org/" target="<em>blank">Travis CI</a> is a <em>Continuous Integration</em> platform for GitHub projects.</p>
 </div>
 <div class="paragraph">
 <p>Travis CI can run the projects' tests automatically whenever new code is pushed to the repo. This ensures that existing functionality and features have not been broken by the changes.</p>
@@ -29,7 +29,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Runs the <code>./gradlew clean headless allTests coverage coveralls -i</code> command (see <a href="UsingGradle.html">UsingGradle</a> for more details on what this command means).</p>
+<p>Runs the <code>./gradlew clean checkstyleMain checkstyleTest headless allTests asciidoctor</code> command (see <a href="UsingGradle.html">UsingGradle</a> for more details on what this command means).</p>
 </li>
 <li>
 <p>Automatically retries the build up to 3 times if a task fails.</p>
@@ -43,7 +43,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>If you would like to customise your travis build further, you can learn more about Travis from <a href="https://docs.travis-ci.com/">Travis CI Documentation</a>.</p>
+<p>If you would like to customise your travis build further, you can learn more about Travis from <a href="https://docs.travis-ci.com/" target="_blank" rel="noopener">Travis CI Documentation</a>.</p>
 </div>
 </div>
 </div>
@@ -56,19 +56,19 @@
 <p>Fork the repo to your own organization.</p>
 </li>
 <li>
-<p>Go to <a href="https://travis-ci.org/" class="bare">https://travis-ci.org/</a> and click <code>Sign in with GitHub</code>, then enter your GitHub account details if needed.</p>
+<p>Go to <a href="https://travis-ci.org/" target="_blank" rel="noopener">https://travis-ci.org/</a> and click <code>Sign in with GitHub</code>, then enter your GitHub account details if needed.</p>
 <div class="paragraph">
-<p><span class="image"><img src="images/signing_in.png" alt="Signing into Travis CI"></span></p>
+<p><span class="image"><img src="images/travis/signing_in.png" alt="Signing into Travis CI"></span></p>
 </div>
 </li>
 <li>
-<p>Head to the <a href="https://travis-ci.org/profile">Accounts</a> page, and find the switch for the forked repository.</p>
+<p>Head to the <a href="https://travis-ci.org/profile" target="_blank" rel="noopener">Accounts</a> page, and find the switch for the forked repository.</p>
 <div class="ulist">
 <ul>
 <li>
 <p>If the organization is not shown, click <code>Review and add</code> as shown below:</p>
 <div class="paragraph">
-<p><span class="image"><img src="images/review_and_add.png" alt="Review and add"></span></p>
+<p><span class="image"><img src="images/travis/review_and_add.png" alt="Review and add"></span></p>
 </div>
 <div class="paragraph">
 <p>This should bring you to a GitHub page that manages the access of third-party applications. Depending on whether you are the owner of the repository, you can either grant access</p>
@@ -95,11 +95,11 @@
 <li>
 <p>Activate the switch.</p>
 <div class="paragraph">
-<p><span class="image"><img src="images/flick_repository_switch.png" alt="Activate the switch"></span></p>
+<p><span class="image"><img src="images/travis/flick_repository_switch.png" alt="Activate the switch"></span></p>
 </div>
 </li>
 <li>
-<p>This repo comes with a <a href="../.travis.yml"><code>.travis.yml</code></a> that tells Travis what to do. So there is no need for you to create one yourself.</p>
+<p>This repo comes with a <a href="https://github.com/CS2103JAN2018-F14-B4/main/blob/master/.travis.yml"><code>.travis.yml</code></a> that tells Travis what to do. So there is no need for you to create one yourself.</p>
 </li>
 <li>
 <p>To see the CI in action, push a commit to the master branch!</p>
@@ -108,23 +108,33 @@
 <li>
 <p>Go to the repository and see the pushed commit. There should be an icon which will link you to the Travis build.</p>
 <div class="paragraph">
-<p><span class="image"><img src="images/build_pending.png" alt="Commit build"></span></p>
+<p><span class="image"><img src="images/travis/build_pending.png" alt="Commit build"></span></p>
 </div>
 </li>
 <li>
 <p>As the build is run on a provided remote machine, we can only examine the logs it produces:</p>
 <div class="paragraph">
-<p><span class="image"><img src="images/travis_build.png" alt="Travis build"></span></p>
+<p><span class="image"><img src="images/travis/travis_build.png" alt="Travis build"></span></p>
 </div>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>If the build is successful, you should be able to check the coverage details of the tests at <a href="http://coveralls.io/">Coveralls</a></p>
-</li>
-<li>
 <p>Update the link to the 'build status' badge at the top of the <code>README.adoc</code> to point to the build status of your own repo.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For a more consistent styling, you can use the badges from <a href="https://shields.io/" target="_blank" rel="noopener">Shields.io</a>.
+Simply copy the code below, and replace the <code>&lt;username&gt;</code> with your GitHub username (or GitHub organization, if your repository belongs to one) and <code>&lt;repo&gt;</code> with your repository name.</p>
+<div class="listingblock">
+<div class="content">
+<pre>https://travis-ci.org/&lt;username&gt;/&lt;repo&gt;[image:https://img.shields.io/travis/&lt;username&gt;/&lt;repo&gt;.svg?label=travis[Build Status]]</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
 </li>
 </ol>
 </div>
@@ -140,7 +150,7 @@
 </li>
 <li>
 <p>On GitHub, create a new user account and give this account collaborator and admin access to the repo.<br>
-Using this account, generate a personal access token <a href="https://github.com/settings/tokens/new">here</a>.</p>
+Using this account, generate a personal access token <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener">here</a>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -187,13 +197,13 @@ If you are the only one with write access to the repo, you can use your own acco
 <p>We will use this token to grant Travis access to the repo.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/generate_token.png" alt="Generate token"></span></p>
+<p><span class="image"><img src="images/travis/generate_token.png" alt="Generate token"></span></p>
 </div>
 </li>
 <li>
-<p>Head to the <a href="https://travis-ci.org/profile">Accounts</a> page, and find the switch for the forked repository.</p>
+<p>Head to the <a href="https://travis-ci.org/profile" target="_blank" rel="noopener">Accounts</a> page, and find the switch for the forked repository.</p>
 <div class="paragraph">
-<p><span class="image"><img src="images/flick_repository_switch.png" alt="Activate the switch"></span></p>
+<p><span class="image"><img src="images/travis/flick_repository_switch.png" alt="Activate the switch"></span></p>
 </div>
 </li>
 <li>
@@ -216,7 +226,7 @@ If you are the only one with write access to the repo, you can use your own acco
 </div>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/travis_add_token.png" alt="Travis add token"></span></p>
+<p><span class="image"><img src="images/travis/travis_add_token.png" alt="Travis add token"></span></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -251,7 +261,7 @@ Suggested change: Remove the codacy badge from <code>README</code>.</p>
 <p>Wait for Travis CI to finish running the build on your new commit.</p>
 </li>
 <li>
-<p>Go to the URL <code>https://&lt;your-username-or-organization-name&gt;.github.io/addressbook-level4/</code>. You should see your <code>README</code> file displayed.</p>
+<p>Go to the URL <code>https://&lt;your-username-or-organization-name&gt;.github.io/main/</code>. You should see your <code>README</code> file displayed.</p>
 </li>
 </ol>
 </div>
@@ -299,7 +309,7 @@ Suggested change: Remove the codacy badge from <code>README</code>.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-29 20:47:28 UTC
+Last updated 2018-03-29 20:51:34 UTC
 </div>
 </div>
 </body>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
+<title>CircleCI</title>
+<link rel="stylesheet" href="stylesheets/gh-pages.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css">
+</head>
+<body class="article">
+<div id="header">
+<h1>CircleCI</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://circleci.com/" target="<em>blank">CircleCI</a> is a <em>Continuous Integration</em> platform for GitHub projects.</p>
+</div>
+<div class="paragraph">
+<p>CircleCI can run the projects' tests automatically whenever new code is pushed to the repo. This ensures that existing functionality and features have not been broken by the changes.</p>
+</div>
+<div class="paragraph">
+<p>The current CircleCI set up performs the following things whenever someone push code to the repo:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Runs the <code>gradle checkstyleMain checkstyleTest headless allTests coverage coveralls asciidoctor</code> command (see <a href="UsingGradle.html">UsingGradle</a> for more details on what this command means).</p>
+</li>
+<li>
+<p>Runs additional <a href="#repository-wide-checks">repository-wide checks</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you would like to customise your CircleCI build further, you can learn more about CircleCI from <a href="https://circleci.com/docs/2.0/">CircleCI Documentation</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="setting-up-circleci"><a class="anchor" href="#setting-up-circleci"></a>Setting up CircleCI</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Fork the repo to your own organization.</p>
+</li>
+<li>
+<p>Go to <a href="https://circleci.com/signup/" target="_blank" rel="noopener">https://circleci.com/signup/</a> and click <code>Sign Up with GitHub</code>, then enter your GitHub account details if needed.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/signing_in.png" alt="Signing into CircleCI"></span></p>
+</div>
+</li>
+<li>
+<p>On the <a href="https://circleci.com/dashboard" target="_blank" rel="noopener">Dashboard</a>, select your organization in the drop-down box at the top left corner.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/switch_org.png" alt="Select your organization"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If the organization is not shown, go to the <a href="https://circleci.com/account">Account Integrations</a> page, and click on <code>Check permissions</code> as shown below:</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/check_permissions.png" alt="Check permissions"></span></p>
+</div>
+<div class="paragraph">
+<p>This should bring you to a GitHub page that manages the access of third-party applications. Depending on whether you are the owner of the repository, you can either grant access</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/grant_access.png" alt="Grant access"></span></p>
+</div>
+<div class="paragraph">
+<p>or request access</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/request_access.png" alt="Request access"></span></p>
+</div>
+<div class="paragraph">
+<p>to CircleCI so that it can access your commits and build your code.</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Select <code>Add Projects</code> from the left sidebar.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/add_projects.png" alt="Add projects"></span></p>
+</div>
+</li>
+<li>
+<p>Find the forked repository that you wish to add, and select <code>Set Up Project</code>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/set_up_project.png" alt="Set up project"></span></p>
+</div>
+</li>
+<li>
+<p>The next page explains how to configure your project so that CircleCI can test your commits.
+Since this repo comes with a CircleCI <a href="https://github.com/CS2103JAN2018-F14-B4/main/blob/master/.circleci/config.yml" target="_blank" rel="noopener"><code>config.yml</code></a>, there is no need for you to create one yourself.</p>
+</li>
+<li>
+<p>Click on <code>Start building</code>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/start_building.png" alt="Start building"></span></p>
+</div>
+</li>
+<li>
+<p>CircleCI will start building your latest commit on <code>master</code>.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/building.png" alt="Building project"></span></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Go to the repository and see the pushed commit. There should be an icon which will link you to the CircleCI build.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/commit_build.png" alt="Commit build"></span></p>
+</div>
+</li>
+<li>
+<p>As the build is run on a provided remote machine, we can only examine the logs it produces:</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/circleci_build.png" alt="CircleCI build"></span></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Update the link to the 'build status' badge at the top of the <code>README.adoc</code> to point to the build status of your own repo.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For a more consistent styling, you can use the badges from <a href="https://shields.io/" target="_blank" rel="noopener">Shields.io</a>.
+Simply copy the code below, and replace the <code>&lt;username&gt;</code> with your GitHub username (or GitHub organization, if your repository belongs to one) and <code>&lt;repo&gt;</code> with your repository name.</p>
+<div class="listingblock">
+<div class="content">
+<pre>https://circleci.com/gh/&lt;username&gt;/&lt;repo&gt;/tree/master[image:https://img.shields.io/circleci/project/github/&lt;username&gt;/&lt;repo&gt;.svg?label=circleci[Build Status]]</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="building-pull-requests"><a class="anchor" href="#building-pull-requests"></a>Building pull requests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to allow CircleCI to build and test pull requests, there are a few options we need to enable.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to your <a href="https://circleci.com/dashboard" target="_blank" rel="noopener">Dashboard</a> and click on the cog beside your repository.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/project_settings.png" alt="Project settings"></span></p>
+</div>
+</li>
+<li>
+<p>Select the <code>Advanced Settings</code> tab.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/advanced_settings.png" alt="Advanced settings"></span></p>
+</div>
+</li>
+<li>
+<p>Turn <code>On</code> the following options: <code>Build forked pull requests</code>, <code>Pass secrets to builds from forked pull requests</code>, and <code>Only build pull requests</code>.
+This last option lets CircleCI skip the building of the <code>gh-pages</code> branch.</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/circleci/enable_options.png" alt="Enable options"></span></p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="repository-wide-checks"><a class="anchor" href="#repository-wide-checks"></a>Repository-wide checks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In addition to running Gradle checks, we also configure CircleCI to run some repository-wide checks. Unlike the Gradle checks which only cover files used in the build process, these repository-wide checks cover <em>all</em> files in the repository. They check for repository rules which are hard to enforce on development machines such as line ending requirements.</p>
+</div>
+<div class="paragraph">
+<p>These checks are implemented as POSIX shell scripts, and thus can only be run on POSIX-compliant operating systems such as macOS and Linux. To run all checks locally on these operating systems, execute the following in the repository root directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">./config/travis/run-checks.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Any warnings or errors will be printed out to the console.</p>
+</div>
+<div class="sect2">
+<h3 id="implementing-new-checks"><a class="anchor" href="#implementing-new-checks"></a>Implementing new checks</h3>
+<div class="paragraph">
+<p>Checks are implemented as executable <code>check-*</code> scripts within the <code>config/travis/</code> directory. The <code>run-checks.sh</code> script will automatically pick up and run files named as such.</p>
+</div>
+<div class="paragraph">
+<p>Check scripts should print out errors in the following format:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>SEVERITY:FILENAME:LINE: MESSAGE</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where <code>SEVERITY</code> is either <code>ERROR</code> or <code>WARN</code>, <code>FILENAME</code> is the path to the file relative to the current directory, <code>LINE</code> is the line of the file where the error occurred and <code>MESSAGE</code> is the message explaining the error.</p>
+</div>
+<div class="paragraph">
+<p>Check scripts must exit with a non-zero exit code if any errors occur.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2018-03-29 20:51:34 UTC
+</div>
+</div>
+</body>
+</html>

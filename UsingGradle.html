@@ -18,7 +18,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://gradle.org/">Gradle</a> is a build automation tool. It can automate build-related tasks such as</p>
+<p><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle</a> is a build automation tool. It can automate build-related tasks such as</p>
 </div>
 <div class="ulist">
 <ul>
@@ -34,7 +34,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>The gradle configuration for this project is defined in the <em>build script</em> <a href="../build.gradle"><code>build.gradle</code></a>.</p>
+<p>The gradle configuration for this project is defined in the <em>build script</em> <a href="https://github.com/CS2103JAN2018-F14-B4/main/blob/master/build.gradle"><code>build.gradle</code></a>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -43,7 +43,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-To learn more about gradle build scripts, refer <a href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html">Build Scripts Basics</a>.
+To learn more about gradle build scripts, refer <a href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html" target="_blank" rel="noopener">Build Scripts Basics</a>.
 </td>
 </tr>
 </table>
@@ -114,7 +114,7 @@ When running a Gradle task, Gradle will try to figure out if the task needs runn
 <ul>
 <li>
 <p><strong><code>shadowJar</code></strong><br>
-Creates the <code>addressbook.jar</code> file in the <code>build/jar</code> folder, <em>if the current file is outdated</em>.<br>
+Creates the <code>bibliotek.jar</code> file in the <code>build/jar</code> folder, <em>if the current file is outdated</em>.<br>
 e.g. <code>./gradlew shadowJar</code></p>
 </li>
 </ul>
@@ -134,7 +134,7 @@ e.g. <code>./gradlew clean shadowJar</code></p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<strong>Why do we create a fat JAR?</strong> If we package only our own class files into the JAR file, it will not work properly unless the user has all the other JAR files (i.e. third party libraries) our classes depend on, which is rather inconvenient. Therefore, we package all dependencies into a single JAR files, creating what is also known as a <em>fat</em> JAR file. To create a fat JAR file, we use the Gradle plugin <a href="https://github.com/johnrengelman/shadow">shadow jar</a>.
+<strong>Why do we create a fat JAR?</strong> If we package only our own class files into the JAR file, it will not work properly unless the user has all the other JAR files (i.e. third party libraries) our classes depend on, which is rather inconvenient. Therefore, we package all dependencies into a single JAR files, creating what is also known as a <em>fat</em> JAR file. To create a fat JAR file, we use the Gradle plugin <a href="https://github.com/johnrengelman/shadow" target="_blank" rel="noopener">shadow jar</a>.
 </td>
 </tr>
 </table>
@@ -182,11 +182,11 @@ Builds the application as a fat JAR, and then runs it.</p>
 <ul>
 <li>
 <p><strong><code>checkstyleMain</code></strong><br>
-Runs the code style check for the main code base</p>
+Runs the code style check for the main code base.</p>
 </li>
 <li>
 <p><strong><code>checkstyleTest</code></strong><br>
-Runs the code style check for the test code base</p>
+Runs the code style check for the test code base.</p>
 </li>
 </ul>
 </div>
@@ -206,11 +206,11 @@ Runs all tests.</p>
 </li>
 <li>
 <p><strong><code>guiTests</code></strong><br>
-Runs all tests in the <code>seedu.address.ui</code> and <code>systemtests</code> package</p>
+Runs all tests in the <code>seedu.address.ui</code> and <code>systemtests</code> package.</p>
 </li>
 <li>
 <p><strong><code>nonGuiTests</code></strong><br>
-Runs all non-GUI tests in the <code>seedu.address</code>
+Runs all non-GUI tests in the <code>seedu.address</code>.
 package</p>
 </li>
 <li>
@@ -261,7 +261,7 @@ See <code>build.gradle</code> &#8594; <code>allprojects</code> &#8594; <code>dep
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-29 20:47:28 UTC
+Last updated 2018-03-29 20:51:34 UTC
 </div>
 </div>
 </body>

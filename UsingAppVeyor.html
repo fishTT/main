@@ -18,7 +18,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://www.appveyor.com/">AppVeyor</a> is a <em>Continuous Integration</em> platform for GitHub projects. It runs its builds on Windows virtual machines.</p>
+<p><a href="https://www.appveyor.com/" target="<em>blank">AppVeyor</a> is a <em>Continuous Integration</em> platform for GitHub projects. It runs its builds on Windows virtual machines.</p>
 </div>
 <div class="paragraph">
 <p>AppVeyor can run the project&#8217;s tests automatically whenever new code is pushed to the repo. This ensures that existing functionality and features have not been broken on Windows by the changes.</p>
@@ -37,7 +37,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>If you would like to customize your AppVeyor build further, you can learn more about AppVeyor from the <a href="https://www.appveyor.com/docs/">AppVeyor Documentation</a>.</p>
+<p>If you would like to customize your AppVeyor build further, you can learn more about AppVeyor from the <a href="https://www.appveyor.com/docs/" target="_blank" rel="noopener">AppVeyor Documentation</a>.</p>
 </div>
 </div>
 </div>
@@ -50,7 +50,7 @@
 <p>Fork the repo to your own organization.</p>
 </li>
 <li>
-<p>Go to <a href="https://ci.appveyor.com/" class="bare">https://ci.appveyor.com/</a>, and under <code>Login</code>, click on <code>GitHub</code> to login with your GitHub account. Enter your GitHub account details if needed.</p>
+<p>Go to <a href="https://ci.appveyor.com/" target="_blank" rel="noopener">https://ci.appveyor.com/</a>, and under <code>Login</code>, click on <code>GitHub</code> to login with your GitHub account. Enter your GitHub account details if needed.</p>
 <div class="paragraph">
 <p><span class="image"><img src="images/appveyor/login.png" alt="Click on GitHub in the login page"></span></p>
 </div>
@@ -149,7 +149,7 @@ grant access:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>&lt;link to project&gt;[image:&lt;link to image&gt;[Build status]]</pre>
+<pre>&lt;link to project&gt;[image:&lt;link to image&gt;[Build Status]]</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -157,11 +157,20 @@ grant access:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>https://ci.appveyor.com/project/damithc/addressbook-level4[image:https://ci.appveyor.com/api/projects/status/3boko2x2vr5cc3w2?svg=true[Build status]]</pre>
+<pre>https://ci.appveyor.com/project/takuyakanbr/main[image:https://ci.appveyor.com/api/projects/status/0b9xn6cwd3i8a80b?svg=true[Build Status]]</pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Copy and paste the asciidoc code to your <code>README.adoc</code> file.</p>
+</div>
+</li>
+<li>
+<p>Alternatively, for a more consistent styling, you can also use the badges from <a href="https://shields.io/" target="_blank" rel="noopener">Shields.io</a>.
+Simply copy the code below, and replace the <code>&lt;username&gt;</code> with your GitHub username (or GitHub organization, if your repository belongs to one) and <code>&lt;repo&gt;</code> with your repository name.</p>
+<div class="listingblock">
+<div class="content">
+<pre>https://ci.appveyor.com/project/&lt;username&gt;/&lt;repo&gt;[image:https://img.shields.io/appveyor/ci/&lt;username&gt;/&lt;repo&gt;.svg?label=appveyor[Build Status]]</pre>
+</div>
 </div>
 </li>
 </ul>
@@ -174,7 +183,7 @@ grant access:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-03-29 20:47:28 UTC
+Last updated 2018-03-29 20:51:34 UTC
 </div>
 </div>
 </body>

@@ -1,10 +1,19 @@
 package seedu.address.ui;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 
-import java.awt.event.*;
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
-import javax.swing.*;
+
 
 
 /**
@@ -19,7 +28,7 @@ class PopupBox {
         frame.setSize(300, 125);
         frame.setUndecorated(true);
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize(); // size of the screen
-        Insets toolHeight = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration()); // height of the task bar
+        Insets toolHeight = Toolkit.getDefaultToolkit().getScreenInsets(frame.getGraphicsConfiguration());
         frame.setLocation(scrSize.width - frame.getWidth(), scrSize.height - toolHeight.bottom - frame.getHeight());
         frame.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -40,7 +49,8 @@ class PopupBox {
         constraints.anchor = GridBagConstraints.NORTH;
         JButton cloesButton = new JButton(new AbstractAction("X") {
             @Override
-            public void actionPerformed(ActionEvent e) {frame.dispose();
+                public void actionPerformed(ActionEvent e) {
+                frame.dispose();
             }
         });
         cloesButton.setMargin(new Insets(1, 4, 1, 4));
@@ -57,5 +67,4 @@ class PopupBox {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
 }

@@ -47,15 +47,15 @@ class PopupBox {
         constraints.weighty = 0f;
         constraints.fill = GridBagConstraints.NONE;
         constraints.anchor = GridBagConstraints.NORTH;
-        JButton cloesButton = new JButton(new AbstractAction("X") {
+        JButton clonesButton = new JButton(new AbstractAction("X") {
             @Override
                 public void actionPerformed(ActionEvent e) {
                 frame.dispose();
             }
         });
-        cloesButton.setMargin(new Insets(1, 4, 1, 4));
-        cloesButton.setFocusable(false);
-        frame.add(cloesButton, constraints);
+        clonesButton.setMargin(new Insets(1, 4, 1, 4));
+        clonesButton.setFocusable(false);
+        frame.add(clonesButton, constraints);
         constraints.gridx = 0;
         constraints.gridy++;
         constraints.weightx = 1.0f;

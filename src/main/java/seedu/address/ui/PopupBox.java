@@ -1,6 +1,5 @@
 package seedu.address.ui;
 
-
 import org.controlsfx.control.Notifications;
 
 import javafx.geometry.Pos;

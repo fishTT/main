@@ -45,6 +45,7 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
+    private PopupBox popupBox;
     private BookDetailsPanel bookDetailsPanel;
     private BookReviewsPanel bookReviewsPanel;
     private BookListPanel bookListPanel;
@@ -134,6 +135,7 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
+        popupBox = new PopupBox();
         bookDetailsPanel = new BookDetailsPanel();
         bookReviewsPanel = new BookReviewsPanel();
         mainContentPlaceholder.getChildren().add(bookDetailsPanel.getRoot());

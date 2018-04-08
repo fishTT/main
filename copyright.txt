@@ -2,6 +2,7 @@
 
 Copyright by Icon Shop - http://freeiconshop.com/
 - book_flat_32.png
+- book_flat_128.png
 
 Copyright by Jan Jan Kovařík - http://glyphicons.com/
 - calendar.png

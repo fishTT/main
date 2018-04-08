@@ -488,3 +488,15 @@ body {
     -fx-background-color: #78909C;
     -fx-text-fill: #F9A825;
 }
+
+
+#welcomeScreenContainer {
+    -fx-background-color: #dfe8ec;
+}
+
+.label.qotd {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-text-fill: #616161;
+}

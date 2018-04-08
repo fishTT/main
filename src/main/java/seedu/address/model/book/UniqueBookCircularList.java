@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.model.UniqueList;
 
+//@@author qiu-siqi
 /**
  * A list of items that enforces no nulls and uniqueness between its elements,
  * with maximum of a pre-set number of elements.

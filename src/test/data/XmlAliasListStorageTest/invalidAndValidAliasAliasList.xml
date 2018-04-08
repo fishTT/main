@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<aliaslist>
+    <aliases>
+        <name>rm</name>
+        <prefix>delete</prefix>
+        <namedArgs></namedArgs>
+    </aliases>
+    <!-- alias with invalid prefix field -->
+    <aliases>
+        <name>urd</name>
+        <namedArgs>s/unread</namedArgs>
+    </aliases>
+</aliaslist>

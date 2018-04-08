@@ -1,9 +1,12 @@
 package seedu.address.model;
 
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.alias.Alias;
+import seedu.address.model.alias.ReadOnlyAliasList;
 import seedu.address.model.book.Book;
 import seedu.address.model.book.exceptions.BookNotFoundException;
 import seedu.address.model.book.exceptions.DuplicateBookException;
@@ -59,6 +62,8 @@ public interface Model {
     void updateBook(Book target, Book editedBook)
             throws BookNotFoundException, DuplicateBookException;
 
+    //=========== Display Book List Accessors ==============================================================
+
     /** Returns an unmodifiable view of the filtered and sorted book list */
     ObservableList<Book> getDisplayBookList();
 
@@ -84,11 +89,15 @@ public interface Model {
      */
     void updateBookListSorter(Comparator<? super Book> comparator);
 
+    //=========== Search Results ===========================================================================
+
     /** Returns an unmodifiable view of the search results. */
     ObservableList<Book> getSearchResultsList();
 
     /** Updates the search results that should be displayed. */
     void updateSearchResults(ReadOnlyBookShelf newResults);
+
+    //=========== Recent books ===========================================================================
 
     /** Returns an unmodifiable view of the recently selected books. */
     ObservableList<Book> getRecentBooksList();
@@ -98,4 +107,24 @@ public interface Model {
 
     /** Add a recently selected book. */
     void addRecentBook(Book newBook);
+
+    //=========== Alias List =============================================================================
+
+    /** Returns the alias list. */
+    ReadOnlyAliasList getAliasList();
+
+    /** Returns an unmodifiable view of the alias list. */
+    ObservableList<Alias> getDisplayAliasList();
+
+    /** Adds the specified {@code alias} to the alias list. */
+    void addAlias(Alias alias);
+
+    /**
+     * Returns an {@code Optional} containing the alias that matches the specified {@code name}.
+     * Returns an empty {@code Optional} if no matching alias was found.
+     */
+    Optional<Alias> getAlias(String name);
+
+    /** Removes the alias that matches the specified {@code name} from the alias list. */
+    void removeAlias(String name);
 }

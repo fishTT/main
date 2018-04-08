@@ -21,6 +21,7 @@ import seedu.address.model.book.Book;
 import seedu.address.network.api.google.GoogleBooksApi;
 import seedu.address.testutil.TypicalBooks;
 
+//@@author takuyakanbr
 public class NetworkManagerTest {
     private static final String PARAM_EMPTY_RESULT = "1";
     private static final String PARAM_SUCCESS = "12345";

@@ -19,7 +19,7 @@ public class TestUtil {
      * Folder used for temp files created during testing. Ignored by Git.
      */
     private static final String SANDBOX_FOLDER = FileUtil.getPath("./build/tmp/sandbox/");
-    private static final int RANDOM_BYTE_LENGTH = 6;
+    private static final int RANDOM_BYTE_LENGTH = 9;
     private static final String PREFIX_SEPARATOR = "_";
 
     /**

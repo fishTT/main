@@ -9,6 +9,7 @@ import seedu.address.commons.core.Theme;
 import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.model.Model;
 
+//@@author takuyakanbr
 public class ThemeCommandSystemTest extends BibliotekSystemTest {
 
     @Test
@@ -34,6 +35,7 @@ public class ThemeCommandSystemTest extends BibliotekSystemTest {
         assertThemeCommandSuccess(ThemeCommand.COMMAND_WORD + " WhitE", Theme.WHITE);
     }
 
+    //@@author
     /**
      * Executes {@code command} and verifies that the command box displays an empty string, the result display
      * box displays {@code ThemeCommand#MESSAGE_SUCCESS} and the model related components remain unchanged.

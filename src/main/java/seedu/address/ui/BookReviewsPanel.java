@@ -8,7 +8,6 @@ import com.google.common.base.Charsets;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.io.Resources;
 
-import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -77,10 +76,8 @@ public class BookReviewsPanel extends UiPart<Region> {
     @Subscribe
     private void handleShowBookReviewsRequestEvent(ShowBookReviewsRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        Platform.runLater(() -> {
-            browser.getEngine().executeScript(clearPageScript);
-            loadPageForBook(event.getBook());
-            getRoot().setVisible(true);
-        });
+        browser.getEngine().executeScript(clearPageScript);
+        loadPageForBook(event.getBook());
+        getRoot().setVisible(true);
     }
 }

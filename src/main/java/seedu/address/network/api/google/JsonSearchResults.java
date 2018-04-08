@@ -17,6 +17,7 @@ import seedu.address.model.book.exceptions.DuplicateBookException;
 import seedu.address.model.book.exceptions.InvalidBookException;
 import seedu.address.model.util.BookDataUtil;
 
+//@@author takuyakanbr
 /**
  * A temporary data holder used for deserialization of the JSON response
  * from the book searching endpoint of Google Books API.
@@ -71,8 +72,8 @@ public class JsonSearchResults {
         }
 
         return new Book(new Gid(volume.id), isbn,
-                BookDataUtil.getAuthorSet(volumeInfo.authors), new Title(volumeInfo.title),
-                BookDataUtil.getCategorySet(volumeInfo.categories), new Description(volumeInfo.description),
+                BookDataUtil.getAuthorList(volumeInfo.authors), new Title(volumeInfo.title),
+                BookDataUtil.getCategoryList(volumeInfo.categories), new Description(volumeInfo.description),
                 new Publisher(volumeInfo.publisher), new PublicationDate(volumeInfo.publishedDate));
     }
 
@@ -90,6 +91,7 @@ public class JsonSearchResults {
         private String id = "";
         private JsonVolumeInfo volumeInfo = new JsonVolumeInfo();
 
+        //@@author
         public void setId(String id) {
             this.id = id;
         }
@@ -99,6 +101,7 @@ public class JsonSearchResults {
         }
     }
 
+    //@@author takuyakanbr
     /** Temporary data holder used for deserialization. */
     private static class JsonVolumeInfo {
         private String title = "";
@@ -109,6 +112,7 @@ public class JsonSearchResults {
         private JsonIndustryIdentifiers[] industryIdentifiers = new JsonIndustryIdentifiers[0];
         private String[] categories = new String[0];
 
+        //@@author
         public void setIndustryIdentifiers(JsonIndustryIdentifiers[] industryIdentifiers) {
             this.industryIdentifiers = industryIdentifiers;
         }

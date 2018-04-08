@@ -2,9 +2,10 @@ package seedu.address.model.book;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import seedu.address.model.UniqueList;
 
@@ -29,8 +30,9 @@ public class Book {
     /**
      * Creates a {@code Book} with the default status, priority, and rating.
      * Every field must be present and not null.
+     * Duplicate authors and categories will be silently ignored.
      */
-    public Book(Gid gid, Isbn isbn, Set<Author> authors, Title title, Set<Category> categories,
+    public Book(Gid gid, Isbn isbn, Collection<Author> authors, Title title, Collection<Category> categories,
                 Description description, Publisher publisher, PublicationDate publicationDate) {
         this(gid, isbn, authors, title, categories, description, Status.DEFAULT_STATUS,
                 Priority.DEFAULT_PRIORITY, new Rating(), publisher, publicationDate);
@@ -39,17 +41,20 @@ public class Book {
     /**
      * Creates a {@code Book}.
      * Every field must be present and not null.
+     * Duplicate authors and categories will be silently ignored.
      */
-    public Book(Gid gid, Isbn isbn, Set<Author> authors, Title title, Set<Category> categories,
+    public Book(Gid gid, Isbn isbn, Collection<Author> authors, Title title, Collection<Category> categories,
                 Description description, Status status, Priority priority, Rating rating,
                 Publisher publisher, PublicationDate publicationDate) {
         requireAllNonNull(gid, isbn, authors, title, categories, description,
                 status, priority, rating, publisher, publicationDate);
         this.gid = gid;
         this.isbn = isbn;
-        this.authors = new UniqueList<>(authors);
+        this.authors = new UniqueList<>();
+        this.authors.addAllIgnoresDuplicates(authors);
         this.title = title;
-        this.categories = new UniqueList<>(categories);
+        this.categories = new UniqueList<>();
+        this.categories.addAllIgnoresDuplicates(categories);
         this.description = description;
         this.status = status;
         this.priority = priority;
@@ -59,11 +64,11 @@ public class Book {
     }
 
     /**
-     * Returns an immutable authors set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable authors list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<Author> getAuthors() {
-        return Collections.unmodifiableSet(authors.toSet());
+    public List<Author> getAuthors() {
+        return Collections.unmodifiableList(authors.toList());
     }
 
     public Title getTitle() {
@@ -71,11 +76,11 @@ public class Book {
     }
 
     /**
-     * Returns an immutable categories set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable categories list, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
      */
-    public Set<Category> getCategories() {
-        return Collections.unmodifiableSet(categories.toSet());
+    public List<Category> getCategories() {
+        return Collections.unmodifiableList(categories.toList());
     }
 
     public Description getDescription() {

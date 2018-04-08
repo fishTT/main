@@ -25,6 +25,7 @@ import seedu.address.model.UserPrefs;
 import seedu.address.network.NetworkManager;
 import seedu.address.testutil.SearchDescriptorBuilder;
 
+//@@author takuyakanbr
 /**
  * Contains integration tests (interaction with the Model) and unit tests for SearchCommand.
  */

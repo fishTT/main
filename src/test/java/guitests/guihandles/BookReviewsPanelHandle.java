@@ -4,6 +4,7 @@ import java.net.URL;
 
 import javafx.scene.Node;
 
+//@@author qiu-siqi
 /**
  * Provides a handle for the {@code BookReviewsPanel} of the UI.
  */

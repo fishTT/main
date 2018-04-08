@@ -394,6 +394,10 @@ body {
     -fx-text-fill: #222;
 }
 
+#commandTextField:readonly {
+    -fx-opacity: 0.8;
+}
+
 #resultDisplay .content {
     -fx-background-color: transparent, #ECEFF1, transparent, #ECEFF1;
     -fx-background-radius: 0;
@@ -487,6 +491,35 @@ body {
 .rating-rated.label {
     -fx-background-color: #78909C;
     -fx-text-fill: #F9A825;
+}
+
+
+#aliasListContainer {
+    -fx-background-color: #c9d2d6;
+}
+
+.alias-list-header {
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.alias-details {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+.alias-id {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-min-width: 20px;
+}
+
+.alias-name {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-min-width: 80px;
+    -fx-margin: 0 6px 0 0;
+}
+
+.label.alias-named-args {
+    -fx-text-fill: #616161;
 }
 
 

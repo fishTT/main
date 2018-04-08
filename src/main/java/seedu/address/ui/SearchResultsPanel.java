@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -60,6 +59,10 @@ public class SearchResultsPanel extends UiPart<Region> {
         });
     }
 
+    protected void clearSelection() {
+        searchResultsListView.getSelectionModel().clearSelection();
+    }
+
     /** Scrolls to the top of the search results list. */
     protected void scrollToTop() {
         searchResultsListView.scrollTo(0);
@@ -69,15 +72,8 @@ public class SearchResultsPanel extends UiPart<Region> {
      * Scrolls to the {@code Book} at the {@code index} and selects it.
      */
     private void scrollTo(int index) {
-        Platform.runLater(() -> {
-            searchResultsListView.scrollTo(index);
-            searchResultsListView.getSelectionModel().clearAndSelect(index);
-        });
-    }
-
-    protected void clearSelectionAndScrollToTop() {
-        searchResultsListView.getSelectionModel().clearSelection();
-        scrollToTop();
+        searchResultsListView.scrollTo(index);
+        searchResultsListView.getSelectionModel().clearAndSelect(index);
     }
 
     @Subscribe

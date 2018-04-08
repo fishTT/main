@@ -16,11 +16,11 @@ import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 
 /**
- * The Welcome Screen Panel of the App.
+ * The Welcome Panel of the App.
  */
-public class WelcomeScreenPanel extends UiPart<Region> {
+public class WelcomePanel extends UiPart<Region> {
 
-    private static final String FXML = "WelcomeScreenPanel.fxml";
+    private static final String FXML = "WelcomePanel.fxml";
     private static final URL QUOTES_FILE = MainApp.class.getResource("/text/quotes.txt");
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
@@ -28,14 +28,14 @@ public class WelcomeScreenPanel extends UiPart<Region> {
     @FXML
     private Label qotd;
 
-    public WelcomeScreenPanel() {
+    public WelcomePanel() {
         super(FXML);
         registerAsAnEventHandler(this);
 
         try {
             qotd.setText(getRandomQuote());
         } catch (IOException e) {
-            logger.warning("Failed to load quote of the day.");
+            logger.warning("Failed to load random quote.");
         }
     }
 
@@ -52,6 +52,10 @@ public class WelcomeScreenPanel extends UiPart<Region> {
     //@@author
     protected void hide() {
         getRoot().setVisible(false);
+    }
+
+    protected void show() {
+        getRoot().setVisible(true);
     }
 
 }

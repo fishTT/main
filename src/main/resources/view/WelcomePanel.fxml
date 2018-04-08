@@ -13,10 +13,10 @@
 <?import javafx.scene.layout.VBox?>
 
 <!-- @@author takuyakanbr -->
-<StackPane fx:id="welcomeScreenPanel" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="welcomePanel" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
     <content>
-      <BorderPane fx:id="welcomeScreenContainer">
+      <BorderPane fx:id="welcomeContainer">
         <center>
           <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <ImageView fx:id="appLogo" fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">

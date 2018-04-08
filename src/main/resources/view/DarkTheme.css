@@ -522,7 +522,7 @@ body {
 }
 
 
-#welcomeScreenContainer {
+#welcomeContainer {
     -fx-background-color: derive(#1d1d1d, 25%);
 }
 

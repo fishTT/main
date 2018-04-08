@@ -29,6 +29,7 @@ import guitests.guihandles.RecentBooksPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.SearchResultsPanelHandle;
 import guitests.guihandles.StatusBarFooterHandle;
+import guitests.guihandles.WelcomePanelHandle;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.index.Index;
@@ -114,6 +115,10 @@ public abstract class BibliotekSystemTest {
 
     public MainMenuHandle getMainMenu() {
         return mainWindowHandle.getMainMenu();
+    }
+
+    public WelcomePanelHandle getWelcomePanel() {
+        return mainWindowHandle.getWelcomePanel();
     }
 
     public BookDetailsPanelHandle getBookDetailsPanel() {
@@ -427,6 +432,7 @@ public abstract class BibliotekSystemTest {
             assertEquals("", getCommandBox().getInput());
             assertEquals("", getResultDisplay().getText());
             assertListMatching(getBookListPanel(), getModel().getDisplayBookList());
+            assertTrue(getWelcomePanel().isVisible());
             assertFalse(getBookDetailsPanel().isVisible());
             assertFalse(getBookReviewsPanel().isVisible());
             assertFalse(getAliasListPanel().isVisible());

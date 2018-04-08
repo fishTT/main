@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -13,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import seedu.address.MainApp;
-import seedu.address.commons.core.LogsCenter;
 
 /**
  * The Welcome Panel of the App.
@@ -23,19 +21,16 @@ public class WelcomePanel extends UiPart<Region> {
     private static final String FXML = "WelcomePanel.fxml";
     private static final URL QUOTES_FILE = MainApp.class.getResource("/text/quotes.txt");
 
-    private final Logger logger = LogsCenter.getLogger(this.getClass());
-
     @FXML
     private Label qotd;
 
     public WelcomePanel() {
         super(FXML);
-        registerAsAnEventHandler(this);
 
         try {
             qotd.setText(getRandomQuote());
         } catch (IOException e) {
-            logger.warning("Failed to load random quote.");
+            throw new AssertionError("Failed to load random quote.");
         }
     }
 

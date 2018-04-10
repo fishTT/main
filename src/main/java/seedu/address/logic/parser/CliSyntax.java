@@ -19,6 +19,8 @@ public class CliSyntax {
     public static final String PREFIX_RATING_STRING = "r/";
     public static final String PREFIX_REMARK_STRING = "re/";
     public static final String PREFIX_SORT_BY_STRING = "by/";
+    public static final String PREFIX_COMMAND_STRING = "cmd/";
+
 
     /* Prefix definitions */
     public static final Prefix PREFIX_EMPTY = new Prefix(PREFIX_EMPTY_STRING);
@@ -32,6 +34,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_RATING = new Prefix(PREFIX_RATING_STRING);
     public static final Prefix PREFIX_REMARK = new Prefix(PREFIX_REMARK_STRING);
     public static final Prefix PREFIX_SORT_BY = new Prefix(PREFIX_SORT_BY_STRING);
+    public static final Prefix PREFIX_COMMAND = new Prefix(PREFIX_COMMAND_STRING);
 
 
     public static final List<Prefix> LIST_OF_PREFIXES =

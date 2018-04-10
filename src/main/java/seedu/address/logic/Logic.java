@@ -1,6 +1,7 @@
 package seedu.address.logic;
 
 import javafx.collections.ObservableList;
+import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -19,6 +20,13 @@ public interface Logic {
      * @throws ParseException If an error occurs during parsing.
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
+
+        /**
+          * Parses the input and returns the associated command.
+          * @param commandText The command as entered by the user.
+          * @throws ParseException If an error occurs during parsing.
+          */
+                Command parse(String commandText) throws ParseException;
 
     /** Returns an unmodifiable view of the filtered and sorted list of books */
     ObservableList<Book> getDisplayBookList();

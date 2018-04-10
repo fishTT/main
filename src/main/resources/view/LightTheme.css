@@ -383,24 +383,39 @@ body {
     -fx-text-fill: #F70D1A;
 }
 
-#commandTextField {
-    -fx-background-color: transparent #ECEFF1 transparent #ECEFF1;
-    -fx-background-insets: 0;
-    -fx-border-color: #ECEFF1 #ECEFF1 #B0BEC5 #ECEFF1;
-    -fx-border-insets: 0;
-    -fx-border-width: 1;
-    -fx-font-family: "Segoe UI Light";
-    -fx-font-size: 13pt;
-    -fx-text-fill: #222;
+#commandBoxItems {
+    -fx-border-color: transparent transparent light transparent;
 }
 
-#commandTextField:readonly {
-    -fx-opacity: 0.8;
+#commandBoxWrapper {
+    -fx-padding: 20;
 }
+
+#commandBoxItems {
+    -fx-border-color: transparent transparent light transparent;
+}
+
+#commandTextField, #commandBoxHints{
+    -fx-font-size: 25pt;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, base, 5, 0, 0, 0);
+    -fx-padding: 0 0 0 0;
+}
+
+#commandBoxHints {
+    -fx-opacity: 0.4;
+}
+
+
 
 #resultDisplay .content {
-    -fx-background-color: transparent, #ECEFF1, transparent, #ECEFF1;
+    -fx-background-color: #f9f9f9;
     -fx-background-radius: 0;
+}
+
+#commandTextField, #resultDisplay, #bookListContainer, #bookDetailsContainer {
+    -fx-highlight-text-fill: #222;
+    -fx-effect: dropShadow(three-pass-box, #d5d5d5, 8, 0, 2, 2);
 }
 
 #description {

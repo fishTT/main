@@ -91,12 +91,13 @@ public class HintParser {
             case EditCommand.COMMAND_WORD:
                 return generateEditHint();
             case SelectCommand.COMMAND_WORD:
+				return " Select a book"
             case DeleteCommand.COMMAND_WORD:
                 return generateDeleteAndSelectHint();
             case ClearCommand.COMMAND_WORD:
-                return " clears address book";
+                return " clears a book";
             case ListCommand.COMMAND_WORD:
-                return " lists all people";
+                return " lists all books";
             case HistoryCommand.COMMAND_WORD:
                 return " show command history";
             case ExitCommand.COMMAND_WORD:

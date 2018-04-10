@@ -21,7 +21,7 @@ public class BookReviewsPanelTest extends GuiUnitTest {
 
     @Before
     public void setUp() {
-        guiRobot.interact(() -> bookReviewsPanel = new BookReviewsPanel());
+        guiRobot.interact(() -> bookReviewsPanel = new BookReviewsPanel(WebViewManager.getInstance()));
         uiPartRule.setUiPart(bookReviewsPanel);
         bookReviewsPanelHandle = new BookReviewsPanelHandle(bookReviewsPanel.getRoot());
     }

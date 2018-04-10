@@ -10,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.model.alias.Alias;
 import seedu.address.testutil.BookShelfBuilder;
 
 public class ModelManagerTest {
@@ -17,7 +18,7 @@ public class ModelManagerTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void getFilteredBookList_modifyList_throwsUnsupportedOperationException() {
+    public void getDisplayBookList_modifyList_throwsUnsupportedOperationException() {
         ModelManager modelManager = new ModelManager();
         thrown.expect(UnsupportedOperationException.class);
         modelManager.getDisplayBookList().remove(0);
@@ -28,6 +29,13 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager();
         thrown.expect(UnsupportedOperationException.class);
         modelManager.getRecentBooksList().remove(0);
+    }
+
+    @Test
+    public void getDisplayAliasList_modifyList_throwsUnsupportedOperationException() {
+        ModelManager modelManager = new ModelManager();
+        thrown.expect(UnsupportedOperationException.class);
+        modelManager.getDisplayAliasList().remove(0);
     }
 
     @Test
@@ -55,7 +63,7 @@ public class ModelManagerTest {
         assertTrue(modelManager.equals(modelManager));
 
         // null -> returns false
-        assertFalse(modelManager == null);
+        assertFalse(modelManager.equals(null));
 
         // different types -> returns false
         assertFalse(modelManager.equals(5));
@@ -68,6 +76,11 @@ public class ModelManagerTest {
 
         // different recentBooks -> returns false
         modelManagerCopy.addRecentBook(BABYLON_ASHES);
+        assertFalse(modelManager.equals(modelManagerCopy));
+
+        // different alias list -> returns false
+        modelManagerCopy = new ModelManager(bookShelf, userPrefs);
+        modelManagerCopy.addAlias(new Alias("1", "1", "1"));
         assertFalse(modelManager.equals(modelManagerCopy));
 
         // resets modelManager to initial state for upcoming tests

@@ -18,6 +18,7 @@ import seedu.address.logic.commands.RecentCommand;
 import seedu.address.model.Model;
 import seedu.address.model.book.Book;
 
+//@@author takuyakanbr
 public class ListCommandSystemTest extends BibliotekSystemTest {
 
     @Test
@@ -54,6 +55,7 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertCommandFailure(ListCommand.COMMAND_WORD + " by/123", Messages.MESSAGE_INVALID_SORT_BY);
     }
 
+    //@@author
     /**
      * Executes {@code command} and asserts that the,<br>
      * 1. Command box displays an empty string.<br>

@@ -52,8 +52,9 @@ public class ClearCommandSystemTest extends BibliotekSystemTest {
      * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(String command) {
-        assertCommandSuccess(command, ClearCommand.MESSAGE_SUCCESS,
-                new ModelManager(new BookShelf(), new UserPrefs(), getModel().getRecentBooksListAsBookShelf()));
+        Model model = getModel();
+        assertCommandSuccess(command, ClearCommand.MESSAGE_SUCCESS, new ModelManager(new BookShelf(), new UserPrefs(),
+                model.getRecentBooksListAsBookShelf(), model.getAliasList()));
     }
 
     /**
@@ -63,6 +64,7 @@ public class ClearCommandSystemTest extends BibliotekSystemTest {
      */
     private void assertCommandSuccess(String command, String expectedResultMessage, Model expectedModel) {
         executeCommand(command);
+
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();

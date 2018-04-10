@@ -52,7 +52,7 @@ public class XmlBookShelfStorage implements BookShelfStorage {
             return Optional.empty();
         }
 
-        XmlSerializableBookShelf xmlBookShelf = XmlFileStorage.loadDataFromSaveFile(new File(filePath));
+        XmlSerializableBookShelf xmlBookShelf = XmlFileStorage.loadBookShelfDataFromFile(new File(filePath));
         try {
             return Optional.of(xmlBookShelf.toModelType());
         } catch (IllegalValueException ive) {
@@ -76,7 +76,7 @@ public class XmlBookShelfStorage implements BookShelfStorage {
 
         File file = new File(filePath);
         FileUtil.createIfMissing(file);
-        XmlFileStorage.saveDataToFile(file, new XmlSerializableBookShelf(bookShelf));
+        XmlFileStorage.saveBookShelfDataToFile(file, new XmlSerializableBookShelf(bookShelf));
     }
 
 }

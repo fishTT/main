@@ -386,6 +386,7 @@ body {
     -fx-border-color: transparent transparent light transparent;
 }
 
+
 #commandBoxWrapper {
     -fx-padding: 20;
 }
@@ -495,4 +496,45 @@ body {
 .rating-rated.label {
     -fx-background-color: #616161;
     -fx-text-fill: #F9A825;
+}
+
+
+#aliasListContainer {
+    -fx-background-color: derive(#1d1d1d, 30%);
+}
+
+.alias-list-header {
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.alias-details {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+.alias-id {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-min-width: 20px;
+}
+
+.alias-name {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-min-width: 80px;
+    -fx-margin: 0 6px 0 0;
+}
+
+.label.alias-named-args {
+    -fx-text-fill: #bbb;
+}
+
+
+#welcomeContainer {
+    -fx-background-color: derive(#1d1d1d, 25%);
+}
+
+.label.qotd {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-text-fill: #bbb;
 }

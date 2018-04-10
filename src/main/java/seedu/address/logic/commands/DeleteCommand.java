@@ -2,7 +2,6 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
 import java.util.Objects;
 
 import seedu.address.commons.core.Messages;
@@ -37,11 +36,8 @@ public class DeleteCommand extends UndoableCommand {
 
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult executeUndoableCommand() {
         requireNonNull(bookToDelete);
-        if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
-            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
 
         try {
             model.deleteBook(bookToDelete);
@@ -54,13 +50,28 @@ public class DeleteCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
-        List<Book> lastShownList = model.getDisplayBookList();
+        checkActiveListType();
+        checkValidIndex();
 
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        bookToDelete = model.getActiveList().get(targetIndex.getZeroBased());
+    }
+
+    /**
+     * Throws a {@link CommandException} if the active list type is not supported by this command.
+     */
+    private void checkActiveListType() throws CommandException {
+        if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
+            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
+        }
+    }
+
+    /**
+     * Throws a {@link CommandException} if the given index is not valid.
+     */
+    private void checkValidIndex() throws CommandException {
+        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
         }
-
-        bookToDelete = lastShownList.get(targetIndex.getZeroBased());
     }
 
     @Override

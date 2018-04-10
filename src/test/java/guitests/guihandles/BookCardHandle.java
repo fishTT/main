@@ -10,6 +10,7 @@ import javafx.scene.layout.Region;
 import seedu.address.model.book.Author;
 import seedu.address.model.book.Book;
 import seedu.address.model.book.Category;
+import seedu.address.ui.BookCard;
 
 /**
  * Provides a handle to a person card in the person list panel.
@@ -109,9 +110,10 @@ public class BookCardHandle extends NodeHandle<Node> {
     public boolean equals(Book book) {
         return getTitle().equals(book.getTitle().title)
                 && new HashSet<>(getAuthors())
-                    .equals(book.getAuthors().stream().map(Author::toString).collect(Collectors.toSet()))
+                    .equals(book.getAuthors().stream().map(Author::getDisplayText).collect(Collectors.toSet()))
                 && new HashSet<>(getCategories())
-                    .equals(book.getCategories().stream().map(Category::toString).collect(Collectors.toSet()))
+                    .equals(book.getCategories().stream().limit(BookCard.DISPLAYED_CATEGORY_LIMIT)
+                            .map(Category::getDisplayText).collect(Collectors.toSet()))
                 && getStatus().equals(book.getStatus().getDisplayText())
                 && getPriority().equals(book.getPriority().getDisplayText())
                 && getRating().equals(book.getRating().getDisplayText());

@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static seedu.address.testutil.TypicalBooks.ARTEMIS;
 import static seedu.address.testutil.TypicalBooks.BABYLON_ASHES;
 import static seedu.address.testutil.TypicalBooks.WAKING_GODS;
@@ -64,6 +65,19 @@ public class BookShelfTest {
     }
 
     @Test
+    public void getBookByIsbn_matchingIsbn_success() throws Exception {
+        bookShelf.addBook(ARTEMIS);
+        bookShelf.addBook(BABYLON_ASHES);
+        assertEquals(BABYLON_ASHES, bookShelf.getBookByIsbn(BABYLON_ASHES.getIsbn()).get());
+    }
+
+    @Test
+    public void getBookByIsbn_nonMatchingIsbn_returnsEmptyOptional() throws Exception {
+        bookShelf.addBook(ARTEMIS);
+        assertFalse(bookShelf.getBookByIsbn(BABYLON_ASHES.getIsbn()).isPresent());
+    }
+
+    @Test
     public void updateBook_validTargetAndReplacement_success() throws Exception {
         bookShelf.addBook(ARTEMIS);
         bookShelf.updateBook(ARTEMIS, BABYLON_ASHES);
@@ -110,6 +124,18 @@ public class BookShelfTest {
     public void getBookList_modifyList_throwsUnsupportedOperationException() {
         thrown.expect(UnsupportedOperationException.class);
         bookShelf.getBookList().remove(0);
+    }
+
+    @Test
+    public void hashCode_sameContent_returnsSameValue() throws Exception {
+        BookShelf bookShelf = new BookShelf();
+        bookShelf.addBook(ARTEMIS);
+        bookShelf.addBook(BABYLON_ASHES);
+        BookShelf bookShelfCopy = new BookShelf();
+        bookShelfCopy.addBook(ARTEMIS);
+        bookShelfCopy.addBook(BABYLON_ASHES);
+        assertEquals(bookShelf.hashCode(), bookShelf.hashCode());
+        assertEquals(bookShelf.hashCode(), bookShelfCopy.hashCode());
     }
 
     /**

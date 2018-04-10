@@ -69,6 +69,11 @@ public class CommandBoxTest extends GuiUnitTest {
 
         guiRobot.push(KeyCode.A);
         assertEquals(defaultStyleOfCommandBox, commandBoxHandle.getStyleClass());
+
+        // does nothing when command box is disabled
+        commandBoxHandle.disable();
+        commandBoxHandle.run(COMMAND_THAT_SUCCEEDS);
+        assertEquals(COMMAND_THAT_SUCCEEDS, commandBoxHandle.getInput());
     }
 
     @Test
@@ -100,6 +105,12 @@ public class CommandBoxTest extends GuiUnitTest {
         assertInputHistory(KeyCode.UP, COMMAND_THAT_SUCCEEDS);
         assertInputHistory(KeyCode.DOWN, COMMAND_THAT_FAILS);
         assertInputHistory(KeyCode.DOWN, thirdCommand);
+        assertInputHistory(KeyCode.DOWN, "");
+
+        // does nothing when command box is disabled
+        commandBoxHandle.disable();
+        assertInputHistory(KeyCode.UP, "");
+        assertInputHistory(KeyCode.UP, "");
         assertInputHistory(KeyCode.DOWN, "");
     }
 

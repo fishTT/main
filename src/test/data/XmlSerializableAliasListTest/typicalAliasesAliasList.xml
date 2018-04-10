@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<aliaslist>
+    <aliases>
+        <name>rm</name>
+        <prefix>delete</prefix>
+        <namedArgs></namedArgs>
+    </aliases>
+    <aliases>
+        <name>s</name>
+        <prefix>search</prefix>
+        <namedArgs></namedArgs>
+    </aliases>
+    <aliases>
+        <name>urd</name>
+        <prefix>list</prefix>
+        <namedArgs>s/unread</namedArgs>
+    </aliases>
+</aliaslist>

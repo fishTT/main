@@ -36,6 +36,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_SORT_BY = new Prefix(PREFIX_SORT_BY_STRING);
     public static final Prefix PREFIX_COMMAND = new Prefix(PREFIX_COMMAND_STRING);
 
+
     public static final List<Prefix> LIST_OF_PREFIXES =
             Arrays.asList(
                     PREFIX_EMPTY, PREFIX_AUTHOR, PREFIX_CATEGORY, PREFIX_DESCRIPTION, PREFIX_ISBN,

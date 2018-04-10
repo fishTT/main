@@ -14,6 +14,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.model.ReadOnlyBookShelf;
 
+//@@author qiu-siqi
 /**
  * A class to access recently selected books data stored as an xml file on the hard disk.
  */
@@ -52,7 +53,7 @@ public class XmlRecentBooksStorage implements RecentBooksStorage {
             return Optional.empty();
         }
 
-        XmlSerializableBookShelf xmlRecentBooksList = XmlFileStorage.loadDataFromSaveFile(new File(filePath));
+        XmlSerializableBookShelf xmlRecentBooksList = XmlFileStorage.loadBookShelfDataFromFile(new File(filePath));
         try {
             return Optional.of(xmlRecentBooksList.toModelType());
         } catch (IllegalValueException ive) {
@@ -76,6 +77,6 @@ public class XmlRecentBooksStorage implements RecentBooksStorage {
 
         File file = new File(filePath);
         FileUtil.createIfMissing(file);
-        XmlFileStorage.saveDataToFile(file, new XmlSerializableBookShelf(recentBooksList));
+        XmlFileStorage.saveBookShelfDataToFile(file, new XmlSerializableBookShelf(recentBooksList));
     }
 }

@@ -1,7 +1,6 @@
 package seedu.address.storage;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -175,7 +174,7 @@ public class XmlAdaptedBook {
         }
         final PublicationDate publicationDate = new PublicationDate(this.publicationDate);
 
-        return new Book(gid, isbn, new HashSet<>(bookAuthors), title, new HashSet<>(bookCategories),
+        return new Book(gid, isbn, bookAuthors, title, bookCategories,
                 description, status, priority, rating, publisher, publicationDate);
     }
 

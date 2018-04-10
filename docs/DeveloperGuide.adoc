@@ -14,6 +14,18 @@ endif::[]
 
 By: `Team F14-B4`      Since: `Jan 2018`      Licence: `MIT`
 
+== Introduction
+
+=== What is Bibliotek
+Bibliotek is a free book cataloguing application that is simple, fast, and easy to use. It is targeted at heavy readers who require a hassle-free way of managing and keep tracking of their read and unread books.
+
+=== Core team
+Bibliotek was developed and is maintained by https://github.com/CS2103JAN2018-F14-B4[Team F14-B4]. Feel free to https://f14-b4.netlify.com/contactus[contact us] for any enquries.
+
+=== Contributing
+Bibliotek is an open source project and contributors are always welcome. To get involved, start by reading <<Setting-Up>>.
+
+[[Setting-Up]]
 == Setting up
 
 === Prerequisites
@@ -185,7 +197,7 @@ image::LogicCommandClassDiagram.png[width="800"]
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
-.  `Logic` uses the `BookShelfParser` class to parse the user command.
+.  `Logic` uses the `BookShelfParser` class to parse the user input.
 .  This results in a `Command` object which is executed by the `LogicManager`.
 .  The command execution can affect the `Model` (e.g. adding a book), make web API calls using the `Network`, and/or raise events.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
@@ -207,6 +219,7 @@ The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
 * stores the Book Shelf data.
+* stores the user added aliases.
 * exposes an unmodifiable `ObservableList<Book>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other components.
 
@@ -223,6 +236,7 @@ The `Storage` component,
 * can save `UserPref` objects in json format and read it back.
 * can save the `BookShelf` data in xml format and read it back.
 * can save the recently selected books data in xml format and read it back.
+* can save the `UniqueAliasList` data in xml format and read it back.
 
 [[Design-Network]]
 === Network component
@@ -235,6 +249,7 @@ image::NetworkClassDiagram.png[width="800"]
 The `Network` component,
 
 * can make asynchronous web API calls to Google Books API.
+* can make asynchronous web API calls to NLB catalogue.
 * does not depend on any of the other four components.
 
 [[Design-Commons]]
@@ -357,7 +372,7 @@ since updating the search results will update its observable list, which will ca
 === Undo feature
 ==== Current Implementation
 
-The undo mechanism is facilitated by an `UndoStack`, which resides inside `LogicManager`. It supports undoing of commands that modifies the state of the address book (e.g. `add`, `edit`). Such commands will inherit from `UndoableCommand`.
+The undo mechanism is facilitated by an `UndoStack`, which resides inside `LogicManager`. It supports undoing of commands that modifies the state of the book shelf (e.g. `add`, `edit`). Such commands will inherit from `UndoableCommand`.
 
 `UndoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `Command` instead. The following diagram shows the inheritance diagram for commands:
 
@@ -462,32 +477,38 @@ image::UndoRedoActivityDiagram.png[width="550"]
 **Additional Info:** See the discussion  https://github.com/se-edu/addressbook-level4/issues/390#issuecomment-298936672[here].
 // end::undoredo[]
 
-=== Edit status, priority, and rating of books: `edit r/rating p/pirority s/status` command
+=== Edit status, priority, and rating of books: `edit` command
 
 ==== Current implementation
 
 When `edit` command is entered,
-1. `Paser` will extract the command for each field information from the user input.
-2. 'editedBook' will be created, and containing the new field information.
-3. Targeting book 'bookToEdit' will be found by the index.
-4. 'editedBook' Book will replace the target 'bookToEdit'.
 
-The user performs `select 1` to view information on the 1st book in the book shelf.
-User can see the default rating is -1, the default priority is NONE, the default status is UNREAD.
-
-The user performs `rate 1 r/ 1 p/ l s/ u ` to rate 1st with 1 point, low priority and unread.
+. `EditCommandParser` will extract the index and the parameters from the user input.
+. `EditCommandParser` checks that at least one parameter is present, and that the parameter(s) are valid.
+. `EditCommandParser` creates an `EditCommand` with the index and parameter(s).
+. `EditCommand` is preprocessed to check that `ActiveListType` is correct and index is valid.
+. The `Book` to edit (`bookToEdit`) is identified by the index. Another `Book` (`editedBook`) is created based on the specified parameters.
+. `editedBook` replaces `bookToEdit` in `BookShelf`.
 
 ==== Design considerations
 
-===== Aspect: What to show to user about the rating
+===== Aspect: Presentation of rating
 
-* **Alternative 1 (current choice):** Show user the number of rating.
+* **Alternative 1 (current choice):** Show users the rating as a number.
 ** Pros: Easy to implement.
-** Cons: User may get bored about the rating.
-* **Alternative 2:** Show them the stars.
+** Cons: Not aesthetically appealing.
+* **Alternative 2:** Show users the rating as stars.
 ** Pros: Difficult to implement.
-** Cons: User may get excited to see those stars, and the number of stars can show the rating clearer.
+** Cons: Improves the aesthetic appeal and clarity.
 
+===== Aspect: Interpretation of unspecified parameters
+
+* **Alternative 1 (current choice):** Unspecified parameters are left unchanged.
+** Pros: Users can omit parameters that they do not wish to change.
+** Cons: More difficult to implement.
+* **Alternative 2:** Unspecified parameters are set to default value.
+** Pros: Easy to implement.
+** Cons: Users need to specify all parameters to change one.
 
 === View recently selected books: `recent` command
 
@@ -741,19 +762,19 @@ Each individual exercise in this section is component-based (i.e. you would not 
 [discrete]
 ==== `Logic` component
 
-*Scenario:* You are in charge of `logic`. During dog-fooding, your team realize that it is troublesome for the user to type the whole command in order to execute a command. Your team devise some strategies to help cut down the amount of typing necessary, and one of the suggestions was to implement aliases for the command words. Your job is to implement such aliases.
+*Scenario:* You are in charge of `logic`. During dog-fooding, your team realize that it is troublesome for a new user, who has not set up any custom aliases yet, to type the whole command in order to execute a command. Your team devise some strategies to help cut down the amount of typing necessary, and one of the suggestions was to implement aliases for the command words. Your job is to implement such aliases.
 
 [TIP]
 Do take a look at <<Design-Logic>> before attempting to modify the `Logic` component.
 
-. Add a shorthand equivalent alias for each of the individual commands. For example, besides typing `clear`, the user can also type `c` to remove all persons in the list.
+. Add a shorthand equivalent alias for each of the individual commands. For example, besides typing `clear`, the user can also type `c` to remove all books in the list.
 +
 ****
 * Hints
-** Just like we store each individual command word constant `COMMAND_WORD` inside `*Command.java` (e.g.  link:{repoURL}/src/main/java/seedu/address/logic/commands/FindCommand.java[`FindCommand#COMMAND_WORD`], link:{repoURL}/src/main/java/seedu/address/logic/commands/DeleteCommand.java[`DeleteCommand#COMMAND_WORD`]), you need a new constant for aliases as well (e.g. `FindCommand#COMMAND_ALIAS`).
-** link:{repoURL}/src/main/java/seedu/address/logic/parser/AddressBookParser.java[`AddressBookParser`] is responsible for analyzing command words.
+** Just like we store each individual command word constant `COMMAND_WORD` inside `*Command.java` (e.g.  link:{repoURL}/src/main/java/seedu/address/logic/commands/EditCommand.java[`EditCommand#COMMAND_WORD`], link:{repoURL}/src/main/java/seedu/address/logic/commands/DeleteCommand.java[`DeleteCommand#COMMAND_WORD`]), you need a new constant for aliases as well (e.g. `EditCommand#COMMAND_ALIAS`).
+** link:{repoURL}/src/main/java/seedu/address/logic/parser/BookShelfParser.java[`BookShelfParser`] is responsible for analyzing command words.
 * Solution
-** Modify the switch statement in link:{repoURL}/src/main/java/seedu/address/logic/parser/AddressBookParser.java[`AddressBookParser#parseCommand(String)`] such that both the proper command word and alias can be used to execute the same intended command.
+** Modify the switch statement in link:{repoURL}/src/main/java/seedu/address/logic/parser/BookShelfParser.java[`BookShelfParser#parseCommand(String)`] such that both the proper command word and alias can be used to execute the same intended command.
 ** Add new tests for each of the aliases that you have added.
 ** Update the user guide to document the new aliases.
 ** See this https://github.com/se-edu/addressbook-level4/pull/785[PR] for the full solution.
@@ -762,55 +783,31 @@ Do take a look at <<Design-Logic>> before attempting to modify the `Logic` compo
 [discrete]
 ==== `Model` component
 
-*Scenario:* You are in charge of `model`. One day, the `logic`-in-charge approaches you for help. He wants to implement a command such that the user is able to remove a particular tag from everyone in the address book, but the model API does not support such a functionality at the moment. Your job is to implement an API method, so that your teammate can use your API to implement his command.
+*Scenario:* You are in charge of `model`. One day, the `logic`-in-charge approaches you for help. He wants to implement a command such that the user is able to remove all custom aliases for a certain command, but the model API does not support such a functionality at the moment. Your job is to implement an API method, so that your teammate can use your API to implement his command.
 
 [TIP]
 Do take a look at <<Design-Model>> before attempting to modify the `Model` component.
 
-. Add a `removeTag(Tag)` method. The specified tag will be removed from everyone in the address book.
+. Add a `removeAliasForCommand(String)` method. All aliases for the specified command will be removed from the alias list.
 +
 ****
 * Hints
-** The link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model`] and the link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`] API need to be updated.
-** Think about how you can use SLAP to design the method. Where should we place the main logic of deleting tags?
-**  Find out which of the existing API methods in  link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`] and link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`] classes can be used to implement the tag removal logic. link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`] allows you to update a person, and link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`] allows you to update the tags.
+** The link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model`] and the link:{repoURL}/src/main/java/seedu/address/model/alias/UniqueAliasList.java[`UniqueAliasList`] API need to be updated.
+** Think about how you can use SLAP to design the method. Where should we place the main logic of deleting aliases?
+**  Find out which of the existing API methods in  link:{repoURL}/src/main/java/seedu/address/model/alias/UniqueAliasList.java[`UniqueAliasList`] and link:{repoURL}/src/main/java/seedu/address/model/alias/Alias.java[`Alias`] classes are used in implementing the removal logic. link:{repoURL}/src/main/java/seedu/address/model/alias/UniqueAliasList.java[`UniqueAliasList`] allows you to remove an alias, and link:{repoURL}/src/main/java/seedu/address/model/alias/Alias.java[`Alias`] allows you to access the alias prefix.
 * Solution
-** Implement a `removeTag(Tag)` method in link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`]. Loop through each person, and remove the `tag` from each person.
-** Add a new API method `deleteTag(Tag)` in link:{repoURL}/src/main/java/seedu/address/model/ModelManager.java[`ModelManager`]. Your link:{repoURL}/src/main/java/seedu/address/model/ModelManager.java[`ModelManager`] should call `AddressBook#removeTag(Tag)`.
+** Implement a `removeAliasWithPrefix(String)` method in link:{repoURL}/src/main/java/seedu/address/model/alias/UniqueAliasList.java[`UniqueAliasList`]. Loop through each alias, and remove the alias if the prefix of the alias matches the given `String`.
+** Add a new API method `removeAliasForCommand(String)` in link:{repoURL}/src/main/java/seedu/address/model/ModelManager.java[`ModelManager`]. Your link:{repoURL}/src/main/java/seedu/address/model/ModelManager.java[`ModelManager`] should call `UniqueAliasList#removeAliasWithPrefix(String)`.
 ** Add new tests for each of the new public methods that you have added.
-** See this https://github.com/se-edu/addressbook-level4/pull/790[PR] for the full solution.
-*** The current codebase has a flaw in tags management. Tags no longer in use by anyone may still exist on the link:{repoURL}/src/main/java/seedu/address/model/AddressBook.java[`AddressBook`]. This may cause some tests to fail. See issue  https://github.com/se-edu/addressbook-level4/issues/753[`#753`] for more information about this flaw.
-*** The solution PR has a temporary fix for the flaw mentioned above in its first commit.
 ****
 
 [discrete]
 ==== `Ui` component
 
-*Scenario:* You are in charge of `ui`. During a beta testing session, your team is observing how the users use your address book application. You realize that one of the users occasionally tries to delete non-existent tags from a contact, because the tags all look the same visually, and the user got confused. Another user made a typing mistake in his command, but did not realize he had done so because the error message wasn't prominent enough. A third user keeps scrolling down the list, because he keeps forgetting the index of the last person in the list. Your job is to implement improvements to the UI to solve all these problems.
+*Scenario:* You are in charge of `ui`. During a beta testing session, your team is observing how users use Bibliotek. You realize that one user made a typing mistake in his command, but did not realize he had done so because the error message wasn't prominent enough. A second user keeps scrolling down the list, because he keeps forgetting the index of the last book in the list. Your job is to implement improvements to the UI to solve these problems.
 
 [TIP]
 Do take a look at <<Design-Ui>> before attempting to modify the `UI` component.
-
-. Use different colors for different tags inside person cards. For example, `friends` tags can be all in brown, and `colleagues` tags can be all in yellow.
-+
-**Before**
-+
-image::getting-started-ui-tag-before.png[width="300"]
-+
-**After**
-+
-image::getting-started-ui-tag-after.png[width="300"]
-+
-****
-* Hints
-** The tag labels are created inside link:{repoURL}/src/main/java/seedu/address/ui/PersonCard.java[the `PersonCard` constructor] (`new Label(tag.tagName)`). https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Label.html[JavaFX's `Label` class] allows you to modify the style of each Label, such as changing its color.
-** Use the .css attribute `-fx-background-color` to add a color.
-** You may wish to modify link:{repoURL}/src/main/resources/view/DarkTheme.css[`DarkTheme.css`] to include some pre-defined colors using css, especially if you have experience with web-based css.
-* Solution
-** You can modify the existing test methods for `PersonCard` 's to include testing the tag's color as well.
-** See this https://github.com/se-edu/addressbook-level4/pull/798[PR] for the full solution.
-*** The PR uses the hash code of the tag names to generate a color. This is deliberately designed to ensure consistent colors each time the application runs. You may wish to expand on this design to include additional features, such as allowing users to set their own tag colors, and directly saving the colors to storage, so that tags retain their colors even if the hash code algorithm changes.
-****
 
 . Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
 +
@@ -831,12 +828,12 @@ image::getting-started-ui-result-after.png[width="200"]
 ** Modify link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay#handleNewResultAvailableEvent(NewResultAvailableEvent)`] to react to this event appropriately.
 ** You can write two different kinds of tests to ensure that the functionality works:
 *** The unit tests for `ResultDisplay` can be modified to include verification of the color.
-*** The system tests link:{repoURL}/src/test/java/systemtests/AddressBookSystemTest.java[`AddressBookSystemTest#assertCommandBoxShowsDefaultStyle() and AddressBookSystemTest#assertCommandBoxShowsErrorStyle()`] to include verification for `ResultDisplay` as well.
+*** The system tests link:{repoURL}/src/test/java/systemtests/BibliotekSystemTest.java[`BibliotekSystemTest#assertCommandBoxShowsDefaultStyle() and BibliotekSystemTest#assertCommandBoxShowsErrorStyle()`] to include verification for `ResultDisplay` as well.
 ** See this https://github.com/se-edu/addressbook-level4/pull/799[PR] for the full solution.
 *** Do read the commits one at a time if you feel overwhelmed.
 ****
 
-. Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
+. Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of books in the book shelf.
 +
 **Before**
 +
@@ -849,29 +846,29 @@ image::getting-started-ui-status-after.png[width="500"]
 ****
 * Hints
 ** link:{repoURL}/src/main/resources/view/StatusBarFooter.fxml[`StatusBarFooter.fxml`] will need a new `StatusBar`. Be sure to set the `GridPane.columnIndex` properly for each `StatusBar` to avoid misalignment!
-** link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] needs to initialize the status bar on application start, and to update it accordingly whenever the address book is updated.
+** link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] needs to initialize the status bar on application start, and to update it accordingly whenever the book shelf is updated.
 * Solution
-** Modify the constructor of link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to take in the number of persons when the application just started.
-** Use link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter#handleAddressBookChangedEvent(AddressBookChangedEvent)`] to update the number of persons whenever there are new changes to the addressbook.
-** For tests, modify link:{repoURL}/src/test/java/guitests/guihandles/StatusBarFooterHandle.java[`StatusBarFooterHandle`] by adding a state-saving functionality for the total number of people status, just like what we did for save location and sync status.
-** For system tests, modify link:{repoURL}/src/test/java/systemtests/AddressBookSystemTest.java[`AddressBookSystemTest`] to also verify the new total number of persons status bar.
+** Modify the constructor of link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to take in the number of books when the application just started.
+** Use link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter#handleBookShelfChangedEvent(BookShelfChangedEvent)`] to update the number of books whenever there are new changes to the book shelf.
+** For tests, modify link:{repoURL}/src/test/java/guitests/guihandles/StatusBarFooterHandle.java[`StatusBarFooterHandle`] by adding a state-saving functionality for the total number of books status, just like what we did for save location and sync status.
+** For system tests, modify link:{repoURL}/src/test/java/systemtests/BibliotekSystemTest.java[`BibliotekSystemTest`] to also verify the new total number of books status bar.
 ** See this https://github.com/se-edu/addressbook-level4/pull/803[PR] for the full solution.
 ****
 
 [discrete]
 ==== `Storage` component
 
-*Scenario:* You are in charge of `storage`. For your next project milestone, your team plans to implement a new feature of saving the address book to the cloud. However, the current implementation of the application constantly saves the address book after the execution of each command, which is not ideal if the user is working on limited internet connection. Your team decided that the application should instead save the changes to a temporary local backup file first, and only upload to the cloud after the user closes the application. Your job is to implement a backup API for the address book storage.
+*Scenario:* You are in charge of `storage`. For your next project milestone, your team plans to implement a new feature of saving the book shelf to the cloud. However, the current implementation of the application constantly saves the book shelf after the execution of each command, which is not ideal if the user is working on limited internet connection. Your team decided that the application should instead save the changes to a temporary local backup file first, and only upload to the cloud after the user closes the application. Your job is to implement a backup API for the book shelf storage.
 
 [TIP]
 Do take a look at <<Design-Storage>> before attempting to modify the `Storage` component.
 
-. Add a new method `backupAddressBook(ReadOnlyAddressBook)`, so that the address book can be saved in a fixed temporary location.
+. Add a new method `backupBookShelf(ReadOnlyBookShelf)`, so that the book shelf can be saved in a fixed temporary location.
 +
 ****
 * Hint
-** Add the API method in link:{repoURL}/src/main/java/seedu/address/storage/AddressBookStorage.java[`AddressBookStorage`] interface.
-** Implement the logic in link:{repoURL}/src/main/java/seedu/address/storage/StorageManager.java[`StorageManager`] and link:{repoURL}/src/main/java/seedu/address/storage/XmlAddressBookStorage.java[`XmlAddressBookStorage`] class.
+** Add the API method in link:{repoURL}/src/main/java/seedu/address/storage/BookShelfStorage.java[`BookShelfStorage`] interface.
+** Implement the logic in link:{repoURL}/src/main/java/seedu/address/storage/StorageManager.java[`StorageManager`] and link:{repoURL}/src/main/java/seedu/address/storage/XmlBookShelfStorage.java[`XmlBookShelfStorage`] class.
 * Solution
 ** See this https://github.com/se-edu/addressbook-level4/pull/594[PR] for the full solution.
 ****
@@ -881,18 +878,18 @@ Do take a look at <<Design-Storage>> before attempting to modify the `Storage` c
 
 By creating this command, you will get a chance to learn how to implement a feature end-to-end, touching all major components of the app.
 
-*Scenario:* You are a software maintainer for `addressbook`, as the former developer team has moved on to new projects. The current users of your application have a list of new feature requests that they hope the software will eventually have. The most popular request is to allow adding additional comments/notes about a particular contact, by providing a flexible `remark` field for each contact, rather than relying on tags alone. After designing the specification for the `remark` command, you are convinced that this feature is worth implementing. Your job is to implement the `remark` command.
+*Scenario:* You are a software maintainer for Bibliotek, as the former developer team has moved on to new projects. The current users of your application have a list of new feature requests that they hope the software will eventually have. The most popular request is to allow adding additional comments/notes about a particular book, by providing a flexible `remark` field for each book. After designing the specification for the `remark` command, you are convinced that this feature is worth implementing. Your job is to implement the `remark` command.
 
 ==== Description
-Edits the remark for a person specified in the `INDEX`. +
+Edits the remark for a book specified in the `INDEX`. +
 Format: `remark INDEX r/[REMARK]`
 
 Examples:
 
-* `remark 1 r/Likes to drink coffee.` +
-Edits the remark for the first person to `Likes to drink coffee.`
+* `remark 1 r/Recommended by YX.` +
+Edits the remark for the first book to `Recommended by YX.`
 * `remark 1 r/` +
-Removes the remark for the first person.
+Removes the remark for the first book.
 
 ==== Step-by-step Instructions
 
@@ -902,64 +899,64 @@ Let's start by teaching the application how to parse a `remark` command. We will
 **Main:**
 
 . Add a `RemarkCommand` that extends link:{repoURL}/src/main/java/seedu/address/logic/commands/UndoableCommand.java[`UndoableCommand`]. Upon execution, it should just throw an `Exception`.
-. Modify link:{repoURL}/src/main/java/seedu/address/logic/parser/AddressBookParser.java[`AddressBookParser`] to accept a `RemarkCommand`.
+. Modify link:{repoURL}/src/main/java/seedu/address/logic/parser/BookShelfParser.java[`BookShelfParser`] to accept a `RemarkCommand`.
 
 **Tests:**
 
 . Add `RemarkCommandTest` that tests that `executeUndoableCommand()` throws an Exception.
-. Add new test method to link:{repoURL}/src/test/java/seedu/address/logic/parser/AddressBookParserTest.java[`AddressBookParserTest`], which tests that typing "remark" returns an instance of `RemarkCommand`.
+. Add new test method to link:{repoURL}/src/test/java/seedu/address/logic/parser/BookShelfParserTest.java[`BookShelfParserTest`], which tests that typing "remark" returns an instance of `RemarkCommand`.
 
 ===== [Step 2] Logic: Teach the app to accept 'remark' arguments
-Let's teach the application to parse arguments that our `remark` command will accept. E.g. `1 r/Likes to drink coffee.`
+Let's teach the application to parse arguments that our `remark` command will accept. E.g. `1 r/Recommended by YX.`
 
 **Main:**
 
 . Modify `RemarkCommand` to take in an `Index` and `String` and print those two parameters as the error message.
 . Add `RemarkCommandParser` that knows how to parse two arguments, one index and one with prefix 'r/'.
-. Modify link:{repoURL}/src/main/java/seedu/address/logic/parser/AddressBookParser.java[`AddressBookParser`] to use the newly implemented `RemarkCommandParser`.
+. Modify link:{repoURL}/src/main/java/seedu/address/logic/parser/BookShelfParser.java[`BookShelfParser`] to use the newly implemented `RemarkCommandParser`.
 
 **Tests:**
 
 . Modify `RemarkCommandTest` to test the `RemarkCommand#equals()` method.
 . Add `RemarkCommandParserTest` that tests different boundary values
 for `RemarkCommandParser`.
-. Modify link:{repoURL}/src/test/java/seedu/address/logic/parser/AddressBookParserTest.java[`AddressBookParserTest`] to test that the correct command is generated according to the user input.
+. Modify link:{repoURL}/src/test/java/seedu/address/logic/parser/BookShelfParserTest.java[`BookShelfParserTest`] to test that the correct command is generated according to the user input.
 
-===== [Step 3] Ui: Add a placeholder for remark in `PersonCard`
-Let's add a placeholder on all our link:{repoURL}/src/main/java/seedu/address/ui/PersonCard.java[`PersonCard`] s to display a remark for each person later.
+===== [Step 3] Ui: Add a placeholder for remark in `BookCard`
+Let's add a placeholder on all our link:{repoURL}/src/main/java/seedu/address/ui/BookCard.java[`BookCard`] s to display a remark for each book later.
 
 **Main:**
 
-. Add a `Label` with any random text inside link:{repoURL}/src/main/resources/view/PersonListCard.fxml[`PersonListCard.fxml`].
-. Add FXML annotation in link:{repoURL}/src/main/java/seedu/address/ui/PersonCard.java[`PersonCard`] to tie the variable to the actual label.
+. Add a `Label` with any random text inside link:{repoURL}/src/main/resources/view/BookListCard.fxml[`BookListCard.fxml`].
+. Add FXML annotation in link:{repoURL}/src/main/java/seedu/address/ui/BookCard.java[`BookCard`] to tie the variable to the actual label.
 
 **Tests:**
 
-. Modify link:{repoURL}/src/test/java/guitests/guihandles/PersonCardHandle.java[`PersonCardHandle`] so that future tests can read the contents of the remark label.
+. Modify link:{repoURL}/src/test/java/guitests/guihandles/BookCardHandle.java[`BookCardHandle`] so that future tests can read the contents of the remark label.
 
 ===== [Step 4] Model: Add `Remark` class
-We have to properly encapsulate the remark in our link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`] class. Instead of just using a `String`, let's follow the conventional class structure that the codebase already uses by adding a `Remark` class.
+We have to properly encapsulate the remark in our link:{repoURL}/src/main/java/seedu/address/model/book/Book.java[`Book`] class. Instead of just using a `String`, let's follow the conventional class structure that the codebase already uses by adding a `Remark` class.
 
 **Main:**
 
-. Add `Remark` to model component (you can copy from link:{repoURL}/src/main/java/seedu/address/model/person/Address.java[`Address`], remove the regex and change the names accordingly).
+. Add `Remark` to model component (you can copy from link:{repoURL}/src/main/java/seedu/address/model/book/Description.java[`Description`] and change the names accordingly).
 . Modify `RemarkCommand` to now take in a `Remark` instead of a `String`.
 
 **Tests:**
 
 . Add test for `Remark`, to test the `Remark#equals()` method.
 
-===== [Step 5] Model: Modify `Person` to support a `Remark` field
-Now we have the `Remark` class, we need to actually use it inside link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`].
+===== [Step 5] Model: Modify `Book` to support a `Remark` field
+Now we have the `Remark` class, we need to actually use it inside link:{repoURL}/src/main/java/seedu/address/model/book/Book.java[`Book`].
 
 **Main:**
 
-. Add `getRemark()` in link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`].
-. You may assume that the user will not be able to use the `add` and `edit` commands to modify the remarks field (i.e. the person will be created without a remark).
-. Modify link:{repoURL}/src/main/java/seedu/address/model/util/SampleDataUtil.java/[`SampleDataUtil`] to add remarks for the sample data (delete your `addressBook.xml` so that the application will load the sample data when you launch it.)
+. Add `getRemark()` in link:{repoURL}/src/main/java/seedu/address/model/book/Book.java[`Book`].
+. You may assume that the user will not be able to use the `edit` command to modify the remarks field.
+. Modify link:{repoURL}/src/main/java/seedu/address/model/util/SampleDataUtil.java/[`SampleDataUtil`] to add remarks for the sample data (delete your `bookshelf.xml` so that the application will load the sample data when you launch it.)
 
-===== [Step 6] Storage: Add `Remark` field to `XmlAdaptedPerson` class
-We now have `Remark` s for `Person` s, but they will be gone when we exit the application. Let's modify link:{repoURL}/src/main/java/seedu/address/storage/XmlAdaptedPerson.java[`XmlAdaptedPerson`] to include a `Remark` field so that it will be saved.
+===== [Step 6] Storage: Add `Remark` field to `XmlAdaptedBook` class
+We now have `Remark` s for `Book` s, but they will be gone when we exit the application. Let's modify link:{repoURL}/src/main/java/seedu/address/storage/XmlAdaptedBook.java[`XmlAdaptedBook`] to include a `Remark` field so that it will be saved.
 
 **Main:**
 
@@ -967,33 +964,33 @@ We now have `Remark` s for `Person` s, but they will be gone when we exit the ap
 
 **Tests:**
 
-. Fix `invalidAndValidPersonAddressBook.xml`, `typicalPersonsAddressBook.xml`, `validAddressBook.xml` etc., such that the XML tests will not fail due to a missing `<remark>` element.
+. Fix `invalidAndValidBookBookShelf.xml`, `typicalBooksBookShelf.xml`, `validBookShelf.xml` etc., such that the XML tests will not fail due to a missing `<remark>` element.
 
-===== [Step 6b] Test: Add withRemark() for `PersonBuilder`
-Since `Person` can now have a `Remark`, we should add a helper method to link:{repoURL}/src/test/java/seedu/address/testutil/PersonBuilder.java[`PersonBuilder`], so that users are able to create remarks when building a link:{repoURL}/src/main/java/seedu/address/model/person/Person.java[`Person`].
+===== [Step 6b] Test: Add withRemark() for `BookBuilder`
+Since `Book` can now have a `Remark`, we should add a helper method to link:{repoURL}/src/test/java/seedu/address/testutil/BookBuilder.java[`BookBuilder`], so that users are able to create remarks when building a link:{repoURL}/src/main/java/seedu/address/model/book/Book.java[`Book`].
 
 **Tests:**
 
-. Add a new method `withRemark()` for link:{repoURL}/src/test/java/seedu/address/testutil/PersonBuilder.java[`PersonBuilder`]. This method will create a new `Remark` for the person that it is currently building.
-. Try and use the method on any sample `Person` in link:{repoURL}/src/test/java/seedu/address/testutil/TypicalPersons.java[`TypicalPersons`].
+. Add a new method `withRemark()` for link:{repoURL}/src/test/java/seedu/address/testutil/BookBuilder.java[`BookBuilder`]. This method will create a new `Remark` for the book that it is currently building.
+. Try and use the method on any sample `Book` in link:{repoURL}/src/test/java/seedu/address/testutil/TypicalBooks.java[`TypicalBooks`].
 
-===== [Step 7] Ui: Connect `Remark` field to `PersonCard`
-Our remark label in link:{repoURL}/src/main/java/seedu/address/ui/PersonCard.java[`PersonCard`] is still a placeholder. Let's bring it to life by binding it with the actual `remark` field.
+===== [Step 7] Ui: Connect `Remark` field to `BookCard`
+Our remark label in link:{repoURL}/src/main/java/seedu/address/ui/BookCard.java[`BookCard`] is still a placeholder. Let's bring it to life by binding it with the actual `remark` field.
 
 **Main:**
 
-. Modify link:{repoURL}/src/main/java/seedu/address/ui/PersonCard.java[`PersonCard`]'s constructor to bind the `Remark` field to the `Person` 's remark.
+. Modify link:{repoURL}/src/main/java/seedu/address/ui/BookCard.java[`BookCard`]'s constructor to bind the `Remark` field to the `Book` 's remark.
 
 **Tests:**
 
-. Modify link:{repoURL}/src/test/java/seedu/address/ui/testutil/GuiTestAssert.java[`GuiTestAssert#assertCardDisplaysPerson(...)`] so that it will compare the now-functioning remark label.
+. Modify link:{repoURL}/src/test/java/seedu/address/ui/testutil/GuiTestAssert.java[`GuiTestAssert#assertCardDisplaysBook(...)`] so that it will compare the now-functioning remark label.
 
 ===== [Step 8] Logic: Implement `RemarkCommand#execute()` logic
 We now have everything set up... but we still can't modify the remarks. Let's finish it up by adding in actual logic for our `remark` command.
 
 **Main:**
 
-. Replace the logic in `RemarkCommand#execute()` (that currently just throws an `Exception`), with the actual logic to modify the remarks of a person.
+. Replace the logic in `RemarkCommand#execute()` (that currently just throws an `Exception`), with the actual logic to modify the remarks of a book.
 
 **Tests:**
 
@@ -1001,7 +998,7 @@ We now have everything set up... but we still can't modify the remarks. Let's fi
 
 ==== Full Solution
 
-See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-by-step solution.
+See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-by-step solution in the context of an address book application. Mapping the solution to the context of Bibliotek is left as an exercise.
 
 [appendix]
 == Product Scope
@@ -1023,30 +1020,33 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 * **Search for books using Google Books API** (major)
 ** Added the network component and a `search` command to allow the user to search for books on Google Books.
 ** This allows the user to easily search for particular books, and add them without having to enter all the information manually (using the updated `add` command).
+* **Customize aliases to use in place of full commands** (major)
+** Added `addalias`, `aliases` and `deletealias` commands to allow adding, viewing and deleting of aliases.
+** This allows users to reduce the typing needed.
 * **Change application theme** (minor)
 ** Added a `theme` command that allows the user to switch between the various themes included with Bibliotek.
 ** This allows the user to change the design of Bibliotek according to their own preferences.
 
 [discrete]
 ==== Qiu Siqi
-* **Search for books in the library or add to watchlist** (major)
-** Update network component to support NLB catalogue.
-** Add `library` and `watch` commands to perform search and add to watchlist respectively.
-** This allows the user to easily check or get updated on the availability of books.
+* **Search for books in the library** (major)
+** Updated network component to support NLB catalogue.
+** Added `library` command to perform search in NLB catalogue.
+** This allows the user to easily check the availability of books.
 * **Get recently viewed books** (minor)
-** Add a `recent` command that allows user to view previous selections that he did not add into his book shelf.
+** Added a `recent` command that allows user to view previous selections that he did not add into his book shelf.
 ** This allows the user to reconsider his choices without having to perform the search again.
 
 [discrete]
 ==== Shi Jin
 * **Mark a book as read, change the priority of a book and rate books** (major)
-** Add attributes rating, status, priority.
-** Add `edit` command that allows user to rate, set status and change priority of
+** Added attributes rating, status, priority.
+** Added `edit` command that allows user to rate, set status and change priority of
 some books.
 ** This allows the user to keep track of what to read and what have been read and give recommendations to others.
-* **Use aliases in place of full commands** (minor)
-** Add a `alias` command that allows users to change the current full commands to the aliases that users need.
-** This allows users to reduce the amount of typing needed.
+* **Encrypt data with a password** (minor)
+** Add an `encrypt` command to encrypt data with a password.
+** This allows users to keep their data private and safe.
 
 [discrete]
 ==== Jianghao
@@ -1274,7 +1274,7 @@ _{More to be added}_
 .  Should come with a user guide and a developer guide.
 .  Should favor <<dos-style-commands,DOS style commands>> over Unix-style commands.
 .  Should be able to hold up to 1000 books without a noticeable sluggishness in performance for typical usage.
-.  Should respond to user commands within 50ms if no external API calls are required. Otherwise, respond within 5s.
+.  Should respond to user commands within 50ms if no external API calls are required. Otherwise, respond within 10s.
 .  Should be intuitive such that a new user can learn to search and add books within 10 minutes.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 
@@ -1320,7 +1320,7 @@ These instructions only provide a starting point for testers to work on; testers
 
 .. Download the jar file and copy into an empty folder
 .. Double-click the jar file +
-   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   Expected: Shows the GUI with a set of sample books. The window size may not be optimum.
 
 . Saving window preferences
 
@@ -1330,15 +1330,15 @@ These instructions only provide a starting point for testers to work on; testers
 
 _{ more test cases ... }_
 
-=== Deleting a person
+=== Deleting a book
 
-. Deleting a person while all persons are listed
+. Deleting a book while all books are listed
 
-.. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+.. Prerequisites: List all books using the `list` command. Multiple books in the list.
 .. Test case: `delete 1` +
-   Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   Expected: First book is deleted from the list. Details of the deleted book shown in the status message. Timestamp in the status bar is updated.
 .. Test case: `delete 0` +
-   Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   Expected: No book is deleted. Error details shown in the status message. Status bar remains the same.
 .. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
    Expected: Similar to previous.
 

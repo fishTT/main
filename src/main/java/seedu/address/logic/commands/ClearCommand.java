@@ -21,12 +21,19 @@ public class ClearCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
         requireNonNull(model);
-        if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
-            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
+        checkActiveListType();
 
         model.resetData(new BookShelf());
         EventsCenter.getInstance().post(new ClearMainContentRequestEvent());
         return new CommandResult(MESSAGE_SUCCESS);
+    }
+
+    /**
+     * Throws a {@link CommandException} if the active list type is not supported by this command.
+     */
+    private void checkActiveListType() throws CommandException {
+        if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
+            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
+        }
     }
 }

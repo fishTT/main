@@ -23,6 +23,7 @@ import seedu.address.model.book.Priority;
 import seedu.address.model.book.Rating;
 import seedu.address.model.book.Status;
 
+//@@author takuyakanbr
 /**
  * Lists all books in the book shelf to the user.
  */
@@ -63,9 +64,9 @@ public class ListCommand extends Command {
 
     @Override
     public CommandResult execute() {
+        EventsCenter.getInstance().post(new SwitchToBookListRequestEvent());
         model.updateBookListFilter(filterDescriptor.buildCombinedFilter());
         model.updateBookListSorter(bookComparator);
-        EventsCenter.getInstance().post(new SwitchToBookListRequestEvent());
         return new CommandResult(String.format(MESSAGE_SUCCESS, model.getDisplayBookList().size()));
     }
 

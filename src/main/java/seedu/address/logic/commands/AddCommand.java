@@ -2,18 +2,21 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
 import java.util.Objects;
 
 import javafx.application.Platform;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.DisableCommandBoxRequestEvent;
+import seedu.address.commons.events.ui.EnableCommandBoxRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.ActiveListType;
 import seedu.address.model.book.Book;
 import seedu.address.model.book.exceptions.DuplicateBookException;
 
+//@@author qiu-siqi
 /**
  * Adds a book to the book shelf.
  */
@@ -56,6 +59,7 @@ public class AddCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() {
         requireNonNull(toAdd);
 
+        EventsCenter.getInstance().post(new DisableCommandBoxRequestEvent());
         makeAsyncBookDetailsRequest();
         return new CommandResult(MESSAGE_ADDING);
     }
@@ -68,6 +72,7 @@ public class AddCommand extends UndoableCommand {
                 .thenAccept(this::onSuccessfulRequest)
                 .exceptionally(e -> {
                     EventsCenter.getInstance().post(new NewResultAvailableEvent(AddCommand.MESSAGE_ADD_FAIL));
+                    EventsCenter.getInstance().post(new EnableCommandBoxRequestEvent());
                     return null;
                 });
     }
@@ -94,37 +99,34 @@ public class AddCommand extends UndoableCommand {
         } catch (DuplicateBookException e) {
             EventsCenter.getInstance().post(new NewResultAvailableEvent(AddCommand.MESSAGE_DUPLICATE_BOOK));
         }
+        EventsCenter.getInstance().post(new EnableCommandBoxRequestEvent());
     }
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
         requireNonNull(model);
 
-        switch (model.getActiveListType()) {
-        case SEARCH_RESULTS:
-        {
-            List<Book> searchResultsList = model.getSearchResultsList();
+        checkActiveListType();
+        checkValidIndex();
 
-            if (targetIndex.getZeroBased() >= searchResultsList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
+        toAdd = model.getActiveList().get(targetIndex.getZeroBased());
+    }
 
-            toAdd = searchResultsList.get(targetIndex.getZeroBased());
-            break;
-        }
-        case RECENT_BOOKS:
-        {
-            List<Book> recentBooksList = model.getRecentBooksList();
-
-            if (targetIndex.getZeroBased() >= recentBooksList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
-
-            toAdd = recentBooksList.get(targetIndex.getZeroBased());
-            break;
-        }
-        default:
+    /**
+     * Throws a {@link CommandException} if the active list type is not supported by this command.
+     */
+    private void checkActiveListType() throws CommandException {
+        if (model.getActiveListType() == ActiveListType.BOOK_SHELF) {
             throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
+        }
+    }
+
+    /**
+     * Throws a {@link CommandException} if the given index is not valid.
+     */
+    private void checkValidIndex() throws CommandException {
+        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
         }
     }
 

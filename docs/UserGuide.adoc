@@ -5,6 +5,7 @@
 :imagesDir: images
 :stylesDir: stylesheets
 :xrefstyle: full
+:linkattrs:
 :experimental:
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -33,11 +34,10 @@ It can be accessed using the `help` command in the application.
 === Features and Capabilities
 Below are some features and capabilities that Bibliotek supports:
 
-* Search for new books
+* Search online for new books
+* Track the books you are reading, have read, and want to read
 * View book reviews
-* Track the books you are reading, have read and want to read
-* Update you when books in your watchlist become available in the library
-* Recommend new books based on your reading list
+* View availability of books in the library
 * Undo your previous actions
 
 == Quick Start
@@ -59,8 +59,8 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Some example commands you can try:
 
 * *`list`* : lists all books
-* **`search`**`t/Babylon's Ashes c/Science Fiction` : searches for books with `Babylon's Ashes` in their title, belonging to the category `Science Fiction`.
-* **`delete`**`3` : deletes the 3rd book shown in the current list
+* **`search t/Babylon's Ashes c/Science Fiction`** : searches for books with `Babylon's Ashes` in their title, belonging to the category `Science Fiction`.
+* **`delete 3`** : deletes the 3rd book shown in the current list
 * *`exit`* : exits the app
 
 .  Refer to <<Features>> for details of each command.
@@ -73,38 +73,41 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 * Words in `UPPER_CASE` are the parameters you supply e.g. in `search t/TITLE`, `TITLE` is a parameter which you can use as `search t/Harry Potter`.
 * Items in square brackets are optional e.g you can use `[t/TITLE] [a/AUTHOR]` as `t/Harry Potter a/Rowling` or as `t/Harry Potter` (but there cannot be no parameters).
-* Items with `…`​ after them can be used multiple times including zero times e.g. you can use `[a/AUTHOR]...` as `{nbsp}` (i.e. 0 times), `a/Dubner`, `a/Dubner a/Steven Levitt` etc.
-* Parameters can be in any order e.g. if the command specifies `a/AUTHOR t/TITLE`, `t/TITLE a/AUTHOR` is acceptable.
+* Items with `…`​ after them can be used multiple times, including zero times. For example, you can use `[a/AUTHOR]...` as `{nbsp}` (i.e. 0 times), `a/Dubner`, `a/Dubner a/Steven Levitt`, etc.
+* Parameters can be in any order. For example, if the command specifies `a/AUTHOR t/TITLE`, `t/TITLE a/AUTHOR` is acceptable.
 ====
 
+[[help-command]]
 === Viewing help : `help`
 
 If you are unsure of some commands, use the `help` command to open this document. +
 Format: `help`
 
-=== Searching for books online: `search`
+[[search-command]]
+=== Searching for books online : `search`
 
-Want to lookup for a specific book? Browsing for new books? Use the `search` command. +
-Format: `search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]`
+Want to search for a specific book? Browsing for new books? Use the `search` command. +
+Format: `search [KEY_WORDS] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]`
 
 ****
-* Searches online for books using the specified `SEARCH_TERM` and constraints on its `ISBN`, `TITLE`, `AUTHOR`, and `CATEGORY`.
+* Searches online for books that contain the specified `KEY_WORDS`, with additional constraints on its `ISBN`, `TITLE`, `AUTHOR`, and `CATEGORY`.
 * At least one of the fields must be provided.
+* The search results will contain a maximum of 30 books, and will be ordered according to their relevance, as determined by the external service.
 ****
 
 WARNING: You can only perform `search` with Internet connection.
 
-If you want to find any books with `Harry Potter` as keyword, you enter `search Harry Potter`.
-
-image::SearchCommandSearching.png[width="700"]
+If you want to find any books with `Harry Potter` as keyword, enter `search Harry Potter`.
 
 Bibliotek shows `Searching for matching books...` to indicate that your `search` is being processed.
 This may take some time since an external service is being called to fetch your search results.
 
-image::SearchCommandFound.png[width="700"]
+image::SearchCommandSearching.png[width="700"]
 
 When your search results are ready, Bibliotek shows `Found xx matching books.` and displays your
 search results in the left panel.
+
+image::SearchCommandFound.png[width="700"]
 
 NOTE: If Bibliotek shows `Failed to retrieve information from online.`, it means your search request has timed out.
 You should try again after some time.
@@ -112,11 +115,56 @@ You should try again after some time.
 Other examples:
 
 * `search Artemis a/Andy Weir` +
-Returns a list of books related to `Artemis`, where `Andy Weir` matches one of the authors.
+Returns a list of books containing the word `Artemis`, where `Andy Weir` matches one of the authors.
 * `search t/Babylon's Ashes c/Science Fiction` +
 Returns a list of `Science Fiction` books that contains `Babylon's Ashes` in the title.
 
-=== Adding a book: `add`
+[[select-command]]
+=== Selecting a book : `select`
+
+If you are interested in a book and want to view more information about it, use `select`. +
+Format: `select INDEX`
+
+****
+* Selects the book at the specified `INDEX` and displays detailed information about it.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* `1, 2, 3, ...`
+****
+
+Suppose you have the following search results.
+
+image::SearchCommandFound.png[width="700"]
+
+If you are interested in `The Ivory Tower and Harry Potter` and wish to view more information,
+enter `select 3`.
+
+Bibliotek shows `Selected Book: 3` to indicate that your `select` is successful. The left panel
+is auto-scrolled to the selected book and the right panel shows detailed information of the book.
+
+image::SelectCommand.png[width="700"]
+
+Alternatively, instead of entering `select 3`, you can directly select `The Ivory Tower and Harry Potter`
+by clicking on it in the left panel.
+
+Bibliotek shows the detailed information of the book in the right panel. Note that no confirmation message
+will be shown in this case.
+
+image::SelectCommandUI.png[width="700"]
+
+Other examples:
+
+* `list` +
+`select 2` +
+Selects the 2nd book in your book shelf.
+* `list p/HIGH` +
+`select 1` +
+Selects the 1st book among books with `HIGH` priority in your book shelf.
+* `search Artemis a/Andy Weir` +
+`select 1` +
+Selects the 1st book in the search results.
+
+[[add-command]]
+=== Adding a book : `add`
 
 If you find a book you wish to read in your search results, you can add this book into your book shelf. Use the `add` command. +
 Format: `add INDEX`
@@ -134,20 +182,19 @@ Suppose you have the following search results.
 
 image::SearchCommandFound.png[width="700"]
 
-If you want to add `Harry Potter and the Classical World` to your book shelf, you enter
-`add 2`.
+If you want to add `Harry Potter and the Classical World` to your book shelf, enter `add 2`.
 
-image::AddCommandAdding.png[width="700"]
-
-Bibliotek shows `Adding the book into your book shelf` to indicate that your `add` is being processed.
+Bibliotek shows `Adding the book into your book shelf...` to indicate that your `add` is being processed.
 This may take some time since an external service is being called to fetch more detailed information about
 the book before adding it to your book shelf.
 
+image::AddCommandAdding.png[width="700"]
+
+Once the necessary information is fetched and the book is added, Bibliotek shows `New book added: TITLE - Authors: AUTHORS`.
+
 image::AddCommandAdded.png[width="700"]
 
-Once the necessary information is fetched and the book is added, Bibliotek shows
-`New book added: TITLE - Authors: AUTHORS`. You can verify that the book have been added by entering `list`
-and scrolling to the last entry in your book shelf.
+You can verify that the book have been added by entering `list t/TITLE`. In this case, you can enter `list t/Harry Potter`.
 
 image::AddCommandAddedConfirmation.png[width="700"]
 
@@ -157,9 +204,10 @@ Other examples:
 `add 1` +
 Adds the 1st book in the search results.
 
+[[list-command]]
 === Listing, filtering, and sorting your books : `list`
 
-If you want to view a portion of the books in your book shelf, use the `list` command. +
+If you want to view all the books in your book shelf or just a portion of them, use the `list` command. +
 Format: `list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [s/STATUS] [p/PRIORITY] [r/RATING] [by/SORT_BY]`
 
 ****
@@ -189,10 +237,10 @@ Format: `list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [s/STATUS] [p/PRIORITY] [r/RATIN
 
 If you want to view all books in your book shelf, you can simply enter `list`.
 
-image::ListCommand.png[width="700"]
-
 Bibliotek shows `Listed xx books.` to indicate that the command was successful.
 The left panel will show all the books in your book shelf.
+
+image::ListCommand.png[width="700"]
 
 Other examples:
 
@@ -201,70 +249,32 @@ Lists books in your book shelf that contains `Andy Weir` in one of the authors' 
 * `list t/Babylon's Ashes c/Science Fiction` +
 Lists `Science Fiction` books in your book shelf that contains `Babylon's Ashes` in the title.
 
-=== Selecting a book : `select`
-
-If you are interested in a book and want to view more information about it, use `select`. +
-Format: `select INDEX`
-
-****
-* Selects the book at the specified `INDEX` and displays detailed information about it.
-* The index refers to the index number shown in the most recent listing.
-* The index *must be a positive integer* `1, 2, 3, ...`
-****
-
-Suppose you have the following search results.
-
-image::SearchCommandFound.png[width="700"]
-
-If you are interested in `The Ivory Tower and Harry Potter` and wish to view more information,
-you enter `select 3`.
-
-image::SelectCommand.png[width="700"]
-
-Bibliotek shows `Selected Book: 3` to indicate that your `select` is successful. The left panel
-is auto-scrolled to the selected book and the right panel shows detailed information of the book.
-
-Alternatively, instead of entering `select 3`, you can directly select `The Ivory Tower and Harry Potter`
-by clicking on it in the left panel.
-
-image::SelectCommandUI.png[width="700"]
-
-Bibliotek shows the detailed information of the book in the right panel. Note that no confirmation message
-will be shown in this case.
-
-Other examples:
-
-* `list` +
-`select 2` +
-Selects the 2nd book in your book shelf.
-* `list p/HIGH` +
-`select 1` +
-Selects the 1st book among books with `HIGH` priority in your book shelf.
-* `search Artemis a/Andy Weir` +
-`select 1` +
-Selects the 1st book in the search results.
-
-=== Editing a book : `edit` `[coming in v1.3]`
+[[edit-command]]
+=== Editing a book : `edit` _(since v1.4)_
 
 After reading a book, you may want to give the book a rating or set the book as read. Or, you may want
 to change the priority of books to remind yourself what you should read next. These can be done using `edit`. +
 Format: `edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
 
 ****
-* Edits the book at the specified `INDEX`. The index refers to the index number shown in the last book shelf listing. The index *must be a positive integer* 1, 2, 3, ...
+* Edits the book at the specified `INDEX`. The index refers to the index number shown in the most recent listing. The index *must be a positive integer* 1, 2, 3, ...
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
+* `STATUS` must be one of the following (items in parenthesis are aliases): `read` (`r`), `unread` (`u`), or `reading` (`rd`).
+* `PRIORITY` must be one of the following (items in parenthesis are aliases): `none` (`n`), `low` (`l`), `medium` (`m`), or `high` (`h`).
+* `RATING` must be a valid rating from 0 to 5, or -1, to select unrated books.
 ****
 
 WARNING: You can only perform `edit` when the list shown is from your book shelf.
 
 Examples:
 
-* `edit 1 p/HIGH` +
+* `edit 1 p/high` +
 Changes the priority of the 1st book to `HIGH`.
-* `edit 2 s/READ r/5` +
+* `edit 2 s/read r/5` +
 Marks the 2nd book as `READ` and changes its rating to `5`.
 
+[[delete-command]]
 === Deleting a book : `delete`
 
 No longer want a book in your book shelf? Remove it using `delete`. +
@@ -285,12 +295,12 @@ Suppose you have the following books in your book shelf.
 
 image::ListCommand.png[width="700"]
 
-If you no longer want to read `Artemis` and wish to remove it from your book shelf, enter `delete 1`.
-
-image::DeleteCommand.png[width="700"]
+If you no longer want to read `Harry Potter and the Classical World` and wish to remove it from your book shelf, enter `delete 3`.
 
 Bibliotek shows `Deleted Book: TITLE - Authors: AUTHORS` to indicate that your `delete` is successful.
 The book no longer exist in the left panel.
+
+image::DeleteCommand.png[width="700"]
 
 Other examples:
 
@@ -298,47 +308,63 @@ Other examples:
 `delete 1` +
 Deletes the 1st book in the results of the `list` command.
 
-=== Viewing book reviews: `reviews` `[since v1.3]`
+[[clear-command]]
+=== Clearing book shelf : `clear`
 
-If a book catches your eyes but you are not sure whether it's worth the read, use
-`reviews` to find out what other readers think. +
-Format: `reviews INDEX`
+Don't need the data in your book shelf anymore? Remove them using `clear`. +
+Format: `clear`
+
+WARNING: You can only perform `clear` if the list shown is from your book shelf.
+
+If you want to delete all books, enter `clear`.
+
+Bibliotek shows `Book shelf has been cleared!` to indicate that your `clear` is successful.
+The left panel is now empty.
+
+image::ClearCommand.png[width="700"]
+
+[[undo-command]]
+=== Undoing previous command : `undo`
+
+If you regret executing a command, use `undo` to reverse your action. +
+Format: `undo`
 
 ****
-* Loads reviews of the book at the specified `INDEX`.
-* The index refers to the index number shown in the most recent listing.
-* The index *must be a positive integer* 1, 2, 3, ...
+* Restores the book shelf to the state before the previous _undoable_ command was executed.
 ****
 
-WARNING: You can only perform `reviews` with Internet connection.
+[NOTE]
+====
+Undoable commands: those commands that modify the book shelf's content (`add`, `edit`, `delete`, and `clear`).
+====
 
-Suppose you have the following search results.
+Suppose you just deleted a book `Harry Potter and the Classical World`.
 
-image::ReviewsCommandList.png[width="700"]
+image::DeleteCommand.png[width="700"]
 
-If you want to view book reviews for `Catching Fire`, enter `reviews 4`.
+If you regret your deletion and wish to undo it, enter `undo`.
 
-image::ReviewsCommandLoading.png[width="700"]
+Bibliotek shows `Undo success!` to indicate that your `undo` is successful. `Harry Potter and the Classical World` is back in your
+book shelf as seen in the left panel.
 
-Bibliotek shows `Loading reviews of book: TITLE - Authors: AUTHORS` to indicate that your `reviews` is being processed.
-Bibliotek is loading the reviews page of the book on https://goodreads.com[goodreads].
+image::UndoCommand.png[width="700"]
 
-NOTE: The web page may take some time to load and will only be shown when ready.
-
-image::ReviewsCommandLoaded.png[width="700"]
-
-Once the web page is ready, Bibliotek shows `Reviews loaded successfully!` and displays the web page
-at the right panel. Scroll down the web page to see the reviews for the book.
-
-image::ReviewsCommandScrollDown.png[width="700"]
+NOTE: Your entire book shelf is shown in the left panel after performing `undo`.
 
 Other examples:
 
-* `search t/Babylon's Ashes c/Science Fiction` +
-`reviews 1` +
-Shows online reviews of 1st book in the search results.
+* `select 1` +
+`list` +
+`undo` +
+The `undo` command fails as there are no undoable commands executed previously.
 
-=== Listing recently viewed books: `recent` `[since v1.2]`
+* `delete 1` +
+`clear` +
+`undo` (reverses the `clear` command) +
+`undo` (reverses the `delete 1` command) +
+
+[[recent-command]]
+=== Listing recently viewed books : `recent` _(since v1.2)_
 
 You recently selected a book in one of your searches but did not add it into your
 book shelf, and now you have trouble searching up that book again? No worries, `recent`
@@ -363,18 +389,54 @@ You did not add the book into your book shelf. After performing various other se
 you regret not adding `The Ivory Tower and Harry Potter` into your book shelf. Instead of
 performing the search again, you can enter `recent` to view recently selected books.
 
+Bibliotek shows `Listed all recently selected books.` to indicate that your `recent` command
+is successful. You can scroll down the left panel to locate `The Ivory Tower and Harry Potter`
+(index 4 in this case).
+
 image::RecentCommand.png[width="700"]
 
-Bibliotek shows `Listed all recently selected books` to indicate that your `recent` command
-is successful. You can scroll down the left panel to locate `The Ivory Tower and Harry Potter`
-(index 4 in this case). You can enter `add 4` to add the book into your book shelf.
+You can then enter `add 4` to add the book into your book shelf.
 
 NOTE: If you don't see the intended book in the list, then too many book selections have been performed after
 that book.
 
-=== Finding a book in the library: `library` `[coming in v1.4]`
+[[reviews-command]]
+=== Viewing book reviews : `reviews` _(since v1.3)_
 
-If you want to know whether a book is available in a library, use `library`. +
+If a book catches your eyes but you are not sure whether it's worth the read, use
+`reviews` to find out what other readers think. +
+Format: `reviews INDEX`
+
+****
+* Loads reviews of the book at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+WARNING: You can only perform `reviews` with Internet connection.
+
+Suppose you have the following search results.
+
+image::SearchCommandFound.png[width="700"]
+
+If you want to view book reviews for `The Ivory Tower and Harry Potter`, enter `reviews 3`.
+
+Bibliotek shows `Showing reviews for book: TITLE - Authors: AUTHORS.` and displays a browser at the right panel.
+The browser will begin loading the reviews page of the book on https://goodreads.com[goodreads, window="_blank"].
+Once the web page has loaded, you will be able to see the reviews, as shown below.
+
+image::ReviewsCommandLoaded.png[width="700"]
+
+Other examples:
+
+* `search t/Babylon's Ashes c/Science Fiction` +
+`reviews 1` +
+Shows online reviews of 1st book in the search results.
+
+[[library-command]]
+=== Finding a book in the library : `library` _(since v1.5)_
+
+If you want to know whether a book is available in the library, use `library`. +
 Format: `library INDEX`
 
 ****
@@ -384,13 +446,148 @@ Format: `library INDEX`
 
 WARNING: You can only perform `library` with Internet connection.
 
+Suppose you have the following books in your display list.
+
+image::ListCommand.png[width="700"]
+
+If you want to search the library for `Harry Potter and the Classical World`, enter `library 3`.
+
+Bibliotek shows `Searching for the book in the library...` to indicate that your `library` command is being processed.
+This may take some time since data is being loaded from the online library catalogue.
+
+image::LibraryCommandSearching.png[width="700"]
+
+Once the data is ready, Bibliotek shows `Showing availability of book: TITLE - Authors: AUTHORS`.
+You will be able to see the availability of the book in the library in the right panel, as shown below.
+
+image::LibraryCommandAfter.png[width="700"]
+
+NOTE: If Bibliotek shows `Failed to retrieve information from online.`,
+it means your search request has timed out. You should try again after some time.
+
+[[history-command]]
+=== Listing entered commands : `history`
+
+If you want to view the commands that you have entered previously, use `history`. +
+Format: `history`
+
+****
+* Lists the previous commands in reverse chronological order.
+****
+
+[NOTE]
+====
+Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
+====
+
+[[addalias-command]]
+=== Adding a command alias : `addalias` _(since v1.5)_
+
+If there is a command that you use frequently, and you find typing out the entire command to be too tedious,
+you can add a command alias to reduce the amount of typing needed. +
+Format: `addalias ALIAS_NAME cmd/COMMAND`
+
+****
+* Adds a command alias for the specified `COMMAND`.
+* `COMMAND` should refer to a default, built-in command, and can optionally include command parameters.
+* `ALIAS_NAME` is case-insensitive, and must not contain any spaces or tabs.
+* If there is an existing alias with the same name as `ALIAS_NAME`, the existing alias will be overwritten.
+****
+
+WARNING: If `COMMAND` does not specify a valid built-in command, you will
+get an `Unknown command` message when you attempt to use the command alias.
+
+[TIP]
+You can use command aliases to specify default named parameters (parameters with a prefix, such as `t/TITLE`). +
+For example, if you want a custom `list` command that sorts by rating by default,
+you can add a command alias using `addalias ls cmd/list by/rating`. +
+You can override this default sort mode by specifying a different sort mode, e.g. `ls by/status`.
+
 Examples:
 
-* `list` +
-`library 1` +
-Search your chosen library for the 1st book in your book shelf.
+* `addalias rm cmd/delete` +
+Adds a command alias with the name `rm`. +
+You can then use `rm INDEX` in place of `delete INDEX`.
 
-=== Placing a book on watchlist: `watch` `[coming in v1.4]`
+* `addalias read cmd/edit s/read p/none` +
+Adds a command alias with the name `read`. +
+You can then use `read INDEX` in place of `edit INDEX s/read p/none`.
+
+[[aliases-command]]
+=== Listing command aliases : `aliases` _(since v1.5)_
+
+If you have forgotten some of your command aliases and need a quick refresher, you can use
+the `aliases` command to view them. +
+Format: `aliases`
+
+****
+* Lists all command aliases.
+****
+
+After entering the `aliases` command, Bibliotek shows `Listed xx aliases.` to indicate that the command was successful.
+The right panel will display a list of all your command aliases.
+
+image::AliasesCommand.png[width="700"]
+
+[[deletealias-command]]
+=== Delete a command alias : `deletealias` _(since v1.5)_
+
+If you no longer require a command alias, you can remove it using `deletealias`. +
+Format: `deletealias ALIAS_NAME`
+
+****
+* Deletes the command alias specified by the `ALIAS_NAME`.
+* `ALIAS_NAME` is case-insensitive, and must match the name of an existing alias.
+****
+
+Examples:
+
+* `deletealias rm` +
+Deletes the command alias with the name `rm`.
+* `deletealias read` +
+Deletes the command alias with the name `read`.
+
+[[theme-command]]
+=== Changing theme : `theme` _(since v1.2)_
+
+If you don't like the default theme used by Bibliotek, you can change it using `theme`. +
+Format: `theme THEME_NAME`
+
+****
+* `THEME_NAME` must specify a valid theme, and is case-insensitive.
+* The current available themes are: `white`, `light`, and `dark`.
+* The default theme is `white`
+****
+
+You can change the application to the white theme using `theme white`.
+
+Bibliotek shows `Application theme changed to: white` to indicate that your theme change is successful.
+
+image::ThemeWhite.png[width="700"]
+
+The same goes for `theme light`:
+
+image::ThemeLight.png[width="700"]
+
+And `theme dark`:
+
+image::ThemeDark.png[width="700"]
+
+[[exit-command]]
+=== Closing the program : `exit`
+
+Use `exit` to close the program. +
+Format: `exit`
+
+=== Saving the data
+
+Bibliotek saves data in the hard disk automatically after any command that changes the data. +
+There is no need to save manually.
+
+== Upcoming Features
+
+[[watch-command]]
+=== Placing a book on watchlist : `watch` _(coming in v2.0)_
 
 Interested in so many books that searching them up using `library` is time consuming?
 With `watch`, you can automatically get notified when a book in your watchlist
@@ -409,7 +606,8 @@ Bibliotek informs you of the availability of your watchlisted books in the libra
 everytime you start up the application.
 ====
 
-=== Ordering a book online: `order` `[coming in v1.5]`
+[[order-command]]
+=== Ordering a book online : `order` _(coming in v2.0)_
 
 If you wish to purchase a book, use `order`. +
 Format: `order INDEX`
@@ -429,102 +627,48 @@ Examples:
 `order 1` +
 Opens the purchase page of the 1st book in your book shelf in your chosen site.
 
-=== Listing entered commands : `history`
+[[suggest-command]]
+=== Getting book recommendations : `suggest` _(coming in v2.0)_
 
-If you want to view the commands that you have entered previously, use `history`. +
-Format: `history`
+Having problems deciding what to read next? Bibliotek can give you book recommendations
+based on the books in your book shelf. Use `suggest` to obtain your personalized recommendations! +
+Format: `suggest`
 
-****
-* Lists the previous commands in reverse chronological order.
-****
+TIP: Give appropriate ratings to books you have read to obtain recommendations that are closer to your preferences.
+
+[[import-command]]
+=== Importing books from other E-Readers : `import` _(coming in v2.0)_
+
+If you are using other E-Readers and have many books in your collection that you wish to
+add into your Bibliotek book shelf, `import` is the command you are looking for. +
+Format: `import SOURCE`
+
+[[fontsize-command]]
+=== Changing font size : `fontsize` _(coming in v2.0)_
+
+Think the font size is too small or large for your liking? You can customize the
+font size to your own needs. +
+Format: `fontsize FONT_SIZE`
+
+[[setpassword-command]]
+=== Setting a password : `setpassword` _(coming in v2.0)_
+
+If you want to keep your data secure, you can opt to set a password for the application. +
+Format: `setpassword p/PASSWORD`
 
 [NOTE]
 ====
-Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
+You will be prompted for the password upon starting up the application. You will
+not need to enter it again thereafter (ie. when using commands).
 ====
 
-=== Undoing previous command : `undo`
+TIP: Remove your password using `setpassword p/`
 
-If you regret executing a command, use `undo` to reverse your action. +
-Format: `undo`
-
-****
-* Restores the book shelf to the state before the previous _undoable_ command was executed.
-****
-
-[NOTE]
-====
-Undoable commands: those commands that modify the book shelf's content (`add`, `delete`, `edit` and `clear`).
-====
-
-Suppose you just deleted a book `Artemis`.
-
-image::DeleteCommand.png[width="700"]
-
-If you regret your deletion and wish to undo it, enter `undo`.
-
-image::UndoCommand.png[width="700"]
-
-Bibliotek shows `Undo success!` to indicate that your `undo` is successful. `Artemis` is back in your
-book shelf as seen in the left panel.
-
-NOTE: Your entire book shelf is shown in the left panel after performing `undo`.
-
-Other examples:
-
-* `select 1` +
-`list` +
-`undo` +
-The `undo` command fails as there are no undoable commands executed previously.
-
-* `delete 1` +
-`clear` +
-`undo` (reverses the `clear` command) +
-`undo` (reverses the `delete 1` command) +
-
-=== Clearing all entries : `clear`
-
-Don't need the data in your book shelf anymore? Remove them using `clear`. +
-Format: `clear`
-
-WARNING: You can only perform `clear` if the list shown is from your book shelf.
-
-If you want to delete all books, enter `clear`.
-
-image::ClearCommand.png[width="700"]
-
-Bibliotek shows `Book shelf has been cleared!` to indicate that your `clear` is successful.
-The left and right panels are now empty.
-
-=== Changing application theme `[since v1.2]`
-
-If you don't like the default theme used by Bibliotek, you can change it using `theme`. +
-Format: `theme THEME_NAME`
-
-****
-* `THEME_NAME` must specify a valid theme, and is case-insensitive.
-* The current available themes are: `white`, `light`, and `dark`.
-* The default theme is `white`
-****
-
-You can change the application to the white theme using `theme white`.
-
-image::ThemeWhite.png[width="700"]
-
-Bibliotek shows `Application theme changed to: white` to indicate that your theme change is successful.
-
-The same goes for `theme light`:
-
-image::ThemeLight.png[width="700"]
-
-And `theme dark`:
-
-image::ThemeDark.png[width="700"]
-
-=== Changing settings: `settings` `[coming in v1.4]`
+[[settings-command]]
+=== Changing settings: `settings` _(coming in v2.0)_
 
 [[settings-library]]
-==== Library `[coming in v1.4]`
+==== Library _(coming in v2.0)_
 
 If you want to search for books in other libraries, you can change your settings. +
 Format: `settings lib/LIBRARY`
@@ -541,7 +685,7 @@ if there are other libraries you wish are supported.
 ====
 
 [[settings-order]]
-==== Online shopping site `[coming in v1.5]`
+==== Online shopping site _(coming in v2.0)_
 
 If you want to purchase books on other online booksellers, you can change your settings. +
 Format: `settings order/SITE`
@@ -557,71 +701,6 @@ Only some sites are supported. Do https://f14-b4.netlify.com/contactus[contact u
 if there are other sites you wish are supported.
 ====
 
-==== Command alias `[coming in v1.5]`
-
-If you don't like the word for a command or think it is too long, you can add a
-command alias to make the command more intuitive or reduce typing. +
-Format: `settings alias/COMMAND: ALIAS`
-
-****
-* Change the alias of the given command.
-* Each command can have 1 alias.
-* By default, all commands have no alias.
-****
-
-TIP: Remove the alias using `settings alias/COMMAND:`
-
-Examples:
-
-* `settings alias/add: a` +
-Change the command alias of `add` to `a`.
-
-* `settings alias/add:` +
-Remove the command alias of `add`.
-
-==== Font size `[coming in v2.0]`
-
-Think the font size is too small or large for your liking? You can customize the
-font size to your own needs. +
-Format: `settings fontsize/FONTSIZE`
-
-==== Password `[coming in v2.0]`
-
-If you want to keep your data secure, you can opt to set a password for the application. +
-Format: `settings password/PASSWORD`
-
-[NOTE]
-====
-You will be prompted for the password upon starting up the application. You will
-not need to enter it again thereafter (ie. when using commands).
-====
-
-TIP: Remove your password using `settings password/`
-
-=== Closing the program : `exit`
-
-Use `exit` to close the program. +
-Format: `exit`
-
-=== Saving the data
-
-Bibliotek saves data in the hard disk automatically after any command that changes the data. +
-There is no need to save manually.
-
-=== Getting book recommendations: `suggest` `[coming in v2.0]`
-
-Having problems deciding what to read next? Bibliotek can give you book recommendations
-based on the books in your book shelf. Use `suggest` to obtain your personalized recommendations! +
-Format: `suggest`
-
-TIP: Give appropriate ratings to books you have read to obtain recommendations that are closer to your preferences.
-
-=== Importing books from other E-Readers: `import` `[coming in v2.0]`
-
-If you are using other E-Readers and have many books in your collection that you wish to
-add into your Bibliotek book shelf, `import` is the command you are looking for. +
-Format: `import SOURCE`
-
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
@@ -635,26 +714,40 @@ Format: `import SOURCE`
 
 == Command Summary
 
-* *Add* `add INDEX` +
+[width="72%",options="header",]
+|=======================================================================
+|Command |Syntax
+|*Add* |`add INDEX`
+
 e.g. `add 1`
-* *Clear* : `clear`
-* *Delete* : `delete INDEX` +
-//* *Edit* : `edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]` +
-//e.g. `edit 2 s/READ r/5`
-* *Exit* : `exit`
-* *Help* : `help`
-* *History* : `history`
-//* *Import* : `import SOURCE`
-//* *Library* : `library INDEX` +
-* *List* : `list`
-//*Order* : `order INDEX`
-* *Recent* : `recent`
-//* *Reviews* : `reviews INDEX`
-* *Search* : `search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]` +
+|*Add Alias* |`addalias ALIAS_NAME cmd/COMMAND`
+
+e.g. `addalias read cmd/edit s/read p/none`
+|*Aliases* |`aliases`
+|*Clear* |`clear`
+|*Delete* |`delete INDEX`
+|*Delete Alias* |`deletealias ALIAS_NAME`
+|*Edit* |`edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
+
+e.g. `edit 2 s/READ r/5`
+|*Exit* |`exit`
+|*Help* |`help`
+|*History* |`history`
+|*Library* |`library INDEX`
+|*List* |`list`
+|*Recent* |`recent`
+|*Reviews* |`reviews INDEX`
+|*Search* |`search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]`
+
 e.g. `search t/Babylon's Ashes c/Science Fiction`
-* *Select* : `select INDEX` +
-* *Theme* : `theme THEME_NAME` +
-//* *Settings* : `settings ...` +
-//e.g. `settings lib/NLB`
-* *Undo* : `undo`
-//* *Watchlist*: `watch INDEX`
+|*Select* |`select INDEX`
+|*Theme* |`theme THEME_NAME`
+|*Undo* |`undo`
+|=======================================================================
+
+[appendix]
+== Glossary
+
+[[isbn]] International Standard Book Number (ISBN)::
+A unique identifier given to every edition of a book published. +
+The 13-digit ISBN, which is used by Bibliotek to identify books, has been in use since January 2007.

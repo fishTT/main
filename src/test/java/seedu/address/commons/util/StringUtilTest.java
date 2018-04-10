@@ -155,5 +155,29 @@ public class StringUtilTest {
         StringUtil.getDetails(null);
     }
 
+    //---------------- Tests for isValidUrl --------------------------------------
 
+    //@@author qiu-siqi
+    @Test
+    public void isValidUrl_nullGiven_throwsNullPointerException() {
+        thrown.expect(NullPointerException.class);
+        StringUtil.isValidUrl(null);
+    }
+
+    @Test
+    public void isValidUrl_emptyString() {
+        assertFalse(StringUtil.isValidUrl(""));
+    }
+
+    @Test
+    public void isValidUrl_validUrl_success() {
+        assertTrue(StringUtil.isValidUrl(
+                "https://catalogue.nlb.gov.sg/cgi-bin/spydus.exe/FULL/EXPNOS/BIBENQ/6689797/241229563,1"));
+    }
+
+    @Test
+    public void isValidUrl_invalidUrl_failure() {
+        assertFalse(StringUtil.isValidUrl(
+                "https:///catalogue.nlb.gov.sg/cgi-bin/spydus.exe/FULL/EXPNOS/BIBENQ/6689797/241229563,1"));
+    }
 }

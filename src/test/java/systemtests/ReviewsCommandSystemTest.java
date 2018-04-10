@@ -1,7 +1,5 @@
 package systemtests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
@@ -9,7 +7,6 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_BOOK;
 
 import org.junit.Test;
 
-import guitests.GuiRobot;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RecentCommand;
@@ -19,6 +16,7 @@ import seedu.address.logic.commands.SelectCommand;
 import seedu.address.model.Model;
 import seedu.address.model.book.Book;
 
+//@@author qiu-siqi
 public class ReviewsCommandSystemTest extends BibliotekSystemTest {
 
     @Test
@@ -47,8 +45,7 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
         assertCommandFailure("ReViEwS 1", MESSAGE_UNKNOWN_COMMAND);
 
         /* ------------ Perform reviews operations on the shown search results list ------------ */
-        executeCommand(SearchCommand.COMMAND_WORD + " hello");
-        new GuiRobot().waitForEvent(() -> !getResultDisplay().getText().equals(SearchCommand.MESSAGE_SEARCHING));
+        executeBackgroundCommand(SearchCommand.COMMAND_WORD + " hello", SearchCommand.MESSAGE_SEARCHING);
         assertCommandSuccess(ReviewsCommand.COMMAND_WORD + " 1", getModel().getSearchResultsList().get(0));
         assertCommandFailure(ReviewsCommand.COMMAND_WORD + " 39", MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
 
@@ -64,15 +61,14 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
      * 1. Command box displays an empty string.<br>
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the load successful message.<br>
-     * 4. {@code Model}, {@code Storage}, {@code BookListPanel}, {@code SearchResultsPanel},
-     * and {@code RecentBooksPanel} remain unchanged.<br>
-     * 5. Selected books card remain unchanged.<br>
-     * 6. {@code BookReviewsPanel} is visible and {@code BookDetailsPanel} is hidden.
+     * 4. {@code Model} and {@code Storage} remain unchanged.<br>
+     * 5. Any selections in {@code BookListPanel}, {@code SearchResultsPanel},
+     *    and {@code RecentBooksPanel} are all deselected.<br>
+     * 6. {@code BookReviewsPanel} is visible.
      * 7. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
-     * @see BibliotekSystemTest#assertSelectedBookListCardChanged(Index)
      */
     private void assertCommandSuccess(String command, Book toLoad) {
         Model expectedModel = getModel();
@@ -83,20 +79,10 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
         String expectedResultMessage = String.format(ReviewsCommand.MESSAGE_SUCCESS, toLoad);
 
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
-        assertSelectedBookListCardUnchanged();
-        assertSelectedSearchResultsCardUnchanged();
-        assertSelectedRecentBooksCardUnchanged();
-        assertCommandBoxShowsDefaultStyle();
+        assertSelectedBookListCardDeselected();
+        assertSelectedSearchResultsCardDeselected();
+        assertSelectedRecentBooksCardDeselected();
         assertBookReviewsPanelVisible();
         assertStatusBarUnchanged();
-    }
-
-    /**
-     * Checks that {@code BookReviewsPanel} is visible and {@code BookDetailsPanel}
-     * is not visible.
-     */
-    private void assertBookReviewsPanelVisible() {
-        assertTrue(getBookReviewsPanel().isVisible());
-        assertFalse(getBookDetailsPanel().isVisible());
     }
 }

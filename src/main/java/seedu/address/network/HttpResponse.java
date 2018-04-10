@@ -4,6 +4,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import org.asynchttpclient.Response;
 
+//@@author takuyakanbr
 /**
  * A wrapper around the {@link Response} class from async-http-client.
  */
@@ -24,6 +25,7 @@ public class HttpResponse {
         this(response.getStatusCode(), response.getContentType(), response.getResponseBody());
     }
 
+    //@@author
     public int getStatusCode() {
         return statusCode;
     }

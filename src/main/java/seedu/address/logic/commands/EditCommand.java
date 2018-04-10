@@ -1,11 +1,11 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ import seedu.address.model.book.Rating;
 import seedu.address.model.book.Status;
 import seedu.address.model.book.exceptions.BookNotFoundException;
 import seedu.address.model.book.exceptions.DuplicateBookException;
-
+//@@author 592363789
 /**
  * Edits the status, priority, and rating of an existing book.
  */
@@ -56,7 +56,7 @@ public class EditCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult executeUndoableCommand() {
         requireAllNonNull(bookToEdit, editedBook);
 
         try {
@@ -71,19 +71,33 @@ public class EditCommand extends UndoableCommand {
 
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
-        if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
-            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
+        requireNonNull(model);
 
-        List<Book> lastShownList = model.getDisplayBookList();
-        if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-        }
+        checkActiveListType();
+        checkValidIndex();
 
-        bookToEdit = lastShownList.get(index.getZeroBased());
+        bookToEdit = model.getActiveList().get(index.getZeroBased());
         editedBook = createEditedBook(bookToEdit, editDescriptor);
     }
 
+    /**
+     * Throws a {@link CommandException} if the active list type is not supported by this command.
+     */
+    private void checkActiveListType() throws CommandException {
+        if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
+            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
+        }
+    }
+
+    /**
+     * Throws a {@link CommandException} if the given index is not valid.
+     */
+    private void checkValidIndex() throws CommandException {
+        if (index.getZeroBased() >= model.getActiveList().size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
+        }
+    }
+    //@@author
     /**
      * Creates and returns a {@code Book} with the details of {@code bookToEdit}
      * edited with {@code editDescriptor}.
@@ -119,7 +133,7 @@ public class EditCommand extends UndoableCommand {
                 && editDescriptor.equals(e.editDescriptor)
                 && Objects.equals(bookToEdit, e.bookToEdit);
     }
-
+    //@@author 592363789
     /**
      * Stores the details to edit the book with. Each non-empty field value will replace the
      * corresponding field value of the book.

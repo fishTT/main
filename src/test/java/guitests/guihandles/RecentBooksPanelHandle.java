@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import seedu.address.model.book.Book;
 
+//@@author qiu-siqi
 /**
  * Provides a handle for {@code RecentBooksPanel} containing the list of {@code Book}.
  */
@@ -113,6 +114,10 @@ public class RecentBooksPanelHandle extends NodeHandle<ListView<Book>> {
      */
     public void select(int index) {
         getRootNode().getSelectionModel().select(index);
+    }
+
+    public boolean isVisible() {
+        return getRootNode().getParent().isVisible();
     }
 
     /**

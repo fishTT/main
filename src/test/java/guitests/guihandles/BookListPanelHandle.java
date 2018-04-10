@@ -115,6 +115,10 @@ public class BookListPanelHandle extends NodeHandle<ListView<Book>> {
         return guiRobot.lookup(CARD_PANE_ID).queryAll();
     }
 
+    public boolean isVisible() {
+        return getRootNode().getParent().isVisible();
+    }
+
     /**
      * Remembers the selected {@code Book} in the list.
      */

@@ -27,6 +27,8 @@ public class UserPrefs {
         }
 
         this.setGuiSettings(500, 500, 0, 0);
+
+        windowSettings = new WindowSettings();
     }
 
     public static UserPrefs getInstance() {

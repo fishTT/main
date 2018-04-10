@@ -40,6 +40,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.SearchCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -91,7 +92,7 @@ public class HintParser {
             case EditCommand.COMMAND_WORD:
                 return generateEditHint();
             case SelectCommand.COMMAND_WORD:
-				return " Select a book"
+				return " Select a book";
             case DeleteCommand.COMMAND_WORD:
                 return generateDeleteAndSelectHint();
             case ClearCommand.COMMAND_WORD:
@@ -106,6 +107,8 @@ public class HintParser {
                 return " shows user guide";
             case UndoCommand.COMMAND_WORD:
                 return " undo command";
+			case SearchCommand.COMMAND_WORD:
+				return " search a book";
             default:
                 return " type help for guide";
         }

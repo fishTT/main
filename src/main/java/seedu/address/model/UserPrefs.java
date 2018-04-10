@@ -9,15 +9,39 @@ import seedu.address.commons.core.WindowSettings;
  * Represents User's preferences.
  */
 public class UserPrefs {
+    //@@author fishTT
+    private static UserPrefs instance;
 
+    private Aliases aliases;
+    //@@author
     private WindowSettings windowSettings;
     private String bookShelfFilePath = "data/bookshelf.xml";
     private String bookShelfName = "MyBookShelf";
     private Theme appTheme = Theme.DEFAULT_THEME;
 
+    //@@author fishTT
     public UserPrefs() {
-        windowSettings = new WindowSettings();
+        if (instance == null) {
+            instance = this;
+        }
+
+        this.setGuiSettings(500, 500, 0, 0);
     }
+
+    public static UserPrefs getInstance() {
+        if (instance == null) {
+            return new UserPrefs();
+        }
+        return instance;
+    }
+
+    public Aliases getAliases() {
+        if (aliases == null) {
+            aliases = new Aliases();
+        }
+        return aliases;
+    }
+    //@@author
 
     public WindowSettings getWindowSettings() {
         return windowSettings == null ? new WindowSettings() : windowSettings;

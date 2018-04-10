@@ -38,7 +38,7 @@ import seedu.address.model.UserPrefs;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
-
+    private static MainWindow instance;
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
     private Stage primaryStage;
@@ -90,8 +90,11 @@ public class MainWindow extends UiPart<Stage> {
 
         setAccelerators();
         registerAsAnEventHandler(this);
+        instance = this;
     }
-
+    public static MainWindow getInstance() {
+        return instance;
+    }
     public Stage getPrimaryStage() {
         return primaryStage;
     }

@@ -51,6 +51,9 @@ public class BookShelfParser {
 
         switch (commandWord) {
 
+        case AddAliasCommand.COMMAND_WORD:
+            return new AliasCommandParser().parse(arguments);
+
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 

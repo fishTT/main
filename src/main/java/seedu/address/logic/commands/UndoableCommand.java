@@ -1,28 +1,19 @@
 package seedu.address.logic.commands;
 
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_BOOKS;
-
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.BookShelf;
-import seedu.address.model.ReadOnlyBookShelf;
 
 /**
  * Represents a command which can be undone.
  */
 public abstract class UndoableCommand extends Command {
-    private ReadOnlyBookShelf previousBookShelf;
 
     protected abstract CommandResult executeUndoableCommand() throws CommandException;
 
     /**
-     * Stores the current state of {@code model#bookShelf}.
+     * Store what is required of the current state of {@code model#bookShelf}.
+     * {@code UndoableCommand}s that needs to save some data should override this method.
      */
-    private void saveBookShelfSnapshot() {
-        requireNonNull(model);
-        this.previousBookShelf = new BookShelf(model.getBookShelf());
-    }
+    protected void saveSnapshot() {}
 
     /**
      * This method is called before the execution of {@code UndoableCommand}.
@@ -31,19 +22,14 @@ public abstract class UndoableCommand extends Command {
     protected void preprocessUndoableCommand() throws CommandException {}
 
     /**
-     * Reverts the BookShelf to the state before this command
-     * was executed and updates the filtered book list to
-     * show all books.
+     * Revert the state of {@code model#bookShelf} back to before this command was executed.
+     * @return success or failure message.
      */
-    protected final void undo() {
-        requireAllNonNull(model, previousBookShelf);
-        model.resetData(previousBookShelf);
-        model.updateBookListFilter(PREDICATE_SHOW_ALL_BOOKS);
-    }
+    protected abstract String undo();
 
     @Override
     public final CommandResult execute() throws CommandException {
-        saveBookShelfSnapshot();
+        saveSnapshot();
         preprocessUndoableCommand();
         return executeUndoableCommand();
     }

@@ -1,17 +1,10 @@
 package seedu.address.storage;
 
-import static java.util.Objects.requireNonNull;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
-import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.FileUtil;
 import seedu.address.model.ReadOnlyBookShelf;
 
 //@@author qiu-siqi
@@ -20,21 +13,19 @@ import seedu.address.model.ReadOnlyBookShelf;
  */
 public class XmlRecentBooksStorage implements RecentBooksStorage {
 
-    private static final Logger logger = LogsCenter.getLogger(XmlRecentBooksStorage.class);
-
-    private String filePath;
+    private XmlBookShelfStorage xmlBookShelfStorage;
 
     public XmlRecentBooksStorage(String filePath) {
-        this.filePath = filePath;
+        xmlBookShelfStorage = new XmlBookShelfStorage(filePath);
     }
 
     public String getRecentBooksFilePath() {
-        return filePath;
+        return xmlBookShelfStorage.getBookShelfFilePath();
     }
 
     @Override
     public Optional<ReadOnlyBookShelf> readRecentBooksList() throws DataConversionException, IOException {
-        return readRecentBooksList(filePath);
+        return xmlBookShelfStorage.readBookShelf();
     }
 
     /**
@@ -44,27 +35,12 @@ public class XmlRecentBooksStorage implements RecentBooksStorage {
      */
     public Optional<ReadOnlyBookShelf> readRecentBooksList(String filePath) throws DataConversionException,
             FileNotFoundException {
-        requireNonNull(filePath);
-
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            logger.info("Recent books file "  + file + " not found");
-            return Optional.empty();
-        }
-
-        XmlSerializableBookShelf xmlRecentBooksList = XmlFileStorage.loadBookShelfDataFromFile(new File(filePath));
-        try {
-            return Optional.of(xmlRecentBooksList.toModelType());
-        } catch (IllegalValueException ive) {
-            logger.info("Illegal values found in " + file + ": " + ive.getMessage());
-            throw new DataConversionException(ive);
-        }
+        return xmlBookShelfStorage.readBookShelf(filePath);
     }
 
     @Override
     public void saveRecentBooksList(ReadOnlyBookShelf recentBooksList) throws IOException {
-        saveRecentBooksList(recentBooksList, filePath);
+        xmlBookShelfStorage.saveBookShelf(recentBooksList);
     }
 
     /**
@@ -72,11 +48,6 @@ public class XmlRecentBooksStorage implements RecentBooksStorage {
      * @param filePath location of the data. Cannot be null
      */
     public void saveRecentBooksList(ReadOnlyBookShelf recentBooksList, String filePath) throws IOException {
-        requireNonNull(recentBooksList);
-        requireNonNull(filePath);
-
-        File file = new File(filePath);
-        FileUtil.createIfMissing(file);
-        XmlFileStorage.saveBookShelfDataToFile(file, new XmlSerializableBookShelf(recentBooksList));
+        xmlBookShelfStorage.saveBookShelf(recentBooksList, filePath);
     }
 }

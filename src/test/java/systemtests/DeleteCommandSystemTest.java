@@ -37,11 +37,12 @@ public class DeleteCommandSystemTest extends BibliotekSystemTest {
         /* Case: delete the last book in the list -> deleted */
         Model modelBeforeDeletingLast = getModel();
         Index lastBookIndex = getLastIndex(modelBeforeDeletingLast);
+        deletedBook = getModel().getDisplayBookList().get(lastBookIndex.getZeroBased());
         assertCommandSuccess(lastBookIndex);
 
         /* Case: undo deleting the last book in the list -> last book restored */
         command = UndoCommand.COMMAND_WORD;
-        expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
+        expectedResultMessage = String.format(DeleteCommand.UNDO_SUCCESS, deletedBook);
         assertCommandSuccess(command, modelBeforeDeletingLast, expectedResultMessage);
 
         /* Case: delete the middle book in the list -> deleted */

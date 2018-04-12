@@ -44,15 +44,21 @@ public class JsonSearchResults {
     }
 
     /**
-     * Converts this data holder object into the model's BookShelf object.
+     * Converts this data holder object into the model's BookShelf object,
+     * with the specified limit on the number of books to populate the book shelf with.
      */
-    public ReadOnlyBookShelf toModelType() {
+    public ReadOnlyBookShelf toModelType(int maxBookCount) {
         BookShelf bookShelf = new BookShelf();
 
+        int bookCount = 0;
         for (JsonVolume volume : items) {
             try {
                 Book book = convertToBook(volume);
                 bookShelf.addBook(book);
+                ++bookCount;
+                if (bookCount >= maxBookCount) {
+                    break;
+                }
             } catch (InvalidBookException | DuplicateBookException e) {
                 logger.warning(e.getMessage());
             }

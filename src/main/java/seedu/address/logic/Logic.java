@@ -21,12 +21,9 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
-        /**
-          * Parses the input and returns the associated command.
-          * @param commandText The command as entered by the user.
-          * @throws ParseException If an error occurs during parsing.
-          */
-                Command parse(String commandText) throws ParseException;
+
+    /** Returns an unmodifiable view of the list that is currently active. */
+    ObservableList<Book> getActiveList();
 
     /** Returns an unmodifiable view of the filtered and sorted list of books */
     ObservableList<Book> getDisplayBookList();

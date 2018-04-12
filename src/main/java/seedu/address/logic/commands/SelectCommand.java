@@ -6,9 +6,8 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.JumpToBookListIndexRequestEvent;
-import seedu.address.commons.events.ui.JumpToRecentBooksIndexRequestEvent;
-import seedu.address.commons.events.ui.JumpToSearchResultsIndexRequestEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.ActiveListType;
 
 /**
  * Selects a book identified using it's last displayed index from the book shelf.
@@ -36,31 +35,17 @@ public class SelectCommand extends Command {
         requireNonNull(model);
 
         checkValidIndex();
+        updateRecentBooksList();
 
-        switch (model.getActiveListType()) {
-        case BOOK_SHELF:
-        {
-            model.addRecentBook(model.getDisplayBookList().get(targetIndex.getZeroBased()));
-            EventsCenter.getInstance().post(new JumpToBookListIndexRequestEvent(targetIndex));
-            break;
-        }
-        case SEARCH_RESULTS:
-        {
-            model.addRecentBook(model.getSearchResultsList().get(targetIndex.getZeroBased()));
-            EventsCenter.getInstance().post(new JumpToSearchResultsIndexRequestEvent(targetIndex));
-            break;
-        }
-        case RECENT_BOOKS:
-        {
-            EventsCenter.getInstance().post(new JumpToRecentBooksIndexRequestEvent(targetIndex));
-            break;
-        }
-        default:
-            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
-
+        EventsCenter.getInstance().post(new JumpToBookListIndexRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_SELECT_BOOK_SUCCESS, targetIndex.getOneBased()));
 
+    }
+
+    private void updateRecentBooksList() {
+        if (model.getActiveListType() != ActiveListType.RECENT_BOOKS) {
+            model.addRecentBook(model.getActiveList().get(targetIndex.getZeroBased()));
+        }
     }
 
     /**

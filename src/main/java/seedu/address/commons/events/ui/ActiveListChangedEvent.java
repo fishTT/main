@@ -3,13 +3,12 @@ package seedu.address.commons.events.ui;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * An event requesting to view the search results.
+ * Represents a change in the active list type.
  */
-public class SwitchToSearchResultsRequestEvent extends BaseEvent {
+public class ActiveListChangedEvent extends BaseEvent {
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
     }
-
 }

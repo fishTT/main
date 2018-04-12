@@ -1,8 +1,12 @@
+@font-face {
+    src: url("OpenSansEmoji.ttf");
+}
+
 body {
     background-color: transparent;
     font-size: 11pt;
-    font-family: "Segoe UI";
-    color: #f2f2f2;
+    font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue";
+    color: #e2e2e2;
     overflow-y: hidden;
 }
 
@@ -13,42 +17,45 @@ body {
 
 .label {
     -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI";
-    -fx-text-fill: #f2f2f2;
+    -fx-font-family: "OpenSansEmoji";
+    -fx-font-smoothing-type: gray;
+    -fx-text-fill: #e2e2e2;
     -fx-opacity: 0.9;
 }
 
 .label-bright {
     -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI";
-    -fx-text-fill: white;
+    -fx-font-family: "OpenSansEmoji";
+    -fx-font-smoothing-type: gray;
+    -fx-text-fill: #f1f1f1;
     -fx-opacity: 1;
 }
 
 .label-muted {
     -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI";
-    -fx-text-fill: #bbb;
+    -fx-font-family: "OpenSansEmoji";
+    -fx-font-smoothing-type: gray;
+    -fx-text-fill: #adadad;
     -fx-opacity: 1;
 }
 
 .label-header {
     -fx-font-size: 24pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
+    -fx-text-fill: #f1f1f1;
     -fx-opacity: 1;
 }
 
 .label-subheading {
     -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
+    -fx-text-fill: #f1f1f1;
     -fx-opacity: 1;
 }
 
 .text-field {
     -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Segoe UI Semibold", "Helvetica Neue", "HelveticaNeue";
 }
 
 .tab-pane {
@@ -88,7 +95,7 @@ body {
 
 .table-view .column-header .label {
     -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
     -fx-text-fill: white;
     -fx-alignment: center-left;
     -fx-opacity: 1;
@@ -139,17 +146,17 @@ body {
 }
 
 .list-cell .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
 }
 
 .cell_big_label {
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Segoe UI Semibold", "Helvetica Neue", "HelveticaNeue";
     -fx-font-size: 16px;
     -fx-text-fill: #010504;
 }
 
 .cell_small_label {
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue";
     -fx-font-size: 13px;
     -fx-text-fill: #010504;
 }
@@ -176,9 +183,9 @@ body {
 
 .result-display {
     -fx-background-color: transparent;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
     -fx-font-size: 12pt;
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
 }
 
 .result-display .label {
@@ -196,7 +203,7 @@ body {
 }
 
 .status-bar .label {
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
     -fx-font-size: 14px;
     -fx-text-fill: white;
 }
@@ -240,7 +247,7 @@ body {
 
 .menu-bar .label {
     -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Light";
+    -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
     -fx-text-fill: white;
     -fx-opacity: 0.9;
 }
@@ -260,7 +267,7 @@ body {
     -fx-border-width: 2;
     -fx-background-radius: 0;
     -fx-background-color: #1d1d1d;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
     -fx-text-fill: #d8d8d8;
     -fx-background-insets: 0 0 0 0, 0, 1, 2;
@@ -382,8 +389,16 @@ body {
     -fx-text-fill: #F70D1A;
 }
 
-#commandBoxItems {
-    -fx-border-color: transparent transparent light transparent;
+
+#commandTextField {
+    -fx-background-color: transparent #383838 transparent #383838;
+    -fx-background-insets: 0;
+    -fx-border-color: #383838 #383838 #ffffff #383838;
+    -fx-border-insets: 0;
+    -fx-border-width: 1;
+    -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
+    -fx-font-size: 13pt;
+    -fx-text-fill: #f1f1f1;
 }
 
 
@@ -418,47 +433,47 @@ body {
 }
 
 .pills .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
     -fx-padding: 1 5 1 5;
     -fx-border-radius: 7;
     -fx-background-radius: 7;
-    -fx-font-size: 10pt;
+    -fx-font-size: 11pt;
 }
 
 .pills-small .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
     -fx-padding: 1 5 1 5;
     -fx-border-radius: 7;
     -fx-background-radius: 7;
-    -fx-font-size: 9pt;
+    -fx-font-size: 9.5pt;
 }
 
 .pills-authors .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
     -fx-padding: 1 3 1 3;
-    -fx-background-color: #3e9168BB;
-    -fx-font-size: 10pt;
+    -fx-background-color: #3e916866;
+    -fx-font-size: 11pt;
 }
 
 .pills-authors-small .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
     -fx-padding: 1 3 1 3;
-    -fx-background-color: #3e9168BB;
-    -fx-font-size: 9pt;
+    -fx-background-color: #3e916866;
+    -fx-font-size: 9.5pt;
 }
 
 .pills-categories .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
     -fx-padding: 1 3 1 3;
-    -fx-background-color: #3e7b91BB;
-    -fx-font-size: 10pt;
+    -fx-background-color: #3e7b9166;
+    -fx-font-size: 11pt;
 }
 
 .pills-categories-small .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #f1f1f1;
     -fx-padding: 1 3 1 3;
-    -fx-background-color: #3e7b91BB;
-    -fx-font-size: 9pt;
+    -fx-background-color: #3e7b9166;
+    -fx-font-size: 9.5pt;
 }
 
 .status-unread.label {
@@ -504,7 +519,7 @@ body {
 }
 
 .alias-list-header {
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Segoe UI Semibold", "Helvetica Neue", "HelveticaNeue";
 }
 
 .alias-details {
@@ -513,28 +528,28 @@ body {
 }
 
 .alias-id {
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Segoe UI Semibold", "Helvetica Neue", "HelveticaNeue";
     -fx-min-width: 20px;
 }
 
 .alias-name {
-    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-family: "Segoe UI Semibold", "Helvetica Neue", "HelveticaNeue";
     -fx-min-width: 80px;
     -fx-margin: 0 6px 0 0;
 }
 
 .label.alias-named-args {
-    -fx-text-fill: #bbb;
+    -fx-text-fill: #adadad;
 }
 
 
 #welcomeContainer {
-    -fx-background-color: derive(#1d1d1d, 25%);
+    -fx-background-color: derive(#1d1d1d, 30%);
 }
 
 .label.qotd {
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", "Helvetica Neue", "HelveticaNeue";
     -fx-font-size: 12px;
     -fx-font-style: italic;
-    -fx-text-fill: #bbb;
+    -fx-text-fill: #adadad;
 }

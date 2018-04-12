@@ -38,6 +38,9 @@ public class EditCommand extends UndoableCommand {
     public static final String MESSAGE_NO_PARAMETERS = "At least one field to edit must be provided.";
     public static final String MESSAGE_WRONG_ACTIVE_LIST = "Items from the current list cannot be edited.";
 
+    public static final String UNDO_SUCCESS = "Successfully undone editing of %s.";
+    public static final String UNDO_FAILURE = "Failed to undo editing of %s.";
+
     private final Index index;
     private final EditDescriptor editDescriptor;
 
@@ -113,6 +116,19 @@ public class EditCommand extends UndoableCommand {
                 bookToEdit.getTitle(), bookToEdit.getCategories(), bookToEdit.getDescription(),
                 updatedStatus, updatedPriority, updatedRating,
                 bookToEdit.getPublisher(), bookToEdit.getPublicationDate());
+    }
+
+    @Override
+    protected String undo() {
+        requireAllNonNull(model, editedBook, bookToEdit);
+
+        try {
+            model.updateBook(editedBook, bookToEdit);
+            return String.format(UNDO_SUCCESS, editedBook);
+        } catch (DuplicateBookException | BookNotFoundException e) {
+            // Should never end up here
+            return String.format(UNDO_FAILURE, editedBook);
+        }
     }
 
     @Override

@@ -17,10 +17,10 @@ public class SearchDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code searchTerm} of the {@code SearchDescriptor} that we are building.
+     * Sets the {@code keyWords} of the {@code SearchDescriptor} that we are building.
      */
-    public SearchDescriptorBuilder withSearchTerm(String searchTerm) {
-        descriptor.setSearchTerm(searchTerm);
+    public SearchDescriptorBuilder withKeyWords(String keyWords) {
+        descriptor.setKeyWords(keyWords);
         return this;
     }
 

@@ -9,6 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -47,6 +48,13 @@ public class LogicManagerTest {
         assertCommandSuccess(listCommand,
                 String.format(ListCommand.MESSAGE_SUCCESS, model.getDisplayBookList().size()), model);
         assertHistoryCorrect(listCommand);
+    }
+
+    @Test
+    public void execute_closeCommand_corrected() {
+        assertCommandSuccess("lst", String.format(Messages.MESSAGE_CORRECTED_COMMAND, "list"), model);
+        assertCommandSuccess("y",
+                String.format(ListCommand.MESSAGE_SUCCESS, model.getDisplayBookList().size()), model);
     }
 
     @Test

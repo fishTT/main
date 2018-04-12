@@ -98,6 +98,7 @@ public class TestApp extends MainApp {
                 model.getRecentBooksListAsBookShelf(), model.getAliasList());
         copy.updateBookListFilter(model.getBookListFilter());
         copy.updateBookListSorter(model.getBookListSorter());
+        copy.setActiveListType(model.getActiveListType());
         ModelHelper.setSearchResults(copy, model.getSearchResultsList());
         ModelHelper.setRecentBooks(copy, model.getRecentBooksList());
         return copy;

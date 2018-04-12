@@ -8,8 +8,4 @@ public class InvalidThemeException extends IllegalValueException {
     public InvalidThemeException(String message) {
         super(message);
     }
-
-    public InvalidThemeException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

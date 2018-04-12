@@ -1,6 +1,6 @@
 package seedu.address.network.api.google;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,6 +15,7 @@ import seedu.address.model.book.Title;
 import seedu.address.model.book.exceptions.InvalidBookException;
 import seedu.address.model.util.BookDataUtil;
 
+//@@author takuyakanbr
 /**
  * A temporary data holder used for deserialization of the JSON response
  * from the book details endpoint of Google Books API.
@@ -48,8 +49,8 @@ public class JsonBookDetails {
         }
 
         return new Book(new Gid(id), isbn,
-                BookDataUtil.getAuthorSet(volumeInfo.authors), new Title(volumeInfo.title),
-                getCategorySet(volumeInfo.categories), new Description(volumeInfo.description),
+                BookDataUtil.getAuthorList(volumeInfo.authors), new Title(volumeInfo.title),
+                getCategoryList(volumeInfo.categories), new Description(volumeInfo.description),
                 new Publisher(volumeInfo.publisher),
                 new PublicationDate(volumeInfo.publishedDate));
     }
@@ -62,11 +63,11 @@ public class JsonBookDetails {
                 .orElse(null);
     }
 
-    private static Set<Category> getCategorySet(String[] categories) {
+    private static List<Category> getCategoryList(String[] categories) {
         return Stream.of(categories)
                 .flatMap(category -> Stream.of(category.split("/")))
                 .map(token -> new Category(token.trim()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     /** Temporary data holder used for deserialization. */
@@ -79,6 +80,7 @@ public class JsonBookDetails {
         private JsonIndustryIdentifiers[] industryIdentifiers = new JsonIndustryIdentifiers[0];
         private String[] categories = new String[0];
 
+        //@@author
         public void setIndustryIdentifiers(JsonIndustryIdentifiers[] industryIdentifiers) {
             this.industryIdentifiers = industryIdentifiers;
         }

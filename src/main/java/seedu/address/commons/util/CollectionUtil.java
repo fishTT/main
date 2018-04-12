@@ -2,10 +2,12 @@ package seedu.address.commons.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -51,11 +53,11 @@ public class CollectionUtil {
     }
 
     /**
-     * Returns a new {@link Set} containing all the specified items.
+     * Returns a new {@link List} containing all the specified items.
      */
     @SafeVarargs
-    public static <T> Set<T> toSet(T... items) {
-        HashSet<T> set = new HashSet<>();
+    public static <T> List<T> toList(T... items) {
+        ArrayList<T> set = new ArrayList<>();
         Collections.addAll(set, items);
         return set;
     }

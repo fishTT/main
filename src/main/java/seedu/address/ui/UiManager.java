@@ -13,6 +13,7 @@ import seedu.address.MainApp;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.WindowSettings;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.Logic;
@@ -64,7 +65,10 @@ public class UiManager extends ComponentManager implements Ui {
 
     @Override
     public void stop() {
-        prefs.updateLastUsedGuiSetting(mainWindow.getCurrentGuiSetting());
+        WindowSettings windowSettings = mainWindow.getCurrentGuiSetting();
+        if (windowSettings.getWindowCoordinates().getX() >= 0 || windowSettings.getWindowCoordinates().getY() >= 0) {
+            prefs.updateLastUsedGuiSetting(windowSettings);
+        }
         mainWindow.hide();
     }
 

@@ -11,6 +11,7 @@ import seedu.address.model.book.Book;
  */
 public class BookCard extends UiPart<Region> {
 
+    public static final int DISPLAYED_CATEGORY_LIMIT = 4;
     private static final String FXML = "BookListCard.fxml";
     private static final String DEFAULT_LABEL_STYLE_CLASS = "label";
 
@@ -45,9 +46,9 @@ public class BookCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         title.setText(book.getTitle().title);
         book.getAuthors().forEach(author -> authors.getChildren()
-                .add(new Label(author.fullName)));
-        book.getCategories().forEach(category -> categories.getChildren()
-                .add(new Label(category.toString())));
+                .add(new Label(author.getDisplayText())));
+        book.getCategories().stream().limit(DISPLAYED_CATEGORY_LIMIT).forEach(category -> categories.getChildren()
+                .add(new Label(category.getDisplayText())));
         status.setText(book.getStatus().getDisplayText());
         status.getStyleClass().setAll(DEFAULT_LABEL_STYLE_CLASS, book.getStatus().getStyleClass());
         priority.setText(book.getPriority().getDisplayText());

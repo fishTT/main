@@ -14,6 +14,7 @@ import javafx.stage.Stage;
  */
 public class GuiRobot extends FxRobot {
 
+    public static final int NETWORK_ACTION_TIMEOUT_MILLISECONDS = 6500;
     private static final int PAUSE_FOR_HUMAN_DELAY_MILLISECONDS = 250;
     private static final int DEFAULT_WAIT_FOR_EVENT_TIMEOUT_MILLISECONDS = 5000;
 

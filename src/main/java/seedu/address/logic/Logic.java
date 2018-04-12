@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.alias.Alias;
 import seedu.address.model.book.Book;
 
 /**
@@ -19,6 +20,9 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
+    /** Returns an unmodifiable view of the list that is currently active. */
+    ObservableList<Book> getActiveList();
+
     /** Returns an unmodifiable view of the filtered and sorted list of books */
     ObservableList<Book> getDisplayBookList();
 
@@ -27,6 +31,9 @@ public interface Logic {
 
     /** Returns an unmodifiable view of the recently selected books list. */
     ObservableList<Book> getRecentBooksList();
+
+    /** Returns an unmodifiable view of the list of aliases. */
+    ObservableList<Alias> getDisplayAliasList();
 
     /** Returns the list of input entered by the user, encapsulated in a {@code ListElementPointer} object */
     ListElementPointer getHistorySnapshot();

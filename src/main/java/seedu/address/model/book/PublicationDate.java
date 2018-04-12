@@ -20,7 +20,6 @@ public class PublicationDate {
         this.date = date;
     }
 
-
     @Override
     public String toString() {
         return date;

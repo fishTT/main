@@ -10,11 +10,15 @@ import java.util.Optional;
 
 import javafx.application.Platform;
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.ActiveListChangedEvent;
+import seedu.address.commons.events.ui.DisableCommandBoxRequestEvent;
+import seedu.address.commons.events.ui.EnableCommandBoxRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
-import seedu.address.commons.events.ui.SwitchToSearchResultsRequestEvent;
 import seedu.address.commons.util.CollectionUtil;
+import seedu.address.model.ActiveListType;
 import seedu.address.model.ReadOnlyBookShelf;
 
+//@@author takuyakanbr
 /**
  * Searches for books on Google Books that matches a set of parameters.
  */
@@ -23,7 +27,7 @@ public class SearchCommand extends Command {
     public static final String COMMAND_WORD = "search";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Searches for books online.\n"
-            + "Parameters: [SEARCH_TERM] "
+            + "Parameters: [KEY_WORDS] "
             + "[" + PREFIX_ISBN + "ISBN] "
             + "[" + PREFIX_TITLE + "TITLE] "
             + "[" + PREFIX_AUTHOR + "AUTHOR] "
@@ -33,8 +37,8 @@ public class SearchCommand extends Command {
             + PREFIX_AUTHOR + "Andy Weir";
 
     public static final String MESSAGE_SEARCHING = "Searching for matching books...";
-    public static final String MESSAGE_EMPTY_QUERY = "No search term or search parameter specified.";
-    public static final String MESSAGE_SEARCH_FAIL = "Failed to retrieve information from online.";
+    public static final String MESSAGE_EMPTY_QUERY = "No search parameter specified.";
+    public static final String MESSAGE_SEARCH_FAIL = "Failed to retrieve information from online service.";
     public static final String MESSAGE_SEARCH_SUCCESS = "Found %s matching books.";
 
     private final SearchDescriptor searchDescriptor;
@@ -60,6 +64,7 @@ public class SearchCommand extends Command {
 
     @Override
     public CommandResult execute() {
+        EventsCenter.getInstance().post(new DisableCommandBoxRequestEvent());
         makeAsyncSearchRequest();
         return new CommandResult(MESSAGE_SEARCHING);
     }
@@ -68,10 +73,14 @@ public class SearchCommand extends Command {
      * Makes an asynchronous request to search for books.
      */
     private void makeAsyncSearchRequest() {
-        network.searchBooks(searchDescriptor.toSearchString())
+        String searchString = searchDescriptor.toSearchString();
+        assert !searchString.trim().isEmpty();
+
+        network.searchBooks(searchString)
                 .thenAccept(this::onSuccessfulRequest)
                 .exceptionally(e -> {
                     EventsCenter.getInstance().post(new NewResultAvailableEvent(SearchCommand.MESSAGE_SEARCH_FAIL));
+                    EventsCenter.getInstance().post(new EnableCommandBoxRequestEvent());
                     return null;
                 });
     }
@@ -80,6 +89,7 @@ public class SearchCommand extends Command {
      * Handles the result of a successful request to search for books.
      */
     private void onSuccessfulRequest(ReadOnlyBookShelf bookShelf) {
+        requireNonNull(bookShelf);
         if (useJavafxThread) {
             Platform.runLater(() -> displaySearchResults(bookShelf));
         } else {
@@ -92,9 +102,11 @@ public class SearchCommand extends Command {
      */
     private void displaySearchResults(ReadOnlyBookShelf bookShelf) {
         model.updateSearchResults(bookShelf);
-        EventsCenter.getInstance().post(new SwitchToSearchResultsRequestEvent());
+        model.setActiveListType(ActiveListType.SEARCH_RESULTS);
+        EventsCenter.getInstance().post(new ActiveListChangedEvent());
         EventsCenter.getInstance().post(new NewResultAvailableEvent(
                 String.format(SearchCommand.MESSAGE_SEARCH_SUCCESS, bookShelf.size())));
+        EventsCenter.getInstance().post(new EnableCommandBoxRequestEvent());
     }
 
     @Override
@@ -118,7 +130,7 @@ public class SearchCommand extends Command {
      * Stores the parameters to search with.
      */
     public static class SearchDescriptor {
-        private String searchTerm;
+        private String keyWords;
         private String isbn;
         private String title;
         private String author;
@@ -130,7 +142,7 @@ public class SearchCommand extends Command {
          * Copy constructor.
          */
         public SearchDescriptor(SearchDescriptor toCopy) {
-            this.searchTerm = toCopy.searchTerm;
+            this.keyWords = toCopy.keyWords;
             this.isbn = toCopy.isbn;
             this.title = toCopy.title;
             this.author = toCopy.author;
@@ -141,15 +153,15 @@ public class SearchCommand extends Command {
          * Returns true if at least one field is not empty.
          */
         public boolean isValid() {
-            return CollectionUtil.isAnyNonNull(searchTerm, isbn, title, author, category);
+            return CollectionUtil.isAnyNonNull(keyWords, isbn, title, author, category);
         }
 
-        public Optional<String> getSearchTerm() {
-            return Optional.ofNullable(searchTerm);
+        public Optional<String> getKeyWords() {
+            return Optional.ofNullable(keyWords);
         }
 
-        public void setSearchTerm(String searchTerm) {
-            this.searchTerm = searchTerm;
+        public void setKeyWords(String keyWords) {
+            this.keyWords = keyWords;
         }
 
         public Optional<String> getIsbn() {
@@ -187,7 +199,7 @@ public class SearchCommand extends Command {
         /** Returns the search string to be used as part of the API url. */
         public String toSearchString() {
             StringBuilder builder = new StringBuilder();
-            getSearchTerm().ifPresent(searchTerm -> builder.append(searchTerm).append(" "));
+            getKeyWords().ifPresent(searchTerm -> builder.append(searchTerm).append(" "));
             getIsbn().ifPresent(isbn -> builder.append("isbn:").append(isbn).append(" "));
             getTitle().ifPresent(title -> builder.append("intitle:").append(title).append(" "));
             getAuthor().ifPresent(author -> builder.append("inauthor:").append(author).append(" "));
@@ -215,7 +227,7 @@ public class SearchCommand extends Command {
             // state check
             SearchDescriptor e = (SearchDescriptor) other;
 
-            return getSearchTerm().equals(e.getSearchTerm())
+            return getKeyWords().equals(e.getKeyWords())
                     && getIsbn().equals(e.getIsbn())
                     && getTitle().equals(e.getTitle())
                     && getAuthor().equals(e.getAuthor())

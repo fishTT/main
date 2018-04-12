@@ -2,7 +2,8 @@ package seedu.address.model;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class UniqueListTest {
         uniqueList.add(new Category("Cat 1"));
         uniqueList.add(new Category("Cat 2"));
         uniqueList.add(new Category("Cat 3"));
-        assertEquals(3, uniqueList.toSet().size());
+        assertEquals(3, uniqueList.toList().size());
     }
 
     @Test
@@ -41,14 +42,44 @@ public class UniqueListTest {
     }
 
     @Test
+    public void addAllIgnoresDuplicates_validItems_success() {
+        UniqueList<Category> uniqueList = new UniqueList<>();
+        ArrayList<Category> toAdd = new ArrayList<>();
+        toAdd.add(new Category("Cat 1"));
+        toAdd.add(new Category("Cat 2"));
+        uniqueList.addAllIgnoresDuplicates(toAdd);
+        assertEquals(2, uniqueList.toList().size());
+    }
+
+    @Test
+    public void addAllIgnoresDuplicates_duplicateItems_success() {
+        UniqueList<Category> uniqueList = new UniqueList<>();
+        ArrayList<Category> toAdd = new ArrayList<>();
+        toAdd.add(new Category("Cat 1"));
+        toAdd.add(new Category("Cat 2"));
+        toAdd.add(new Category("Cat 2"));
+        toAdd.add(new Category("Cat 3"));
+        toAdd.add(new Category("Cat 1"));
+        uniqueList.addAllIgnoresDuplicates(toAdd);
+        assertEquals(3, uniqueList.toList().size());
+    }
+
+    @Test
+    public void addAllIgnoresDuplicates_null_throwsNullPointerException() {
+        UniqueList<Category> uniqueList = new UniqueList<>();
+        thrown.expect(NullPointerException.class);
+        uniqueList.addAllIgnoresDuplicates(null);
+    }
+
+    @Test
     public void toSet_modifyList_doesNotMutateList() throws Exception {
         UniqueList<Category> uniqueList = new UniqueList<>();
         uniqueList.add(new Category("Cat 1"));
-        Set<Category> set = uniqueList.toSet();
+        List<Category> set = uniqueList.toList();
         set.add(new Category("Cat 2"));
-        assertEquals(1, uniqueList.toSet().size());
+        assertEquals(1, uniqueList.toList().size());
         set.remove(new Category("Cat 1"));
-        assertEquals(1, uniqueList.toSet().size());
+        assertEquals(1, uniqueList.toList().size());
     }
 
     @Test
@@ -58,14 +89,14 @@ public class UniqueListTest {
         UniqueList<Category> replacement = new UniqueList<>();
         replacement.add(new Category("Cat 2"));
         replacement.add(new Category("Cat 3"));
-        uniqueList.setItems(replacement.toSet());
-        assertEquals(2, uniqueList.toSet().size());
+        uniqueList.setItems(replacement.toList());
+        assertEquals(2, uniqueList.toList().size());
         assertEquals(true, uniqueList.contains(new Category("Cat 2")));
         assertEquals(false, uniqueList.contains(new Category("Cat 1")));
     }
 
     @Test
-    public void setItems_null_throwsNullPointerException() {
+    public void setItems_null_throwsNullPointerException() throws Exception {
         UniqueList<Category> uniqueList = new UniqueList<>();
         thrown.expect(NullPointerException.class);
         uniqueList.setItems(null);
@@ -79,7 +110,7 @@ public class UniqueListTest {
         toMerge.add(new Category("Cat 2"));
         toMerge.add(new Category("Cat 3"));
         uniqueList.mergeFrom(toMerge);
-        assertEquals(3, uniqueList.toSet().size());
+        assertEquals(3, uniqueList.toList().size());
         assertEquals(true, uniqueList.contains(new Category("Cat 2")));
         assertEquals(true, uniqueList.contains(new Category("Cat 1")));
     }

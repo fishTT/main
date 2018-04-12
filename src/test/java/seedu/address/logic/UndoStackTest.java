@@ -141,6 +141,11 @@ public class UndoStackTest {
 
     class DummyUndoableCommand extends UndoableCommand {
         @Override
+        protected String undo() {
+            return "";
+        }
+
+        @Override
         public CommandResult executeUndoableCommand() {
             return new CommandResult("");
         }

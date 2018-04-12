@@ -11,15 +11,16 @@ import org.asynchttpclient.Dsl;
 
 import seedu.address.commons.core.LogsCenter;
 
+//@@author takuyakanbr
 /**
  * A wrapper around the {@link AsyncHttpClient} class from async-http-client.
  */
 public class HttpClient {
 
     private static final Logger logger = LogsCenter.getLogger(HttpClient.class);
-    private static final int CONNECTION_TIMEOUT_MILLIS = 1000 * 5; // 5 seconds
-    private static final int READ_TIMEOUT_MILLIS = 1000 * 5; // 5 seconds
-    private static final int REQUEST_TIMEOUT_MILLIS = 1000 * 5; // 5 seconds
+    private static final int CONNECTION_TIMEOUT_MILLIS = 1000 * 10; // 10 seconds
+    private static final int READ_TIMEOUT_MILLIS = 1000 * 10; // 10 seconds
+    private static final int REQUEST_TIMEOUT_MILLIS = 1000 * 10; // 10 seconds
 
     private final AsyncHttpClient asyncHttpClient;
 

@@ -12,6 +12,7 @@ public class UserPrefs {
 
     private WindowSettings windowSettings;
     private String bookShelfFilePath = "data/bookshelf.xml";
+    private String aliasListFilePath = "data/aliaslist.xml";
     private String bookShelfName = "MyBookShelf";
     private Theme appTheme = Theme.DEFAULT_THEME;
 
@@ -37,6 +38,14 @@ public class UserPrefs {
 
     public void setBookShelfFilePath(String bookShelfFilePath) {
         this.bookShelfFilePath = bookShelfFilePath;
+    }
+
+    public String getAliasListFilePath() {
+        return aliasListFilePath;
+    }
+
+    public void setAliasListFilePath(String aliasListFilePath) {
+        this.aliasListFilePath = aliasListFilePath;
     }
 
     public String getBookShelfName() {
@@ -68,20 +77,22 @@ public class UserPrefs {
 
         return Objects.equals(windowSettings, o.windowSettings)
                 && Objects.equals(bookShelfFilePath, o.bookShelfFilePath)
+                && Objects.equals(aliasListFilePath, o.aliasListFilePath)
                 && Objects.equals(bookShelfName, o.bookShelfName)
                 && Objects.equals(appTheme, o.appTheme);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(windowSettings, bookShelfFilePath, bookShelfName);
+        return Objects.hash(windowSettings, bookShelfFilePath, aliasListFilePath, bookShelfName, appTheme);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Window Settings : ").append(windowSettings.toString());
-        sb.append("\nLocal data file location : ").append(bookShelfFilePath);
+        sb.append("\nBook shelf file location : ").append(bookShelfFilePath);
+        sb.append("\nAlias list file location: ").append(aliasListFilePath);
         sb.append("\nBookShelf name : ").append(bookShelfName);
         sb.append("\nTheme : ").append(appTheme);
         return sb.toString();

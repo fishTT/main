@@ -61,7 +61,7 @@ public class UniqueBookListTest {
         UniqueBookList uniqueBookList = new UniqueBookList();
         uniqueBookList.add(TypicalBooks.ARTEMIS);
         uniqueBookList.remove(TypicalBooks.ARTEMIS);
-        assertEquals(0, uniqueBookList.toSet().size());
+        assertEquals(0, uniqueBookList.toList().size());
     }
 
     @Test

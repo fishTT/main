@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import seedu.address.logic.commands.ReviewsCommand;
 
+//@@author qiu-siqi
 public class ReviewsCommandParserTest {
     private ReviewsCommandParser parser = new ReviewsCommandParser();
 

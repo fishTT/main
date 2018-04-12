@@ -6,6 +6,7 @@ package seedu.address.commons.core;
 public class Messages {
 
     public static final String MESSAGE_UNKNOWN_COMMAND = "Unknown command";
+    public static final String MESSAGE_CORRECTED_COMMAND = "Did you mean: %s?\nEnter 'y' to accept the suggestion.";
     public static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format! \n%1$s";
     public static final String MESSAGE_INVALID_BOOK_DISPLAYED_INDEX = "The book index provided is invalid";
     public static final String MESSAGE_BOOKS_LISTED_OVERVIEW = "%1$d books listed!";

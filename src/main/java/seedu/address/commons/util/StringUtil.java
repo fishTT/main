@@ -83,4 +83,35 @@ public class StringUtil {
             return "";
         }
     }
+
+    // Reused from http://www.extensionmethod.net/1555/csharp/string/isvalidurl
+    /**
+     * Checks whether the string {@code s} denotes a valid URL.
+     */
+    public static boolean isValidUrl(String s) {
+        requireNonNull(s);
+        return s.matches("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=,'#]*)?");
+    }
+
+    /**
+     * Replaces the {@code index} index of {@code target} with {@code replacement}.
+     */
+    public static String replace(String target, char replacement, int index) {
+        return target.substring(0, index) + replacement + target.substring(index + 1, target.length());
+    }
+
+    /**
+     * Adds {@code toAdd} behind the {@code index} index of {@code target}.
+     */
+    public static String addAfter(String target, char toAdd, int index) {
+        return target.substring(0, index + 1) + toAdd + target.substring(index + 1, target.length());
+    }
+
+    /**
+     * Removes the character at {@code index} index of {@code target}.
+     */
+    public static String removeAt(String target, int index) {
+        return target.substring(0, index) + target.substring(index + 1, target.length());
+    }
+
 }

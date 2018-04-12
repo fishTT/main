@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="aliasListPanel" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <VBox fx:id="aliasListContainer">
+    <Label styleClass="alias-list-header" text="Command Aliases">
+      <padding>
+        <Insets bottom="8.0" left="10.0" right="10.0" top="8.0"/>
+      </padding>
+    </Label>
+    <ListView fx:id="aliasListView" VBox.vgrow="ALWAYS"/>
+  </VBox>
+  <padding>
+    <Insets bottom="10" left="5" right="10" top="10"/>
+  </padding>
+</StackPane>

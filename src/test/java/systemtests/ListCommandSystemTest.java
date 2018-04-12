@@ -18,6 +18,7 @@ import seedu.address.logic.commands.RecentCommand;
 import seedu.address.model.Model;
 import seedu.address.model.book.Book;
 
+//@@author takuyakanbr
 public class ListCommandSystemTest extends BibliotekSystemTest {
 
     @Test
@@ -54,14 +55,14 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertCommandFailure(ListCommand.COMMAND_WORD + " by/123", Messages.MESSAGE_INVALID_SORT_BY);
     }
 
+    //@@author
     /**
      * Executes {@code command} and asserts that the,<br>
      * 1. Command box displays an empty string.<br>
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the success message of executing list command with the expected
      * number of listed books.<br>
-     * 4. {@code Model}, {@code Storage}, {@code SearchResultsPanel}, and {@code RecentBooksPanel}
-     * remain unchanged.<br>
+     * 4. {@code Model} and {@code Storage} remain unchanged.<br>
      * 5. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
@@ -82,8 +83,6 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchanged();
         assertSelectedBookListCardDeselected();
-        assertSelectedSearchResultsCardDeselected();
-        assertSelectedRecentBooksCardDeselected();
 
     }
 }

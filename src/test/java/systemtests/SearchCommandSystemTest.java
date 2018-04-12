@@ -9,38 +9,46 @@ import static seedu.address.logic.commands.CommandTestUtil.TITLE_DESC_ARTEMIS;
 import org.junit.Test;
 
 import guitests.GuiRobot;
+import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.SearchCommand;
+import seedu.address.model.ActiveListType;
 import seedu.address.model.BookShelf;
 import seedu.address.model.Model;
 
+//@@author takuyakanbr
 public class SearchCommandSystemTest extends BibliotekSystemTest {
     @Test
     public void search() throws Exception {
         /* ----------------------------------- Perform invalid search operations ------------------------------------ */
 
-        /* Case: no search term or parameters -> rejected */
+        /* Case: close command word -> corrected */
+        executeCommand("searchh hello");
+        assertApplicationDisplaysExpected("",
+                String.format(Messages.MESSAGE_CORRECTED_COMMAND, "search hello"), getModel());
+
+        /* Case: no key words or named parameters -> rejected */
         assertCommandFailure(SearchCommand.COMMAND_WORD, SearchCommand.MESSAGE_EMPTY_QUERY);
 
-        /* Case: no search term or parameters -> rejected */
+        /* Case: no key words or named parameters -> rejected */
         assertCommandFailure("   " + SearchCommand.COMMAND_WORD + "             ", SearchCommand.MESSAGE_EMPTY_QUERY);
 
         /* Case: mixed case command word -> rejected */
         assertCommandFailure("SeaRcH hello", MESSAGE_UNKNOWN_COMMAND);
 
         /* Case: misspelled command word -> rejected */
-        assertCommandFailure("searchh hello", MESSAGE_UNKNOWN_COMMAND);
+        assertCommandFailure("saerch hello", MESSAGE_UNKNOWN_COMMAND);
 
         /* ----------------------------------- Perform valid search operations -------------------------------------- */
 
         // Note: these tests require network connection.
 
-        /* Case: search for books given search term -> success */
+        /* Case: search for books given key word -> success */
         assertSearchSuccess(SearchCommand.COMMAND_WORD + " hello");
 
-        /* Case: search for books given search parameters -> success */
+        /* Case: search for books given named parameters -> success */
         assertSearchSuccess(SearchCommand.COMMAND_WORD + TITLE_DESC_ARTEMIS + CATEGORY_DESC_ARTEMIS
                 + AUTHOR_DESC_ARTEMIS);
 
@@ -55,6 +63,7 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
         assertCommandFailure(DeleteCommand.COMMAND_WORD + " 1", DeleteCommand.MESSAGE_WRONG_ACTIVE_LIST);
     }
 
+    //@@author
     /**
      * Executes {@code command} and verifies that, after the web API has returned a result,<br>
      * 1. Command box displays an empty string.<br>
@@ -69,12 +78,15 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
      */
     private void assertSearchSuccess(String command) throws Exception {
         Model expectedModel = getModel();
+        expectedModel.setActiveListType(ActiveListType.SEARCH_RESULTS);
 
         executeCommand(command);
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchanged();
 
-        new GuiRobot().waitForEvent(() -> !getResultDisplay().getText().equals(SearchCommand.MESSAGE_SEARCHING));
+        new GuiRobot().waitForEvent(() -> !getResultDisplay().getText().equals(SearchCommand.MESSAGE_SEARCHING),
+                GuiRobot.NETWORK_ACTION_TIMEOUT_MILLISECONDS);
+        new GuiRobot().waitForEvent(() -> getCommandBox().isEnabled(), GuiRobot.NETWORK_ACTION_TIMEOUT_MILLISECONDS);
 
         BookShelf searchResults = new BookShelf();
         searchResults.setBooks(getModel().getSearchResultsList());
@@ -83,6 +95,7 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
         assertApplicationDisplaysExpected("",
                 String.format(SearchCommand.MESSAGE_SEARCH_SUCCESS, searchResults.size()), expectedModel);
         assertCommandBoxShowsDefaultStyle();
+        assertCommandBoxEnabled();
         assertStatusBarUnchanged();
     }
 

@@ -19,8 +19,6 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.BaseEvent;
 import seedu.address.commons.events.ui.JumpToBookListIndexRequestEvent;
-import seedu.address.commons.events.ui.JumpToRecentBooksIndexRequestEvent;
-import seedu.address.commons.events.ui.JumpToSearchResultsIndexRequestEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -159,14 +157,7 @@ public class SelectCommandTest {
         }
 
         BaseEvent lastEvent = eventsCollectorRule.eventsCollector.getMostRecent();
-        int targetIndex = -1;
-        if (lastEvent instanceof JumpToBookListIndexRequestEvent) {
-            targetIndex = ((JumpToBookListIndexRequestEvent) lastEvent).targetIndex;
-        } else if (lastEvent instanceof JumpToSearchResultsIndexRequestEvent) {
-            targetIndex = ((JumpToSearchResultsIndexRequestEvent) lastEvent).targetIndex;
-        } else if (lastEvent instanceof JumpToRecentBooksIndexRequestEvent) {
-            targetIndex = ((JumpToRecentBooksIndexRequestEvent) lastEvent).targetIndex;
-        }
+        int targetIndex = ((JumpToBookListIndexRequestEvent) lastEvent).targetIndex;
         assertEquals(index, Index.fromZeroBased(targetIndex));
     }
 

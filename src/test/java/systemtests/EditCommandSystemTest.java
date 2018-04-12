@@ -88,6 +88,7 @@ public class EditCommandSystemTest extends BibliotekSystemTest {
 
         /* --------------------------------- Performing invalid edit operation -------------------------------------- */
 
+
         /* Case: invalid index (0) -> rejected */
         assertCommandFailure(EditCommand.COMMAND_WORD + " 0 " + PREFIX_RATING + "5",
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
@@ -129,7 +130,9 @@ public class EditCommandSystemTest extends BibliotekSystemTest {
      * @see EditCommandSystemTest#assertCommandSuccess(String, Book, Model)
      */
     private void assertCommandSuccess(String command, Index index, Book expectedBook) throws Exception {
-        Model expectedModel = new ModelManager(getModel().getBookShelf(), new UserPrefs());
+        Model model = getModel();
+        Model expectedModel = new ModelManager(model.getBookShelf(), new UserPrefs(),
+                model.getRecentBooksListAsBookShelf(), model.getAliasList());
         expectedModel.updateBookListFilter(getModel().getBookListFilter());
         expectedModel.updateBook(expectedModel.getDisplayBookList().get(index.getZeroBased()), expectedBook);
         assertCommandSuccess(command, expectedBook, expectedModel);
@@ -142,7 +145,7 @@ public class EditCommandSystemTest extends BibliotekSystemTest {
      * 3. Result display box displays the success message.<br>
      * 4. {@code Model}, {@code Storage} and {@code BookListPanel} equal to the corresponding components
      * after editing.<br>
-     * 5. Selected search results and recent books card remain unchanged.<br>
+     * 5. Selected book card remain unchanged.<br>
      * 6. Status bar's sync status changes.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>

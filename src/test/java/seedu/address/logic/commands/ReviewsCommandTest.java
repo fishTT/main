@@ -30,6 +30,7 @@ import seedu.address.model.book.Book;
 import seedu.address.network.NetworkManager;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
+//@@author qiu-siqi
 /**
  * Contains integration tests (interaction with the Model) for {@code ReviewsCommand}.
  */
@@ -53,7 +54,7 @@ public class ReviewsCommandTest {
     }
 
     @Test
-    public void execute_validIndexBookShelf_success() throws Exception {
+    public void execute_validIndexBookShelf_success() {
         ReviewsCommand reviewsCommand = prepareCommand(INDEX_FIRST_BOOK);
         ModelManager expectedModel = new ModelManager(model.getBookShelf(), new UserPrefs());
 
@@ -70,7 +71,7 @@ public class ReviewsCommandTest {
     }
 
     @Test
-    public void execute_validIndexSearchResults_success() throws Exception {
+    public void execute_validIndexSearchResults_success() {
         prepareSearchResultListInModel(model);
 
         ReviewsCommand reviewsCommand = prepareCommand(INDEX_FIRST_BOOK);
@@ -92,7 +93,7 @@ public class ReviewsCommandTest {
     }
 
     @Test
-    public void execute_validIndexRecentBooks_success() throws Exception {
+    public void execute_validIndexRecentBooks_success() {
         prepareRecentBooksListInModel(model);
 
         ReviewsCommand reviewsCommand = prepareCommand(INDEX_FIRST_BOOK);
@@ -114,7 +115,7 @@ public class ReviewsCommandTest {
     }
 
     @Test
-    public void equals() throws Exception {
+    public void equals() {
         ReviewsCommand reviewsFirstCommand = prepareCommand(INDEX_FIRST_BOOK);
         ReviewsCommand reviewsSecondCommand = prepareCommand(INDEX_SECOND_BOOK);
 

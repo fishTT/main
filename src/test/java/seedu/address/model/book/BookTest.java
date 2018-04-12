@@ -14,47 +14,47 @@ public class BookTest {
                 null, null, null, null, null, null, null, null, null));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(null, new Isbn(""),
-                Collections.emptySet(), new Title(""), Collections.emptySet(),
+                Collections.emptyList(), new Title(""), Collections.emptyList(),
                 new Description(""), new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), null,
-                Collections.emptySet(), new Title(""), Collections.emptySet(),
+                Collections.emptyList(), new Title(""), Collections.emptyList(),
                 new Description(""), new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                null, new Title(""), Collections.emptySet(),
+                null, new Title(""), Collections.emptyList(),
                 new Description(""), new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), null, Collections.emptySet(),
+                Collections.emptyList(), null, Collections.emptyList(),
                 new Description(""), new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), new Title(""), null,
+                Collections.emptyList(), new Title(""), null,
                 new Description(""), new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), new Title(""), Collections.emptySet(),
+                Collections.emptyList(), new Title(""), Collections.emptyList(),
                 null, new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), new Title(""), Collections.emptySet(), new Description(""),
+                Collections.emptyList(), new Title(""), Collections.emptyList(), new Description(""),
                 null, Priority.LOW, new Rating(-1), new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), new Title(""), Collections.emptySet(), new Description(""),
+                Collections.emptyList(), new Title(""), Collections.emptyList(), new Description(""),
                 Status.READ, null, new Rating(-1), new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), new Title(""), Collections.emptySet(), new Description(""),
+                Collections.emptyList(), new Title(""), Collections.emptyList(), new Description(""),
                 Status.READ, Priority.LOW, null, new Publisher(""), new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), new Title(""), Collections.emptySet(),
+                Collections.emptyList(), new Title(""), Collections.emptyList(),
                 new Description(""), null, new PublicationDate("")));
 
         Assert.assertThrows(NullPointerException.class, () -> new Book(new Gid(""), new Isbn(""),
-                Collections.emptySet(), new Title(""), Collections.emptySet(),
+                Collections.emptyList(), new Title(""), Collections.emptyList(),
                 new Description(""), new Publisher(""), null));
     }
 

@@ -9,6 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
@@ -50,9 +51,22 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void getFilteredBookList_modifyList_throwsUnsupportedOperationException() {
+    public void execute_closeCommand_corrected() {
+        assertCommandSuccess("lst", String.format(Messages.MESSAGE_CORRECTED_COMMAND, "list"), model);
+        assertCommandSuccess("y",
+                String.format(ListCommand.MESSAGE_SUCCESS, model.getDisplayBookList().size()), model);
+    }
+
+    @Test
+    public void getDisplayBookList_modifyList_throwsUnsupportedOperationException() {
         thrown.expect(UnsupportedOperationException.class);
         logic.getDisplayBookList().remove(0);
+    }
+
+    @Test
+    public void getDisplayAliasList_modifyList_throwsUnsupportedOperationException() {
+        thrown.expect(UnsupportedOperationException.class);
+        logic.getDisplayAliasList().remove(0);
     }
 
     /**

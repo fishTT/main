@@ -3,10 +3,11 @@ package seedu.address.logic.commands;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.ui.SwitchToBookListRequestEvent;
+import seedu.address.commons.events.ui.ActiveListChangedEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.ActiveListType;
 import seedu.address.model.Model;
 import seedu.address.network.Network;
 
@@ -27,9 +28,11 @@ public class UndoCommand extends Command {
             throw new CommandException(MESSAGE_FAILURE);
         }
 
-        undoStack.popUndo().undo();
-        EventsCenter.getInstance().post(new SwitchToBookListRequestEvent());
-        return new CommandResult(MESSAGE_SUCCESS);
+        String message = undoStack.popUndo().undo();
+        model.updateBookListFilter(Model.PREDICATE_SHOW_ALL_BOOKS);
+        model.setActiveListType(ActiveListType.BOOK_SHELF);
+        EventsCenter.getInstance().post(new ActiveListChangedEvent());
+        return new CommandResult(message);
     }
 
     @Override

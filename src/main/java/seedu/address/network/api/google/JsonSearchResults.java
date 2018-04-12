@@ -17,6 +17,7 @@ import seedu.address.model.book.exceptions.DuplicateBookException;
 import seedu.address.model.book.exceptions.InvalidBookException;
 import seedu.address.model.util.BookDataUtil;
 
+//@@author takuyakanbr
 /**
  * A temporary data holder used for deserialization of the JSON response
  * from the book searching endpoint of Google Books API.
@@ -43,15 +44,21 @@ public class JsonSearchResults {
     }
 
     /**
-     * Converts this data holder object into the model's BookShelf object.
+     * Converts this data holder object into the model's BookShelf object,
+     * with the specified limit on the number of books to populate the book shelf with.
      */
-    public ReadOnlyBookShelf toModelType() {
+    public ReadOnlyBookShelf toModelType(int maxBookCount) {
         BookShelf bookShelf = new BookShelf();
 
+        int bookCount = 0;
         for (JsonVolume volume : items) {
             try {
                 Book book = convertToBook(volume);
                 bookShelf.addBook(book);
+                ++bookCount;
+                if (bookCount >= maxBookCount) {
+                    break;
+                }
             } catch (InvalidBookException | DuplicateBookException e) {
                 logger.warning(e.getMessage());
             }
@@ -71,8 +78,8 @@ public class JsonSearchResults {
         }
 
         return new Book(new Gid(volume.id), isbn,
-                BookDataUtil.getAuthorSet(volumeInfo.authors), new Title(volumeInfo.title),
-                BookDataUtil.getCategorySet(volumeInfo.categories), new Description(volumeInfo.description),
+                BookDataUtil.getAuthorList(volumeInfo.authors), new Title(volumeInfo.title),
+                BookDataUtil.getCategoryList(volumeInfo.categories), new Description(volumeInfo.description),
                 new Publisher(volumeInfo.publisher), new PublicationDate(volumeInfo.publishedDate));
     }
 
@@ -90,6 +97,7 @@ public class JsonSearchResults {
         private String id = "";
         private JsonVolumeInfo volumeInfo = new JsonVolumeInfo();
 
+        //@@author
         public void setId(String id) {
             this.id = id;
         }
@@ -99,6 +107,7 @@ public class JsonSearchResults {
         }
     }
 
+    //@@author takuyakanbr
     /** Temporary data holder used for deserialization. */
     private static class JsonVolumeInfo {
         private String title = "";
@@ -109,6 +118,7 @@ public class JsonSearchResults {
         private JsonIndustryIdentifiers[] industryIdentifiers = new JsonIndustryIdentifiers[0];
         private String[] categories = new String[0];
 
+        //@@author
         public void setIndustryIdentifiers(JsonIndustryIdentifiers[] industryIdentifiers) {
             this.industryIdentifiers = industryIdentifiers;
         }

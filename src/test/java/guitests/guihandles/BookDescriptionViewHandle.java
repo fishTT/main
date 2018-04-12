@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.web.WebView;
 import seedu.address.commons.core.LogsCenter;
 
+//@@author qiu-siqi
 /**
  * Provides a handle for {@code BookDescriptionView}.
  */

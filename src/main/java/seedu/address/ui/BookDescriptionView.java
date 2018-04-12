@@ -10,6 +10,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import seedu.address.model.book.Book;
 
+//@@author qiu-siqi
 /**
  * The Region showing description of books.
  */

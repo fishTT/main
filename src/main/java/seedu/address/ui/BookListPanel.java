@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -20,6 +19,7 @@ import seedu.address.model.book.Book;
  */
 public class BookListPanel extends UiPart<Region> {
     private static final String FXML = "BookListPanel.fxml";
+
     private final Logger logger = LogsCenter.getLogger(BookListPanel.class);
 
     @FXML
@@ -31,35 +31,43 @@ public class BookListPanel extends UiPart<Region> {
         registerAsAnEventHandler(this);
     }
 
-    private void setConnections(ObservableList<Book> bookList) {
+    /**
+     * Set the currently displayed book list to {@code bookList}.
+     */
+    protected void setBookList(ObservableList<Book> bookList) {
         bookListView.setItems(bookList);
         bookListView.setCellFactory(listView -> new BookListViewCell());
+    }
+
+    private void setConnections(ObservableList<Book> bookList) {
+        setBookList(bookList);
         setEventHandlerForSelectionChangeEvent();
     }
 
     private void setEventHandlerForSelectionChangeEvent() {
         bookListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    if (newValue != null && this.getRoot().isVisible()) {
+                    if (newValue != null) {
                         logger.fine("Selection in book list panel changed to : '" + newValue + "'");
                         raise(new BookListSelectionChangedEvent(newValue));
                     }
                 });
     }
 
+    protected void clearSelection() {
+        bookListView.getSelectionModel().clearSelection();
+    }
+
+    protected void scrollToTop() {
+        bookListView.scrollTo(0);
+    }
+
     /**
      * Scrolls to the {@code Book} at the {@code index} and selects it.
      */
     private void scrollTo(int index) {
-        Platform.runLater(() -> {
-            bookListView.scrollTo(index);
-            bookListView.getSelectionModel().clearAndSelect(index);
-        });
-    }
-
-    protected void clearSelectionAndScrollToTop() {
-        bookListView.getSelectionModel().clearSelection();
-        bookListView.scrollTo(0);
+        bookListView.scrollTo(index);
+        bookListView.getSelectionModel().clearAndSelect(index);
     }
 
     @Subscribe

@@ -18,6 +18,7 @@ import seedu.address.logic.UndoStack;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.book.Book;
 import seedu.address.network.NetworkManager;
 
 public class UndoCommandTest {
@@ -41,17 +42,21 @@ public class UndoCommandTest {
                 Arrays.asList(deleteCommandOne, deleteCommandTwo));
         UndoCommand undoCommand = new UndoCommand();
         undoCommand.setData(model, MOCK_NETWORK_MANAGER, EMPTY_COMMAND_HISTORY, undoStack);
+        Book deleteCommandOneBook = model.getDisplayBookList().get(INDEX_FIRST_BOOK.getZeroBased());
         deleteCommandOne.execute();
+        Book deleteCommandTwoBook = model.getDisplayBookList().get(INDEX_FIRST_BOOK.getZeroBased());
         deleteCommandTwo.execute();
 
         // multiple commands in undoStack
         Model expectedModel = new ModelManager(getTypicalBookShelf(), new UserPrefs());
         deleteFirstBook(expectedModel);
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(undoCommand, model,
+                String.format(DeleteCommand.UNDO_SUCCESS, deleteCommandTwoBook), expectedModel);
 
         // single command in undoStack
         expectedModel = new ModelManager(getTypicalBookShelf(), new UserPrefs());
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(undoCommand, model,
+                String.format(DeleteCommand.UNDO_SUCCESS, deleteCommandOneBook), expectedModel);
 
         // no command in undoStack
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);

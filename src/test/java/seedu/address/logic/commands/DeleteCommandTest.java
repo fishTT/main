@@ -128,7 +128,8 @@ public class DeleteCommandTest {
         undoStack.push(deleteCommand);
 
         // undo -> reverts bookshelf back to previous state and filtered book list to show all books
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(undoCommand, model,
+                String.format(DeleteCommand.UNDO_SUCCESS, bookToDelete), expectedModel);
     }
 
     @Test
@@ -140,6 +141,9 @@ public class DeleteCommandTest {
 
         // execution failed -> deleteCommand not pushed into undoStack
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
+
+        // no commands in undoStack -> undoCommand fail
+        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
     }
 
     /**
@@ -162,7 +166,8 @@ public class DeleteCommandTest {
         undoStack.push(deleteCommand);
 
         // undo -> reverts book shelf back to previous state and filtered book list to show all books
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(undoCommand, model,
+                String.format(DeleteCommand.UNDO_SUCCESS, bookToDelete), expectedModel);
 
         expectedModel.deleteBook(bookToDelete);
         assertNotEquals(bookToDelete, model.getDisplayBookList().get(INDEX_FIRST_BOOK.getZeroBased()));

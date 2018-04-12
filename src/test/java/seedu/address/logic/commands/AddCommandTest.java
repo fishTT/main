@@ -31,6 +31,7 @@ import seedu.address.model.UserPrefs;
 import seedu.address.model.book.Book;
 import seedu.address.network.NetworkManager;
 
+//@@author qiu-siqi
 /**
  * Contains integration tests (interaction with the Model and UndoCommand) and unit tests for
  * {@code AddCommand}.
@@ -112,8 +113,10 @@ public class AddCommandTest {
         UndoStack undoStack = new UndoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoStack);
 
+        Book toAdd = model.getSearchResultsList().get(0);
+
         NetworkManager networkManagerMock = mock(NetworkManager.class);
-        when(networkManagerMock.getBookDetails(model.getSearchResultsList().get(0).getGid().gid))
+        when(networkManagerMock.getBookDetails(toAdd.getGid().gid))
                 .thenReturn(CompletableFuture.completedFuture(model.getSearchResultsList().get(0)));
 
         AddCommand addCommand = new AddCommand(INDEX_FIRST_BOOK, false);
@@ -124,7 +127,7 @@ public class AddCommandTest {
         undoStack.push(addCommand);
 
         // undo -> reverts bookshelf back to previous state
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(undoCommand, model, String.format(AddCommand.UNDO_SUCCESS, toAdd), expectedModel);
     }
 
     @Test

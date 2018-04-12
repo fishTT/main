@@ -5,7 +5,6 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalBooks.getTypicalBookShelf;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
@@ -14,14 +13,13 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.network.NetworkManager;
-import seedu.address.ui.testutil.EventsCollectorRule;
+import seedu.address.testutil.TypicalBooks;
 
+//@@author qiu-siqi
 /**
  * Contains integration tests (interaction with the Model) and unit tests for RecentCommand.
  */
 public class RecentCommandTest {
-    @Rule
-    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     private Model model;
     private Model expectedModel;
@@ -37,7 +35,14 @@ public class RecentCommandTest {
     }
 
     @Test
-    public void execute_showsRecent() {
-        assertCommandSuccess(recentCommand, model, RecentCommand.MESSAGE_SUCCESS, expectedModel);
+    public void execute_showsEmptyRecent() {
+        assertCommandSuccess(recentCommand, model, String.format(RecentCommand.MESSAGE_SUCCESS, 0), expectedModel);
+    }
+
+    @Test
+    public void execute_showsNonEmptyRecent() {
+        model.addRecentBook(TypicalBooks.ARTEMIS);
+        expectedModel.addRecentBook(TypicalBooks.ARTEMIS);
+        assertCommandSuccess(recentCommand, model, String.format(RecentCommand.MESSAGE_SUCCESS, 1), expectedModel);
     }
 }

@@ -32,10 +32,8 @@ public class AliasesCommandSystemTest extends BibliotekSystemTest {
      * 1. Command box displays an empty string.<br>
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the expected message.<br>
-     * 4. {@code Model}, {@code Storage}, {@code SearchResultsPanel},
-     *    and {@code RecentBooksPanel} remain unchanged.<br>
-     * 5. Any selections in {@code BookListPanel}, {@code SearchResultsPanel},
-     *    and {@code RecentBooksPanel} are all deselected.<br>
+     * 4. {@code Model}, {@code Storage} remain unchanged.<br>
+     * 5. Any selection in {@code BookListPanel} is deselected.<br>
      * 6. {@code AliasListPanel} is visible, and {@code BookReviewsPanel} and {@code BookDetailsPanel} are hidden.<br>
      * 7. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
@@ -53,8 +51,6 @@ public class AliasesCommandSystemTest extends BibliotekSystemTest {
         assertAliasListDisplaysExpected(expectedModel);
 
         assertSelectedBookListCardDeselected();
-        assertSelectedSearchResultsCardDeselected();
-        assertSelectedRecentBooksCardDeselected();
         assertAliasListPanelVisible();
         assertStatusBarUnchanged();
     }

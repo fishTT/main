@@ -48,4 +48,8 @@ public class CommandBoxHandle extends NodeHandle<TextField> {
     public boolean isEnabled() {
         return getRootNode().isEditable();
     }
+
+    public void disable() {
+        getRootNode().setEditable(false);
+    }
 }

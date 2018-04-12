@@ -90,6 +90,24 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public ObservableList<Book> getActiveList() {
+        switch (activeListType) {
+        case BOOK_SHELF: {
+            return getDisplayBookList();
+        }
+        case SEARCH_RESULTS: {
+            return getSearchResultsList();
+        }
+        case RECENT_BOOKS: {
+            return getRecentBooksList();
+        }
+        default:
+            // Should never end up here
+            return getDisplayBookList();
+        }
+    }
+
+    @Override
     public void resetData(ReadOnlyBookShelf newData) {
         bookShelf.resetData(newData);
         indicateBookShelfChanged();

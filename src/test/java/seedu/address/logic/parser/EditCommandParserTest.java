@@ -16,7 +16,7 @@ import seedu.address.model.book.Priority;
 import seedu.address.model.book.Rating;
 import seedu.address.model.book.Status;
 import seedu.address.testutil.EditDescriptorBuilder;
-
+//@@author 592363789
 public class EditCommandParserTest {
     private static final int EMPTY_RATING = -1;
     private static final int NON_EMPTY_RATING = 5;

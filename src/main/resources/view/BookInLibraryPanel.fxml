@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="bookInLibraryPanel" xmlns="http://javafx.com/javafx/8"
+           xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="10" left="5" right="10" top="10"/>
+    </padding>
+    <StackPane fx:id="browserPlaceholder"/>
+</StackPane>

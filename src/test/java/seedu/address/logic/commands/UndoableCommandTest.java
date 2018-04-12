@@ -15,6 +15,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.book.Book;
 import seedu.address.model.book.exceptions.BookNotFoundException;
+import seedu.address.model.book.exceptions.DuplicateBookException;
 
 public class UndoableCommandTest {
     private final Model model = new ModelManager(getTypicalBookShelf(), new UserPrefs());
@@ -40,13 +41,26 @@ public class UndoableCommandTest {
      * Deletes the first person in the model's filtered list.
      */
     class DummyCommand extends UndoableCommand {
+        private Book bookToDelete;
+
         DummyCommand(Model model) {
             this.model = model;
         }
 
         @Override
+        protected String undo() {
+            try {
+                model.addBook(bookToDelete);
+                return "Success";
+            } catch (DuplicateBookException e) {
+                fail("Impossible: bookToDelete was deleted.");
+                return "Failure";
+            }
+        }
+
+        @Override
         public CommandResult executeUndoableCommand() throws CommandException {
-            Book bookToDelete = model.getDisplayBookList().get(0);
+            bookToDelete = model.getDisplayBookList().get(0);
             try {
                 model.deleteBook(bookToDelete);
             } catch (BookNotFoundException pnfe) {

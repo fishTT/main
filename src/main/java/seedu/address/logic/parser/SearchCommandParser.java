@@ -25,9 +25,9 @@ public class SearchCommandParser implements Parser<SearchCommand> {
 
         SearchCommand.SearchDescriptor searchDescriptor = new SearchCommand.SearchDescriptor();
 
-        String searchTerm = argMultimap.getPreamble();
-        if (searchTerm.length() > 0) {
-            searchDescriptor.setSearchTerm(searchTerm);
+        String keyWords = argMultimap.getPreamble();
+        if (keyWords.length() > 0) {
+            searchDescriptor.setKeyWords(keyWords);
         }
 
         argMultimap.getValue(PREFIX_ISBN).ifPresent(searchDescriptor::setIsbn);

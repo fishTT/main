@@ -37,6 +37,9 @@ public interface Model {
     /** Returns the type of list that is currently active. */
     ActiveListType getActiveListType();
 
+    /** Returns an unmodifiable view of the list that is currently active. */
+    ObservableList<Book> getActiveList();
+
     /** Sets the type of list that is currently active. */
     void setActiveListType(ActiveListType type);
 

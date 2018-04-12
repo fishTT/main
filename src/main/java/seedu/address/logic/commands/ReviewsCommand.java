@@ -2,8 +2,6 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
@@ -38,47 +36,21 @@ public class ReviewsCommand extends Command {
     @Override
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
-        Book toLoad;
-        switch (model.getActiveListType()) {
-        case BOOK_SHELF:
-        {
-            List<Book> displayBookList = model.getDisplayBookList();
 
-            if (targetIndex.getZeroBased() >= displayBookList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
-
-            toLoad = displayBookList.get(targetIndex.getZeroBased());
-            break;
-        }
-        case SEARCH_RESULTS:
-        {
-            List<Book> searchResultsList = model.getSearchResultsList();
-
-            if (targetIndex.getZeroBased() >= searchResultsList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
-
-            toLoad = searchResultsList.get(targetIndex.getZeroBased());
-            break;
-        }
-        case RECENT_BOOKS:
-        {
-            List<Book> recentBooksList = model.getRecentBooksList();
-
-            if (targetIndex.getZeroBased() >= recentBooksList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
-
-            toLoad = recentBooksList.get(targetIndex.getZeroBased());
-            break;
-        }
-        default:
-            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
+        checkValidIndex();
+        Book toLoad = model.getActiveList().get(targetIndex.getZeroBased());
 
         EventsCenter.getInstance().post(new ShowBookReviewsRequestEvent(toLoad));
         return new CommandResult(String.format(MESSAGE_SUCCESS, toLoad));
+    }
+
+    /**
+     * Throws a {@link CommandException} if the given index is not valid.
+     */
+    private void checkValidIndex() throws CommandException {
+        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
+        }
     }
 
     @Override

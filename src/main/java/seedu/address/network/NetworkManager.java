@@ -12,6 +12,7 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.model.ReadOnlyBookShelf;
 import seedu.address.model.book.Book;
 import seedu.address.network.api.google.GoogleBooksApi;
+import seedu.address.network.library.NlbCatalogueApi;
 
 //@@author takuyakanbr
 /**
@@ -26,18 +27,21 @@ public class NetworkManager extends ComponentManager implements Network {
 
     private final HttpClient httpClient;
     private final GoogleBooksApi googleBooksApi;
+    private final NlbCatalogueApi nlbCatalogueApi;
 
     public NetworkManager() {
         super();
         httpClient = new HttpClient();
         googleBooksApi = new GoogleBooksApi(httpClient);
+        nlbCatalogueApi = new NlbCatalogueApi(httpClient);
     }
 
-    protected NetworkManager(HttpClient httpClient, GoogleBooksApi googleBooksApi) {
+    protected NetworkManager(HttpClient httpClient, GoogleBooksApi googleBooksApi, NlbCatalogueApi nlbCatalogueApi) {
         super();
-        requireAllNonNull(httpClient, googleBooksApi);
+        requireAllNonNull(httpClient, googleBooksApi, nlbCatalogueApi);
         this.httpClient = httpClient;
         this.googleBooksApi = googleBooksApi;
+        this.nlbCatalogueApi = nlbCatalogueApi;
     }
 
     @Override
@@ -62,6 +66,19 @@ public class NetworkManager extends ComponentManager implements Network {
                 })
                 .exceptionally(e -> {
                     logger.warning("Get book details failed: " + StringUtil.getDetails(e));
+                    throw new CompletionException(e);
+                });
+    }
+
+    @Override
+    public CompletableFuture<String> searchLibraryForBook(Book book) {
+        return nlbCatalogueApi.searchForBook(book)
+                .thenApply(result -> {
+                    logger.info("Search books in library succeeded: " + book);
+                    return result;
+                })
+                .exceptionally(e -> {
+                    logger.warning("Search books in library failed: " + StringUtil.getDetails(e));
                     throw new CompletionException(e);
                 });
     }

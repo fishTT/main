@@ -27,6 +27,7 @@ import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.LibraryCommand;
 import seedu.address.logic.commands.ReviewsCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -125,6 +126,12 @@ public class BookShelfParserTest {
     }
 
     @Test
+    public void parseCommand_library() throws Exception {
+        LibraryCommand command = (LibraryCommand) parser.parseCommand(LibraryCommand.COMMAND_WORD + " 1");
+        assertEquals(new LibraryCommand(INDEX_FIRST_BOOK), command);
+    }
+
+    @Test
     public void parseCommand_history() throws Exception {
         assertTrue(parser.parseCommand(HistoryCommand.COMMAND_WORD) instanceof HistoryCommand);
         assertTrue(parser.parseCommand(HistoryCommand.COMMAND_WORD + " 3") instanceof HistoryCommand);
@@ -160,5 +167,47 @@ public class BookShelfParserTest {
         thrown.expect(ParseException.class);
         thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
         parser.parseCommand("unknownCommand");
+    }
+
+    @Test
+    public void attemptCommandAutoCorrection_add() throws Exception {
+        assertEquals("list by/title", parser.attemptCommandAutoCorrection("lst by/title"));
+        assertEquals("add 1", parser.attemptCommandAutoCorrection("dd 1"));
+        assertEquals("deletealias r", parser.attemptCommandAutoCorrection("deletealia r"));
+    }
+
+    @Test
+    public void attemptCommandAutoCorrection_remove() throws Exception {
+        assertEquals("edit 1 s/r", parser.attemptCommandAutoCorrection("eedit 1 s/r"));
+        assertEquals("delete 1", parser.attemptCommandAutoCorrection("deletee 1"));
+        assertEquals("aliases", parser.attemptCommandAutoCorrection("alliases"));
+    }
+
+    @Test
+    public void attemptCommandAutoCorrection_replace() throws Exception {
+        assertEquals("edit 1 s/r", parser.attemptCommandAutoCorrection("adit 1 s/r"));
+        assertEquals("recent", parser.attemptCommandAutoCorrection("resent"));
+        assertEquals("addalias a cmd/add", parser.attemptCommandAutoCorrection("addaliae a cmd/add"));
+    }
+
+    @Test
+    public void attemptCommandAutoCorrection_unknownCommand_throwsParseException() throws Exception {
+        thrown.expect(ParseException.class);
+        thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
+        parser.attemptCommandAutoCorrection("addbook 1");
+    }
+
+    @Test
+    public void attemptCommandAutoCorrection_tooDifferent_throwsParseException() throws Exception {
+        thrown.expect(ParseException.class);
+        thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
+        parser.attemptCommandAutoCorrection("eidt 1 s/r");
+    }
+
+    @Test
+    public void attemptCommandAutoCorrection_longText_throwsParseException() throws Exception {
+        thrown.expect(ParseException.class);
+        thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
+        parser.attemptCommandAutoCorrection("thisismetryingtomakeyoursystemcrashbygivingareallylongstring 1");
     }
 }

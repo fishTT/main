@@ -14,8 +14,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.BookListSelectionChangedEvent;
-import seedu.address.commons.events.ui.RecentBooksSelectionChangedEvent;
-import seedu.address.commons.events.ui.SearchResultsSelectionChangedEvent;
 import seedu.address.model.book.Book;
 
 /**
@@ -107,20 +105,12 @@ public class BookDetailsPanel extends UiPart<Region> {
         getRoot().setVisible(false);
     }
 
+    protected void show() {
+        getRoot().setVisible(true);
+    }
+
     @Subscribe
     private void handleBookListSelectionChangedEvent(BookListSelectionChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        showBook(event.getNewSelection());
-    }
-
-    @Subscribe
-    private void handleSearchResultsSelectionChangedEvent(SearchResultsSelectionChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        showBook(event.getNewSelection());
-    }
-
-    @Subscribe
-    private void handleRecentBooksSelectionChangedEvent(RecentBooksSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         showBook(event.getNewSelection());
     }

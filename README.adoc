@@ -27,9 +27,9 @@ endif::[]
 * Uses short and simple commands for user interactions
 * Provides a GUI to display lists and details of books
 * Search online for new books and add them with a command
-* Prioritize, rate, and mark books as read or unread
-* Filter and sort books by title, priority, rating, etc.
+* Prioritize, rate, and mark books as reading, read, or unread
 * View book reviews
+* View availability of books in the library
 
 == Site Map
 

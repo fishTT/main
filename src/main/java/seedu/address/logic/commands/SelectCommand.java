@@ -1,15 +1,13 @@
 package seedu.address.logic.commands;
 
-import java.util.List;
+import static java.util.Objects.requireNonNull;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.JumpToBookListIndexRequestEvent;
-import seedu.address.commons.events.ui.JumpToRecentBooksIndexRequestEvent;
-import seedu.address.commons.events.ui.JumpToSearchResultsIndexRequestEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.book.Book;
+import seedu.address.model.ActiveListType;
 
 /**
  * Selects a book identified using it's last displayed index from the book shelf.
@@ -34,48 +32,29 @@ public class SelectCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        switch (model.getActiveListType()) {
-        case BOOK_SHELF:
-        {
-            List<Book> filteredBookList = model.getDisplayBookList();
+        requireNonNull(model);
 
-            if (targetIndex.getZeroBased() >= filteredBookList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
+        checkValidIndex();
+        updateRecentBooksList();
 
-            model.addRecentBook(filteredBookList.get(targetIndex.getZeroBased()));
-            EventsCenter.getInstance().post(new JumpToBookListIndexRequestEvent(targetIndex));
-            break;
-        }
-        case SEARCH_RESULTS:
-        {
-            List<Book> searchResultsList = model.getSearchResultsList();
-
-            if (targetIndex.getZeroBased() >= searchResultsList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
-
-            model.addRecentBook(searchResultsList.get(targetIndex.getZeroBased()));
-            EventsCenter.getInstance().post(new JumpToSearchResultsIndexRequestEvent(targetIndex));
-            break;
-        }
-        case RECENT_BOOKS:
-        {
-            List<Book> recentBooksList = model.getRecentBooksList();
-
-            if (targetIndex.getZeroBased() >= recentBooksList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-            }
-
-            EventsCenter.getInstance().post(new JumpToRecentBooksIndexRequestEvent(targetIndex));
-            break;
-        }
-        default:
-            throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
-
+        EventsCenter.getInstance().post(new JumpToBookListIndexRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_SELECT_BOOK_SUCCESS, targetIndex.getOneBased()));
 
+    }
+
+    private void updateRecentBooksList() {
+        if (model.getActiveListType() != ActiveListType.RECENT_BOOKS) {
+            model.addRecentBook(model.getActiveList().get(targetIndex.getZeroBased()));
+        }
+    }
+
+    /**
+     * Throws a {@link CommandException} if the given index is not valid.
+     */
+    private void checkValidIndex() throws CommandException {
+        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
+        }
     }
 
     @Override

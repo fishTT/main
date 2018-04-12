@@ -28,6 +28,14 @@ public interface Network {
     CompletableFuture<Book> getBookDetails(String bookId);
 
     /**
+     * Searches for a book in the library.
+     *
+     * @param book book to search for.
+     * @return CompletableFuture that resolves to a String with the search results.
+     */
+    CompletableFuture<String> searchLibraryForBook(Book book);
+
+    /**
      * Stops the Network component.
      */
     void stop();

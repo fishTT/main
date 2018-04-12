@@ -17,7 +17,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.ui.SwitchToBookListRequestEvent;
+import seedu.address.commons.events.ui.ActiveListChangedEvent;
+import seedu.address.model.ActiveListType;
 import seedu.address.model.book.Book;
 import seedu.address.model.book.Priority;
 import seedu.address.model.book.Rating;
@@ -64,7 +65,8 @@ public class ListCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        EventsCenter.getInstance().post(new SwitchToBookListRequestEvent());
+        model.setActiveListType(ActiveListType.BOOK_SHELF);
+        EventsCenter.getInstance().post(new ActiveListChangedEvent());
         model.updateBookListFilter(filterDescriptor.buildCombinedFilter());
         model.updateBookListSorter(bookComparator);
         return new CommandResult(String.format(MESSAGE_SUCCESS, model.getDisplayBookList().size()));

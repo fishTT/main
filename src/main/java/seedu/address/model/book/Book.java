@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.UniqueList;
 
 /**
@@ -69,6 +70,22 @@ public class Book {
      */
     public List<Author> getAuthors() {
         return Collections.unmodifiableList(authors.toList());
+    }
+
+    /**
+     * Returns the authors as a comma delimited String.
+     */
+    public String getAuthorsAsString() {
+        StringBuilder builder = new StringBuilder();
+        getAuthors().forEach(author -> builder.append(author).append(", "));
+
+        // Remove the last ", "
+        if (getAuthors().size() > 0) {
+            builder.deleteCharAt(Index.fromOneBased(builder.length()).getZeroBased());
+            builder.deleteCharAt(Index.fromOneBased(builder.length()).getZeroBased());
+        }
+
+        return builder.toString();
     }
 
     public Title getTitle() {

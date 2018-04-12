@@ -10,10 +10,12 @@ import org.junit.Test;
 
 import guitests.GuiRobot;
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.SearchCommand;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.model.ActiveListType;
 import seedu.address.model.BookShelf;
 import seedu.address.model.Model;
 import seedu.address.model.book.Book;
@@ -37,7 +39,8 @@ public class AddCommandSystemTest extends BibliotekSystemTest {
 
         /* Case: undo adding firstBook to the list -> firstBook deleted */
         command = UndoCommand.COMMAND_WORD;
-        String expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
+        String expectedResultMessage = String.format(AddCommand.UNDO_SUCCESS, firstBook);
+        model.setActiveListType(ActiveListType.BOOK_SHELF);
         assertCommandSuccess(command, model, expectedResultMessage);
 
         /* Case: add to empty book shelf -> added */
@@ -56,31 +59,15 @@ public class AddCommandSystemTest extends BibliotekSystemTest {
         /* --------------------- Perform add operation while a book card is selected ------------------------ */
 
         /* Case: selects first card in the book list, add a book -> added, card selection remains unchanged */
-        selectSearchResult(Index.fromOneBased(1));
+        selectBook(Index.fromOneBased(1));
         command = AddCommand.COMMAND_WORD + " 2";
         assertCommandSuccess(command, searchResultsList.get(1));
 
         /* --------------------- Perform add operations on the recent books list -------------------------- */
 
-        /* Case: invalid index -> rejected */
-        model = getModel();
-        executeCommand("recent");
-        assertCommandFailure(AddCommand.COMMAND_WORD + " " + (model.getRecentBooksList().size() + 1),
-                MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-
-        /* Case: add a duplicate book -> rejected */
-        executeCommand("list");
-        selectBook(INDEX_FIRST_BOOK);
-        executeCommand("recent");
-        model = getModel();
-
-        command = AddCommand.COMMAND_WORD + " 1";
-        executeBackgroundCommand(command, AddCommand.MESSAGE_ADDING);
-        assertApplicationDisplaysExpected("", AddCommand.MESSAGE_DUPLICATE_BOOK, model);
-
         /* Case: add a valid book -> added */
         executeBackgroundCommand(SearchCommand.COMMAND_WORD + " a/iain banks", SearchCommand.MESSAGE_SEARCHING);
-        selectSearchResult(INDEX_FIRST_BOOK);
+        selectBook(INDEX_FIRST_BOOK);
         executeCommand("recent");
         model = getModel();
 
@@ -89,12 +76,22 @@ public class AddCommandSystemTest extends BibliotekSystemTest {
 
         assertCommandSuccess(command, firstBook);
 
+        /* Case: invalid index -> rejected */
+        model = getModel();
+        executeCommand("recent");
+        assertCommandFailure(AddCommand.COMMAND_WORD + " " + (model.getRecentBooksList().size() + 1),
+                MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
+
         /* ------------------------------- Perform invalid add operations ----------------------------------- */
+
+        /* Case: close keyword -> corrected */
+        executeCommand("adds 1");
+        assertApplicationDisplaysExpected("",
+                String.format(Messages.MESSAGE_CORRECTED_COMMAND, "add 1"), getModel());
 
         /* Case: add a duplicate book -> rejected */
         model = getModel();
-        executeBackgroundCommand(command, AddCommand.MESSAGE_ADDING);
-        assertApplicationDisplaysExpected("", AddCommand.MESSAGE_DUPLICATE_BOOK, model);
+        assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_BOOK);
 
         /* Case: invalid index (0) -> rejected */
         assertCommandFailure(AddCommand.COMMAND_WORD + " " + 0,
@@ -116,11 +113,8 @@ public class AddCommandSystemTest extends BibliotekSystemTest {
         assertCommandFailure(AddCommand.COMMAND_WORD + " 1 2",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
-        /* Case: invalid keyword -> rejected */
-        assertCommandFailure("adds 1", MESSAGE_UNKNOWN_COMMAND);
-
         /* Case: mixed case command word -> rejected */
-        assertCommandFailure("Add 1", MESSAGE_UNKNOWN_COMMAND);
+        assertCommandFailure("AdD 1", MESSAGE_UNKNOWN_COMMAND);
 
         /* Case: invalid active list type */
         executeCommand("list");
@@ -142,8 +136,7 @@ public class AddCommandSystemTest extends BibliotekSystemTest {
      * 3. Result display box displays the search successful message.<br>
      * 4. {@code Model}, {@code Storage} and {@code BookListPanel} equal to the corresponding components in
      * the current model added with {@code toAdd}.<br>
-     * 5. Selected search results and recent books card remain unchanged.<br>
-     * 6. Status bar's sync status changes.<br>
+     * 5. Status bar's sync status changes.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
@@ -164,8 +157,6 @@ public class AddCommandSystemTest extends BibliotekSystemTest {
         expectedModel.addBook(getModel().getBookShelf().getBookByIsbn(toAdd.getIsbn()).get());
 
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
-        assertSelectedSearchResultsCardUnchanged();
-        assertSelectedRecentBooksCardUnchanged();
         assertCommandBoxShowsDefaultStyle();
         assertCommandBoxEnabled();
         assertStatusBarUnchangedExceptSyncStatus();
@@ -175,16 +166,15 @@ public class AddCommandSystemTest extends BibliotekSystemTest {
      * Performs the same verification as {@code assertCommandSuccess(String, Book)} except asserts that
      * the,<br>
      * 1. Result display box displays {@code expectedResultMessage}.<br>
-     * 2. {@code Model}, {@code Storage}, {@code BookListPanel}, and {@code SearchResultsPanel} equal to the
+     * 2. {@code Model}, {@code Storage} and {@code BookListPanel} equal to the
      * corresponding components in {@code expectedModel}.<br>
+     * 3. Selection in {@code BookListPanel} remains unchanged.<br>
      * @see AddCommandSystemTest#assertCommandSuccess(String, Book)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage) {
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertSelectedBookListCardUnchanged();
-        assertSelectedSearchResultsCardUnchanged();
-        assertSelectedRecentBooksCardUnchanged();
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();
     }

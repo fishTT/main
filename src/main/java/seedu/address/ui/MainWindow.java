@@ -16,18 +16,15 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.WindowSettings;
+import seedu.address.commons.events.ui.ActiveListChangedEvent;
 import seedu.address.commons.events.ui.BookListSelectionChangedEvent;
 import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.commons.events.ui.ClearMainContentRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
-import seedu.address.commons.events.ui.RecentBooksSelectionChangedEvent;
-import seedu.address.commons.events.ui.SearchResultsSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowAliasListRequestEvent;
 import seedu.address.commons.events.ui.ShowBookReviewsRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.events.ui.SwitchToBookListRequestEvent;
-import seedu.address.commons.events.ui.SwitchToRecentBooksRequestEvent;
-import seedu.address.commons.events.ui.SwitchToSearchResultsRequestEvent;
+import seedu.address.commons.events.ui.ShowLibraryResultRequestEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
 
@@ -48,10 +45,10 @@ public class MainWindow extends UiPart<Stage> {
     private WelcomePanel welcomePanel;
     private BookDetailsPanel bookDetailsPanel;
     private BookReviewsPanel bookReviewsPanel;
+    private BookInLibraryPanel bookInLibraryPanel;
     private AliasListPanel aliasListPanel;
     private BookListPanel bookListPanel;
-    private SearchResultsPanel searchResultsPanel;
-    private RecentBooksPanel recentBooksPanel;
+    private HelpWindow helpWindow;
     private Config config;
     private UserPrefs prefs;
 
@@ -139,22 +136,19 @@ public class MainWindow extends UiPart<Stage> {
         welcomePanel = new WelcomePanel();
         bookDetailsPanel = new BookDetailsPanel();
         bookReviewsPanel = new BookReviewsPanel();
+        bookInLibraryPanel = new BookInLibraryPanel();
         aliasListPanel = new AliasListPanel(logic.getDisplayAliasList());
         mainContentPlaceholder.getChildren().add(welcomePanel.getRoot());
         mainContentPlaceholder.getChildren().add(bookDetailsPanel.getRoot());
         mainContentPlaceholder.getChildren().add(bookReviewsPanel.getRoot());
+        mainContentPlaceholder.getChildren().add(bookInLibraryPanel.getRoot());
         mainContentPlaceholder.getChildren().add(aliasListPanel.getRoot());
         bookReviewsPanel.getRoot().setVisible(false);
+        bookInLibraryPanel.getRoot().setVisible(false);
         bookDetailsPanel.setStyleSheet(prefs.getAppTheme().getCssFile());
 
         bookListPanel = new BookListPanel(logic.getDisplayBookList());
-        searchResultsPanel = new SearchResultsPanel(logic.getSearchResultsList());
-        recentBooksPanel = new RecentBooksPanel(logic.getRecentBooksList());
-        bookListPanelPlaceholder.getChildren().add(searchResultsPanel.getRoot());
         bookListPanelPlaceholder.getChildren().add(bookListPanel.getRoot());
-        bookListPanelPlaceholder.getChildren().add(recentBooksPanel.getRoot());
-        searchResultsPanel.getRoot().setVisible(false);
-        recentBooksPanel.getRoot().setVisible(false);
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -207,7 +201,9 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleHelp() {
-        HelpWindow helpWindow = new HelpWindow();
+        if (helpWindow == null) {
+            helpWindow = new HelpWindow();
+        }
         helpWindow.show();
     }
 
@@ -216,12 +212,14 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Clears the list selections in the book list, search results, and recent books panel.
+     * Hides all panels in the main content.
      */
-    private void clearAllListSelections() {
-        bookListPanel.clearSelection();
-        searchResultsPanel.clearSelection();
-        recentBooksPanel.clearSelection();
+    private void hideMainContent() {
+        welcomePanel.hide();
+        bookDetailsPanel.hide();
+        bookReviewsPanel.hide();
+        bookInLibraryPanel.hide();
+        aliasListPanel.hide();
     }
 
     /**
@@ -246,13 +244,16 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     @Subscribe
-    private void handleSwitchToBookListRequestEvent(SwitchToBookListRequestEvent event) {
+    private void handleActiveListChangedEvent(ActiveListChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
+
         welcomePanel.show();
         bookDetailsPanel.hide();
         bookReviewsPanel.hide();
         aliasListPanel.hide();
+
         bookListPanel.clearSelection();
+        bookListPanel.setBookList(logic.getActiveList());
         bookListPanel.scrollToTop();
         bookListPanel.getRoot().setVisible(true);
         searchResultsPanel.getRoot().setVisible(false);
@@ -285,6 +286,7 @@ public class MainWindow extends UiPart<Stage> {
         bookListPanel.getRoot().setVisible(false);
         searchResultsPanel.getRoot().setVisible(false);
         recentBooksPanel.getRoot().setVisible(true);
+
     }
 
     @Subscribe
@@ -312,7 +314,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     @Subscribe
-    private void handleRecentBooksSelectionChangedEvent(RecentBooksSelectionChangedEvent event) {
+    private void handleShowBookReviewsRequestEvent(ShowBookReviewsRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         welcomePanel.hide();
         bookReviewsPanel.hide();
@@ -320,7 +322,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     @Subscribe
-    private void handleShowBookReviewsRequestEvent(ShowBookReviewsRequestEvent event) {
+    private void handleShowBookInLibraryRequestEvent(ShowLibraryResultRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         clearAllListSelections();
         welcomePanel.hide();

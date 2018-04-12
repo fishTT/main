@@ -20,6 +20,9 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
+    /** Returns an unmodifiable view of the list that is currently active. */
+    ObservableList<Book> getActiveList();
+
     /** Returns an unmodifiable view of the filtered and sorted list of books */
     ObservableList<Book> getDisplayBookList();
 

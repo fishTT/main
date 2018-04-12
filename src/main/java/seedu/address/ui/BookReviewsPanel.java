@@ -8,12 +8,10 @@ import com.google.common.base.Charsets;
 import com.google.common.eventbus.Subscribe;
 import com.google.common.io.Resources;
 
-import javafx.concurrent.Worker;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
+import javafx.scene.layout.StackPane;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ShowBookReviewsRequestEvent;
@@ -34,7 +32,7 @@ public class BookReviewsPanel extends UiPart<Region> {
     private final String clearPageScript;
 
     @FXML
-    private WebView browser;
+    private StackPane browserPlaceholder;
 
     public BookReviewsPanel() {
         super(FXML);
@@ -52,13 +50,8 @@ public class BookReviewsPanel extends UiPart<Region> {
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
 
-        WebEngine engine = browser.getEngine();
-        engine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-            // run custom javascript when loading is complete
-            if (newState == Worker.State.SUCCEEDED) {
-                engine.executeScript(bookReviewsScript);
-            }
-        });
+        WebViewManager webViewManager = WebViewManager.getInstance();
+        webViewManager.onLoadSuccess(getRoot(), () -> webViewManager.executeScript(bookReviewsScript));
     }
 
     protected void loadPageForBook(Book book) {
@@ -66,18 +59,26 @@ public class BookReviewsPanel extends UiPart<Region> {
     }
 
     private void loadPage(String url) {
-        browser.getEngine().load(url);
+        WebViewManager.getInstance().load(browserPlaceholder, url);
+    }
+
+    private void clearPage() {
+        WebViewManager.getInstance().executeScript(clearPageScript);
     }
 
     protected void hide() {
         getRoot().setVisible(false);
     }
 
+    protected void show() {
+        getRoot().setVisible(true);
+    }
+
     @Subscribe
     private void handleShowBookReviewsRequestEvent(ShowBookReviewsRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        browser.getEngine().executeScript(clearPageScript);
+        clearPage();
+        show();
         loadPageForBook(event.getBook());
-        getRoot().setVisible(true);
     }
 }

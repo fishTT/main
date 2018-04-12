@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.FileUtil;
@@ -57,6 +59,17 @@ public class TestUtil {
         return model.getDisplayBookList().get(index.getZeroBased());
     }
 
+    //@@author takuyakanbr
+    /**
+     * Returns a {@link CompletableFuture} that has already completed exceptionally
+     * with an {@code IOException}.
+     */
+    public static <T> CompletableFuture<T> getFailedFuture() {
+        return CompletableFuture.completedFuture(null).thenApply(obj -> {
+            throw new CompletionException(new IOException());
+        });
+    }
+
     /**
      * Returns a random 8 character string to be used as a prefix to a filename.
      */
@@ -66,5 +79,4 @@ public class TestUtil {
         byte[] encodedBytes = Base64.getEncoder().encode(randomBytes);
         return new String(encodedBytes).replace("/", "-");
     }
-
 }

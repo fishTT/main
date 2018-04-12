@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -15,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoStack;
 import seedu.address.logic.commands.SearchCommand.SearchDescriptor;
@@ -24,6 +26,8 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.network.NetworkManager;
 import seedu.address.testutil.SearchDescriptorBuilder;
+import seedu.address.testutil.TestUtil;
+import seedu.address.ui.testutil.EventsCollectorRule;
 
 //@@author takuyakanbr
 /**
@@ -31,6 +35,8 @@ import seedu.address.testutil.SearchDescriptorBuilder;
  */
 public class SearchCommandTest {
 
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -48,29 +54,47 @@ public class SearchCommandTest {
     }
 
     @Test
-    public void execute_allFieldsSpecifiedWithSearchTerm_success() {
+    public void execute_allFieldsSpecifiedWithKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1")
-                .withCategory("1").withIsbn("1").withAuthor("1").withSearchTerm("searchterm").build();
+                .withCategory("1").withIsbn("1").withAuthor("1").withKeyWords("searchterm").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_allFieldsSpecifiedNoSearchTerm_success() {
+    public void execute_allFieldsSpecifiedNoKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1")
                 .withCategory("1").withIsbn("1").withAuthor("1").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_someFieldsSpecifiedNoSearchTerm_success() {
+    public void execute_someFieldsSpecifiedNoKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1").withIsbn("1").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_noFieldSpecifiedNoSearchTerm_success() {
+    public void execute_noFieldSpecifiedNoKeyWord_throwsAssertionError() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().build();
+        thrown.expect(AssertionError.class);
         assertExecutionSuccess(searchDescriptor);
+    }
+
+    @Test
+    public void execute_networkError_raisesExpectedEvent() {
+        SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withKeyWords("error").build();
+        SearchCommand searchCommand = new SearchCommand(searchDescriptor, false);
+
+        NetworkManager networkManagerMock = mock(NetworkManager.class);
+        when(networkManagerMock.searchBooks(searchDescriptor.toSearchString()))
+                .thenReturn(TestUtil.getFailedFuture());
+
+        searchCommand.setData(model, networkManagerMock, new CommandHistory(), new UndoStack());
+        searchCommand.execute();
+
+        NewResultAvailableEvent resultEvent = (NewResultAvailableEvent)
+                eventsCollectorRule.eventsCollector.getMostRecent(NewResultAvailableEvent.class);
+        assertEquals(SearchCommand.MESSAGE_SEARCH_FAIL, resultEvent.message);
     }
 
     @Test

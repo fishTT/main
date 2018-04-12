@@ -2,12 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.web.WebView?>
 
 <StackPane fx:id="bookReviewsPane" xmlns="http://javafx.com/javafx/8"
            xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="10" left="5" right="10" top="10"/>
     </padding>
-    <WebView fx:id="browser"/>
+    <StackPane fx:id="browserPlaceholder"/>
 </StackPane>

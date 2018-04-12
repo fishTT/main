@@ -25,7 +25,7 @@ public class ClearCommandSystemTest extends BibliotekSystemTest {
 
         /* Case: undo clearing book shelf -> original book shelf restored */
         String command = UndoCommand.COMMAND_WORD;
-        String expectedResultMessage = UndoCommand.MESSAGE_SUCCESS;
+        String expectedResultMessage = ClearCommand.UNDO_SUCCESS;
         assertCommandSuccess(command,  expectedResultMessage, model);
         assertSelectedBookListCardUnchanged();
 

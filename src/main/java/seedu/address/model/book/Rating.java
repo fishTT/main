@@ -3,7 +3,7 @@ package seedu.address.model.book;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import java.util.Arrays;
-
+//@@author 592363789
 /**
  * Represents a book's rating.
  * Guarantees: immutable.

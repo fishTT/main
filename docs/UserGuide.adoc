@@ -584,6 +584,12 @@ Format: `exit`
 Bibliotek saves data in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
+// tag::quoteOfTheDay[]
+=== Displaying quote of the day.
+
+Bibliotek displays a random quote of the day about book in the welcome panel.
+// end::quoteOfTheDay[]
+
 == Upcoming Features
 
 [[watch-command]]
@@ -649,6 +655,14 @@ Format: `import SOURCE`
 Think the font size is too small or large for your liking? You can customize the
 font size to your own needs. +
 Format: `fontsize FONT_SIZE`
+
+[[autpcomplete-command]]
+// tag::autocomplete[]
+=== Autocompleting commands : `Tab` _(coming in v2.0)_
+
+Do want to type faster? Fret not! Just press 'Tab' and Bibliotek will automatically 
+complete your commands for you. +
+// end::autocomplete[]
 
 [[setpassword-command]]
 === Setting a password : `setpassword` _(coming in v2.0)_

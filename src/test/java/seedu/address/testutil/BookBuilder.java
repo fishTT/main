@@ -1,7 +1,7 @@
 package seedu.address.testutil;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 import seedu.address.model.book.Author;
 import seedu.address.model.book.Book;
@@ -31,9 +31,9 @@ public class BookBuilder {
     private static final String DEFAULT_PUBLISHER = "Someone";
     private static final String DEFAULT_PUBLICATION_DATE = "2017-11-14";
 
-    private Set<Author> authors;
+    private List<Author> authors;
     private Title title;
-    private Set<Category> categories;
+    private List<Category> categories;
     private Description description;
     private Status status;
     private Priority priority;
@@ -44,9 +44,9 @@ public class BookBuilder {
     private Publisher publisher;
 
     public BookBuilder() {
-        authors = Collections.singleton(new Author(DEFAULT_AUTHOR));
+        authors = Collections.singletonList(new Author(DEFAULT_AUTHOR));
         title = new Title(DEFAULT_TITLE);
-        categories = Collections.singleton(new Category(DEFAULT_CATEGORY));
+        categories = Collections.singletonList(new Category(DEFAULT_CATEGORY));
         description = new Description(DEFAULT_DESCRIPTION);
         status = Status.DEFAULT_STATUS;
         priority = Priority.DEFAULT_PRIORITY;
@@ -75,7 +75,7 @@ public class BookBuilder {
      * Parses the {@code authors} into a {@code Set<Author>} and set it to the {@code Book} that we are building.
      */
     public BookBuilder withAuthors(String... authors) {
-        this.authors = BookDataUtil.getAuthorSet(authors);
+        this.authors = BookDataUtil.getAuthorList(authors);
         return this;
     }
 
@@ -91,7 +91,7 @@ public class BookBuilder {
      * Parses the {@code categories} into a {@code Set<Category>} and set it to the {@code Book} that we are building.
      */
     public BookBuilder withCategories(String... categories) {
-        this.categories = BookDataUtil.getCategorySet(categories);
+        this.categories = BookDataUtil.getCategoryList(categories);
         return this;
     }
 

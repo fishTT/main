@@ -7,6 +7,7 @@ import static java.util.Objects.requireNonNull;
  * Guarantees: immutable.
  */
 public class Category {
+    private static final String DISPLAY_PREFIX = "\uD83D\uDD16 ";
 
     public final String category;
 
@@ -18,6 +19,10 @@ public class Category {
     public Category(String category) {
         requireNonNull(category);
         this.category = category;
+    }
+
+    public String getDisplayText() {
+        return DISPLAY_PREFIX + category;
     }
 
     @Override

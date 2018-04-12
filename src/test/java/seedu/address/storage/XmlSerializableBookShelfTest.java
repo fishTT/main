@@ -1,6 +1,9 @@
 package seedu.address.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.testutil.TypicalBooks.ARTEMIS;
 
 import java.io.File;
 
@@ -40,4 +43,27 @@ public class XmlSerializableBookShelfTest {
         dataFromFile.toModelType();
     }
 
+    @Test
+    public void equals() throws Exception {
+        XmlSerializableBookShelf xmlBookShelf = new XmlSerializableBookShelf(TypicalBooks.getTypicalBookShelf());
+
+        // same object -> return true
+        assertTrue(xmlBookShelf.equals(xmlBookShelf));
+
+        // same books -> return true
+        XmlSerializableBookShelf xmlBookShelfCopy = new XmlSerializableBookShelf(TypicalBooks.getTypicalBookShelf());
+        assertTrue(xmlBookShelf.equals(xmlBookShelfCopy));
+
+        // different types -> returns false
+        assertFalse(xmlBookShelf.equals("string"));
+
+        // null -> returns false
+        assertFalse(xmlBookShelf.equals(null));
+
+        // different books -> return false
+        BookShelf bookShelf = new BookShelf();
+        bookShelf.addBook(ARTEMIS);
+        XmlSerializableBookShelf differentXmlBookShelf = new XmlSerializableBookShelf(bookShelf);
+        assertFalse(xmlBookShelf.equals(differentXmlBookShelf));
+    }
 }

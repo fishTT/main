@@ -2,6 +2,8 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -45,6 +47,7 @@ public class CommandBox extends UiPart<Region> {
         super(FXML);
         this.logic = logic;
         registerAsAnEventHandler(this);
+
         commandTextField.textProperty().addListener((ob, o, n) -> {
             // expand the textfield
             double width = TextUtil.computeTextWidth(commandTextField.getFont(),
@@ -65,6 +68,7 @@ public class CommandBox extends UiPart<Region> {
         CommandBoxHints commandBoxHints = new CommandBoxHints(commandTextField);
         commandBoxItems.getChildren().add(commandBoxHints.getRoot());
         commandTextField.prefColumnCountProperty().bind(commandTextField.textProperty().length());
+
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((observable, oldInput, newInput) ->
                 setStyleByValidityOfInput(newInput));
@@ -79,6 +83,9 @@ public class CommandBox extends UiPart<Region> {
      */
     @FXML
     private void handleKeyPress(KeyEvent keyEvent) {
+        if (!commandTextField.isEditable()) {
+            return;
+        }
         switch (keyEvent.getCode()) {
         case UP:
             // As up and down buttons will alter the position of the caret,
@@ -136,6 +143,9 @@ public class CommandBox extends UiPart<Region> {
      */
     @FXML
     private void handleCommandInputChanged() {
+        if (!commandTextField.isEditable()) {
+            return;
+        }
         try {
             CommandResult commandResult = logic.execute(commandTextField.getText());
             initHistory();
@@ -201,4 +211,15 @@ public class CommandBox extends UiPart<Region> {
         styleClass.add(ERROR_STYLE_CLASS);
     }
 
+    @Subscribe
+    private void handleDisableCommandBoxRequestEvent(DisableCommandBoxRequestEvent event) {
+        commandTextField.setEditable(false);
+        commandTextField.setFocusTraversable(false);
+    }
+
+    @Subscribe
+    private void handleEnableCommandBoxRequestEvent(EnableCommandBoxRequestEvent event) {
+        commandTextField.setEditable(true);
+        commandTextField.setFocusTraversable(true);
+    }
 }

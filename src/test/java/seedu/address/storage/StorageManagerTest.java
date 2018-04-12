@@ -3,6 +3,7 @@ package seedu.address.storage;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.testutil.TypicalAliases.getTypicalAliasList;
 import static seedu.address.testutil.TypicalBooks.getTypicalBookShelf;
 
 import java.io.IOException;
@@ -12,11 +13,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import seedu.address.commons.events.model.AliasListChangedEvent;
 import seedu.address.commons.events.model.BookShelfChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.model.BookShelf;
 import seedu.address.model.ReadOnlyBookShelf;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.alias.ReadOnlyAliasList;
+import seedu.address.model.alias.UniqueAliasList;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class StorageManagerTest {
@@ -33,7 +37,8 @@ public class StorageManagerTest {
         XmlBookShelfStorage bookShelfStorage = new XmlBookShelfStorage(getTempFilePath("biblio"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
         XmlRecentBooksStorage recentBooksStorage = new XmlRecentBooksStorage(getTempFilePath("recent"));
-        storageManager = new StorageManager(bookShelfStorage, userPrefsStorage, recentBooksStorage);
+        XmlAliasListStorage aliasListStorage = new XmlAliasListStorage(getTempFilePath("alias"));
+        storageManager = new StorageManager(bookShelfStorage, userPrefsStorage, recentBooksStorage, aliasListStorage);
     }
 
     private String getTempFilePath(String fileName) {
@@ -75,8 +80,9 @@ public class StorageManagerTest {
     @Test
     public void handleBookShelfChangedEvent_exceptionThrown_eventRaised() {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
-        Storage storage = new StorageManager(new XmlBookShelfStorageExceptionThrowingStub("dummy"),
-                new JsonUserPrefsStorage("dummy"), new XmlRecentBooksStorage("dummy"));
+        Storage storage = new StorageManager(
+                new XmlBookShelfStorageExceptionThrowingStub("dummy"), new JsonUserPrefsStorage("dummy"),
+                new XmlRecentBooksStorage("dummy"), new XmlAliasListStorage("dummy"));
         storage.handleBookShelfChangedEvent(new BookShelfChangedEvent(new BookShelf()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
@@ -96,21 +102,58 @@ public class StorageManagerTest {
     }
 
     @Test
+    public void aliasListReadSave() throws Exception {
+        /*
+         * Note: This is an integration test that verifies the StorageManager is properly wired to the
+         * XmlAliasListStorage class.
+         * More extensive testing of alias list saving/reading is done in XmlAliasListStorageTest class.
+         */
+        UniqueAliasList original = getTypicalAliasList();
+        storageManager.saveAliasList(original);
+        ReadOnlyAliasList retrieved = storageManager.readAliasList().get();
+        assertEquals(original, retrieved);
+    }
+
+    @Test
     public void getRecentBooksFilePath() {
         assertNotNull(storageManager.getRecentBooksFilePath());
     }
 
-    /**
-     * A Stub class to throw an exception when the save method is called
-     */
-    class XmlBookShelfStorageExceptionThrowingStub extends XmlBookShelfStorage {
+    @Test
+    public void handleAliasListChangedEvent_exceptionThrown_eventRaised() {
+        // create a StorageManager while injecting a stub that throws an exception when the save method is called
+        Storage storage = new StorageManager(new XmlBookShelfStorage("dummy"), new JsonUserPrefsStorage("dummy"),
+                new XmlRecentBooksStorage("dummy"), new XmlAliasListStorageExceptionThrowingStub("dummy"));
+        storage.handleAliasListChangedEvent(new AliasListChangedEvent(new UniqueAliasList()));
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
+    }
 
-        public XmlBookShelfStorageExceptionThrowingStub(String filePath) {
+    /**
+     * A Stub class to throw an exception when the save method is called.
+     */
+    private static class XmlBookShelfStorageExceptionThrowingStub extends XmlBookShelfStorage {
+
+        private XmlBookShelfStorageExceptionThrowingStub(String filePath) {
             super(filePath);
         }
 
         @Override
         public void saveBookShelf(ReadOnlyBookShelf bookShelf, String filePath) throws IOException {
+            throw new IOException("dummy exception");
+        }
+    }
+
+    /**
+     * A Stub class to throw an exception when the save method is called.
+     */
+    private static class XmlAliasListStorageExceptionThrowingStub extends XmlAliasListStorage {
+
+        private XmlAliasListStorageExceptionThrowingStub(String filePath) {
+            super(filePath);
+        }
+
+        @Override
+        public void saveAliasList(ReadOnlyAliasList aliasList) throws IOException {
             throw new IOException("dummy exception");
         }
     }

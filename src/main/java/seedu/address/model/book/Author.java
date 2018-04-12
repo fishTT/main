@@ -7,6 +7,7 @@ import static java.util.Objects.requireNonNull;
  * Guarantees: immutable.
  */
 public class Author {
+    private static final String DISPLAY_PREFIX = "\uD83D\uDC64 ";
 
     public final String fullName;
 
@@ -18,6 +19,10 @@ public class Author {
     public Author(String fullName) {
         requireNonNull(fullName);
         this.fullName = fullName;
+    }
+
+    public String getDisplayText() {
+        return DISPLAY_PREFIX + fullName;
     }
 
     @Override

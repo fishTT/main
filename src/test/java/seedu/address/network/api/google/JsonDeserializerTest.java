@@ -13,6 +13,7 @@ import seedu.address.commons.util.FileUtil;
 import seedu.address.model.ReadOnlyBookShelf;
 import seedu.address.model.book.Book;
 
+//@@author takuyakanbr
 public class JsonDeserializerTest {
     private static final String TEST_DATA_BOOK_DETAILS_FOLDER =
             FileUtil.getPath("src/test/data/JsonDeserializerTest/bookDetails/");

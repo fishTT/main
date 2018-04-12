@@ -92,11 +92,7 @@ public class BookShelf implements ReadOnlyBookShelf {
      * @throws BookNotFoundException if the {@code key} is not in this {@code BookShelf}.
      */
     public boolean removeBook(Book key) throws BookNotFoundException {
-        if (books.remove(key)) {
-            return true;
-        } else {
-            throw new BookNotFoundException();
-        }
+        return books.remove(key);
     }
 
     //// util methods

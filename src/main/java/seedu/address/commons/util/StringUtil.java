@@ -83,4 +83,14 @@ public class StringUtil {
             return "";
         }
     }
+
+    // Reused from http://www.extensionmethod.net/1555/csharp/string/isvalidurl
+    /**
+     * Checks whether the string {@code s} denotes a valid URL.
+     */
+    public static boolean isValidUrl(String s) {
+        requireNonNull(s);
+        return s.matches("http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=,'#]*)?");
+    }
+
 }

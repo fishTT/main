@@ -1,7 +1,7 @@
 package seedu.address.model.util;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import seedu.address.model.book.Author;
 import seedu.address.model.book.Category;
@@ -12,10 +12,10 @@ import seedu.address.model.book.Category;
 public class BookDataUtil {
 
     /**
-     * Returns an author set containing the list of strings given.
+     * Returns an author list containing the list of strings given.
      */
-    public static Set<Author> getAuthorSet(String... strings) {
-        HashSet<Author> authors = new HashSet<>();
+    public static List<Author> getAuthorList(String... strings) {
+        ArrayList<Author> authors = new ArrayList<>();
         for (String s : strings) {
             authors.add(new Author(s));
         }
@@ -24,10 +24,10 @@ public class BookDataUtil {
     }
 
     /**
-     * Returns a category set containing the list of strings given.
+     * Returns a category list containing the list of strings given.
      */
-    public static Set<Category> getCategorySet(String... strings) {
-        HashSet<Category> categories = new HashSet<>();
+    public static List<Category> getCategoryList(String... strings) {
+        ArrayList<Category> categories = new ArrayList<>();
         for (String s : strings) {
             categories.add(new Category(s));
         }

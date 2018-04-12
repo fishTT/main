@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalBooks.BABYLON_ASHES;
 import org.junit.Before;
 import org.junit.Test;
 
+import guitests.GuiRobot;
 import guitests.guihandles.BookDetailsPanelHandle;
 import seedu.address.commons.events.ui.BookListSelectionChangedEvent;
 import seedu.address.model.book.Book;
@@ -70,6 +71,8 @@ public class BookDetailsPanelTest extends GuiUnitTest {
     private void assertDetailsPanelDisplaysBook(Book expectedBook) {
         guiRobot.pauseForHuman();
         assertTrue(bookDetailsPanelHandle.isVisible());
+        new GuiRobot().waitForEvent(() ->
+                bookDetailsPanelHandle.getDescription().equals(expectedBook.getDescription().toString()), 1500);
         GuiTestAssert.assertDetailsPanelDisplaysBook(expectedBook, bookDetailsPanelHandle);
     }
 }

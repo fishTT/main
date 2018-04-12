@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -15,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoStack;
 import seedu.address.logic.commands.SearchCommand.SearchDescriptor;
@@ -24,12 +26,17 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.network.NetworkManager;
 import seedu.address.testutil.SearchDescriptorBuilder;
+import seedu.address.testutil.TestUtil;
+import seedu.address.ui.testutil.EventsCollectorRule;
 
+//@@author takuyakanbr
 /**
  * Contains integration tests (interaction with the Model) and unit tests for SearchCommand.
  */
 public class SearchCommandTest {
 
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -70,6 +77,23 @@ public class SearchCommandTest {
     public void execute_noFieldSpecifiedNoSearchTerm_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().build();
         assertExecutionSuccess(searchDescriptor);
+    }
+
+    @Test
+    public void execute_networkError_raisesExpectedEvent() {
+        SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withSearchTerm("error").build();
+        SearchCommand searchCommand = new SearchCommand(searchDescriptor, false);
+
+        NetworkManager networkManagerMock = mock(NetworkManager.class);
+        when(networkManagerMock.searchBooks(searchDescriptor.toSearchString()))
+                .thenReturn(TestUtil.getFailedFuture());
+
+        searchCommand.setData(model, networkManagerMock, new CommandHistory(), new UndoStack());
+        searchCommand.execute();
+
+        NewResultAvailableEvent resultEvent = (NewResultAvailableEvent)
+                eventsCollectorRule.eventsCollector.getMostRecent(NewResultAvailableEvent.class);
+        assertEquals(SearchCommand.MESSAGE_SEARCH_FAIL, resultEvent.message);
     }
 
     @Test

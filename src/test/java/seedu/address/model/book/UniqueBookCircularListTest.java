@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 import javafx.collections.ObservableList;
 import seedu.address.testutil.TypicalBooks;
 
+//@@author qiu-siqi
 public class UniqueBookCircularListTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();

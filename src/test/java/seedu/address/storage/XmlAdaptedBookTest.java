@@ -1,9 +1,12 @@
 package seedu.address.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static seedu.address.storage.XmlAdaptedBook.MISSING_FIELD_MESSAGE_FORMAT;
 import static seedu.address.testutil.TypicalBooks.ARTEMIS;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -115,4 +118,81 @@ public class XmlAdaptedBookTest {
         Assert.assertThrows(IllegalValueException.class, expectedMessage, book::toModelType);
     }
 
+    @Test
+    public void equals() {
+        XmlAdaptedBook xmlAdaptedBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE,
+                VALID_DESCRIPTION, VALID_AUTHORS, VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY,
+                VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+
+        // same object -> return true
+        assertTrue(xmlAdaptedBook.equals(xmlAdaptedBook));
+
+        // same values -> return true
+        XmlAdaptedBook xmlAdaptedBookCopy = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE,
+                VALID_DESCRIPTION, VALID_AUTHORS, VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY,
+                VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertTrue(xmlAdaptedBook.equals(xmlAdaptedBookCopy));
+
+        // different types -> returns false
+        assertFalse(xmlAdaptedBook.equals("string"));
+
+        // null -> returns false
+        assertFalse(xmlAdaptedBook.equals(null));
+
+        // different gid -> return false
+        XmlAdaptedBook differentBook = new XmlAdaptedBook("xx", VALID_ISBN, VALID_TITLE,
+                VALID_DESCRIPTION, VALID_AUTHORS, VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY,
+                VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different isbn -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, "xx", VALID_TITLE, VALID_DESCRIPTION, VALID_AUTHORS,
+                VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY, VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different title -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, "xx", VALID_DESCRIPTION, VALID_AUTHORS,
+                VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY, VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different description -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, "xx", VALID_AUTHORS,
+                VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY, VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different authors -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, VALID_DESCRIPTION, new ArrayList<>(),
+                VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY, VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different categories -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, VALID_DESCRIPTION, VALID_AUTHORS,
+                new ArrayList<>(), VALID_STATUS, VALID_PRIORITY, VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different status -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, VALID_DESCRIPTION, VALID_AUTHORS,
+                VALID_CATEGORIES, Status.READ, VALID_PRIORITY, VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different priority -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, VALID_DESCRIPTION, VALID_AUTHORS,
+                VALID_CATEGORIES, VALID_STATUS, Priority.HIGH, VALID_RATING, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different rating -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, VALID_DESCRIPTION, VALID_AUTHORS,
+                VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY, 5, VALID_PUBLISHER, VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different publisher -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, VALID_DESCRIPTION, VALID_AUTHORS,
+                VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY, VALID_RATING, "xx", VALID_PUBLICATION_DATE);
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+
+        // different publication date -> return false
+        differentBook = new XmlAdaptedBook(VALID_GID, VALID_ISBN, VALID_TITLE, VALID_DESCRIPTION, VALID_AUTHORS,
+                VALID_CATEGORIES, VALID_STATUS, VALID_PRIORITY, VALID_RATING, VALID_PUBLISHER, "2000-01-01");
+        assertFalse(xmlAdaptedBook.equals(differentBook));
+    }
 }

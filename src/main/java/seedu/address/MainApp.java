@@ -25,15 +25,19 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyBookShelf;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.alias.ReadOnlyAliasList;
+import seedu.address.model.alias.UniqueAliasList;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.network.Network;
 import seedu.address.network.NetworkManager;
+import seedu.address.storage.AliasListStorage;
 import seedu.address.storage.BookShelfStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.RecentBooksStorage;
 import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
+import seedu.address.storage.XmlAliasListStorage;
 import seedu.address.storage.XmlBookShelfStorage;
 import seedu.address.storage.XmlRecentBooksStorage;
 import seedu.address.ui.Ui;
@@ -44,7 +48,7 @@ import seedu.address.ui.UiManager;
  */
 public class MainApp extends Application {
 
-    public static final Version VERSION = new Version(1, 3, 0, false);
+    public static final Version VERSION = new Version(1, 4, 0, false);
 
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
@@ -68,7 +72,8 @@ public class MainApp extends Application {
         userPrefs = initPrefs(userPrefsStorage);
         BookShelfStorage bookShelfStorage = new XmlBookShelfStorage(userPrefs.getBookShelfFilePath());
         RecentBooksStorage recentBooksStorage = new XmlRecentBooksStorage(config.getRecentBooksFilePath());
-        storage = new StorageManager(bookShelfStorage, userPrefsStorage, recentBooksStorage);
+        AliasListStorage aliasListStorage = new XmlAliasListStorage(userPrefs.getAliasListFilePath());
+        storage = new StorageManager(bookShelfStorage, userPrefsStorage, recentBooksStorage, aliasListStorage);
 
         initLogging(config);
 
@@ -94,21 +99,19 @@ public class MainApp extends Application {
      * or an empty book shelf will be used instead if errors occur when reading {@code storage}'s book shelf.
      */
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
-        Optional<ReadOnlyBookShelf> bookShelfOptional;
-        ReadOnlyBookShelf initialData;
-        ReadOnlyBookShelf recentBooksData;
+        ReadOnlyBookShelf initialData = new BookShelf();
+        ReadOnlyBookShelf recentBooksData = new BookShelf();
+        ReadOnlyAliasList aliasListData = new UniqueAliasList();
         try {
-            bookShelfOptional = storage.readBookShelf();
+            Optional<ReadOnlyBookShelf> bookShelfOptional = storage.readBookShelf();
             if (!bookShelfOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with a sample BookShelf");
             }
             initialData = bookShelfOptional.orElseGet(SampleDataUtil::getSampleBookShelf);
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty BookShelf");
-            initialData = new BookShelf();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty BookShelf");
-            initialData = new BookShelf();
         }
 
         try {
@@ -116,13 +119,20 @@ public class MainApp extends Application {
             recentBooksData = recentBooksOptional.orElse(new BookShelf());
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty recent list");
-            recentBooksData = new BookShelf();
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. Will be starting with an empty recent list");
-            recentBooksData = new BookShelf();
         }
 
-        return new ModelManager(initialData, userPrefs, recentBooksData);
+        try {
+            Optional<ReadOnlyAliasList> aliasListOptional = storage.readAliasList();
+            aliasListData = aliasListOptional.orElse(new UniqueAliasList());
+        } catch (DataConversionException e) {
+            logger.warning("Data file not in the correct format. Will be starting with an empty alias list");
+        } catch (IOException e) {
+            logger.warning("Problem while reading from the file. Will be starting with an empty alias list");
+        }
+
+        return new ModelManager(initialData, userPrefs, recentBooksData, aliasListData);
     }
 
     private void initLogging(Config config) {

@@ -8,7 +8,6 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_BOOK;
 
 import org.junit.Test;
 
-import guitests.GuiRobot;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RecentCommand;
@@ -93,8 +92,7 @@ public class SelectCommandSystemTest extends BibliotekSystemTest {
         /* ------------------------ Perform select operations on the shown results list ----------------------------- */
 
         // Note: this test requires an Internet connection.
-        executeCommand(SearchCommand.COMMAND_WORD + " hello");
-        new GuiRobot().waitForEvent(() -> !getResultDisplay().getText().equals(SearchCommand.MESSAGE_SEARCHING));
+        executeBackgroundCommand(SearchCommand.COMMAND_WORD + " hello", SearchCommand.MESSAGE_SEARCHING);
         assertSearchResultsSelectSuccess(SelectCommand.COMMAND_WORD + " 1", Index.fromOneBased(1));
         assertSearchResultsSelectSuccess(SelectCommand.COMMAND_WORD + " 1", Index.fromOneBased(1));
 

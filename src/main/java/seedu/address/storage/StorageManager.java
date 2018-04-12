@@ -8,14 +8,16 @@ import com.google.common.eventbus.Subscribe;
 
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.model.AliasListChangedEvent;
 import seedu.address.commons.events.model.BookShelfChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyBookShelf;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.alias.ReadOnlyAliasList;
 
 /**
- * Manages storage of AddressBook data in local storage.
+ * Manages storage of Bibliotek data in local storage.
  */
 public class StorageManager extends ComponentManager implements Storage {
 
@@ -23,13 +25,15 @@ public class StorageManager extends ComponentManager implements Storage {
     private BookShelfStorage bookShelfStorage;
     private UserPrefsStorage userPrefsStorage;
     private RecentBooksStorage recentBooksStorage;
+    private final AliasListStorage aliasListStorage;
 
     public StorageManager(BookShelfStorage bookShelfStorage, UserPrefsStorage userPrefsStorage,
-                          RecentBooksStorage recentBooksStorage) {
+                          RecentBooksStorage recentBooksStorage, AliasListStorage aliasListStorage) {
         super();
         this.bookShelfStorage = bookShelfStorage;
         this.userPrefsStorage = userPrefsStorage;
         this.recentBooksStorage = recentBooksStorage;
+        this.aliasListStorage = aliasListStorage;
     }
 
     // ================ UserPrefs methods ==============================
@@ -81,7 +85,7 @@ public class StorageManager extends ComponentManager implements Storage {
     @Override
     @Subscribe
     public void handleBookShelfChangedEvent(BookShelfChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Book shelf changed; saving to file"));
         try {
             saveBookShelf(event.data);
         } catch (IOException e) {
@@ -105,4 +109,28 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveRecentBooksList(ReadOnlyBookShelf recentBooksList) throws IOException {
         recentBooksStorage.saveRecentBooksList(recentBooksList);
     }
+
+    // ================ AliasList methods ==================================
+
+    @Override
+    public Optional<ReadOnlyAliasList> readAliasList() throws DataConversionException, IOException {
+        return aliasListStorage.readAliasList();
+    }
+
+    @Override
+    public void saveAliasList(ReadOnlyAliasList aliasList) throws IOException {
+        aliasListStorage.saveAliasList(aliasList);
+    }
+
+    @Override
+    @Subscribe
+    public void handleAliasListChangedEvent(AliasListChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Alias list changed; saving to file"));
+        try {
+            saveAliasList(event.data);
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        }
+    }
+
 }

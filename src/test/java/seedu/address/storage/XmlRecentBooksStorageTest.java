@@ -18,6 +18,7 @@ import seedu.address.commons.util.FileUtil;
 import seedu.address.model.BookShelf;
 import seedu.address.model.ReadOnlyBookShelf;
 
+//@@author qiu-siqi
 public class XmlRecentBooksStorageTest {
     private static final String TEST_DATA_FOLDER =
             FileUtil.getPath("./src/test/data/XmlBookShelfStorageTest/");

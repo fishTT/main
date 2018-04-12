@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- @@author takuyakanbr -->
+<StackPane fx:id="welcomePanel" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+    <content>
+      <BorderPane fx:id="welcomeContainer">
+        <center>
+          <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <ImageView fx:id="appLogo" fitHeight="128.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
+              <Image url="@/images/book_flat_128.png"/>
+              <VBox.margin>
+                <Insets bottom="10"/>
+              </VBox.margin>
+            </ImageView>
+            <Label styleClass="label-subheading" text="Bibliotek"/>
+          </VBox>
+        </center>
+        <bottom>
+          <GridPane>
+            <columnConstraints>
+              <ColumnConstraints minWidth="10.0" percentWidth="15.0"/>
+              <ColumnConstraints minWidth="10.0" percentWidth="70.0"/>
+              <ColumnConstraints minWidth="10.0" percentWidth="15.0"/>
+            </columnConstraints>
+            <rowConstraints>
+              <RowConstraints fillHeight="false" vgrow="ALWAYS"/>
+            </rowConstraints>
+            <Label fx:id="qotd" alignment="CENTER" maxWidth="400" styleClass="qotd" text="\$qotd" textAlignment="CENTER"
+                   wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
+                   GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+              <padding>
+                <Insets bottom="12.0"/>
+              </padding>
+            </Label>
+          </GridPane>
+        </bottom>
+      </BorderPane>
+    </content>
+  </ScrollPane>
+  <padding>
+    <Insets bottom="10" left="5" right="10" top="10"/>
+  </padding>
+</StackPane>

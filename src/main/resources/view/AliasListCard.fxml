@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox id="aliasCardPane" fx:id="aliasCardPane" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <FlowPane styleClass="alias-details">
+    <HBox.margin>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </HBox.margin>
+    <Label fx:id="id" styleClass="alias-id" text="\$id"/>
+    <Label fx:id="name" styleClass="alias-name" text="\$name"/>
+    <Label fx:id="prefix" styleClass="alias-prefix" text="\$prefix"/>
+    <Label fx:id="namedArgs" styleClass="alias-named-args" text="\$namedArgs"/>
+  </FlowPane>
+</HBox>

@@ -7,7 +7,7 @@ import seedu.address.commons.events.BaseEvent;
  * Contains the full string of input in the command box
  */
 
-//@@author nicholaschuayunzhi
+//@@author fishTT
 public class CommandInputChangedEvent extends BaseEvent {
 
     public final String currentInput;

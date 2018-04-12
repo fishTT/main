@@ -22,7 +22,7 @@ public class CliSyntax {
     public static final String PREFIX_COMMAND_STRING = "cmd/";
 
 
-    /* Prefix definitions */
+    // Prefix definitions
     public static final Prefix PREFIX_EMPTY = new Prefix(PREFIX_EMPTY_STRING);
     public static final Prefix PREFIX_AUTHOR = new Prefix(PREFIX_AUTHOR_STRING);
     public static final Prefix PREFIX_CATEGORY = new Prefix(PREFIX_CATEGORY_STRING);

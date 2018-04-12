@@ -103,7 +103,8 @@ public class UserPrefs {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb;
+        sb = new StringBuilder();
         sb.append("Window Settings : ").append(windowSettings.toString());
         sb.append("\nLocal data file location : ").append(bookShelfFilePath);
         sb.append("\nBookShelf name : ").append(bookShelfName);

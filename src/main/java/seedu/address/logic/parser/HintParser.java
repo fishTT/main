@@ -8,21 +8,19 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMPTY;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMPTY_STRING;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN_STRING;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TITLE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TITLE_STRING;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING_STRING;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT_BY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT_BY_STRING;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS_STRING;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TITLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TITLE_STRING;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +43,7 @@ import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+//@@author fishTT
 /**
  * Class that is responsible for generating hints based on user input
  * Contains one public method generateHint which returns an appropriate hint based on input
@@ -87,30 +86,30 @@ public class HintParser {
      */
     private static String generateHintContent() {
         switch (commandWord) {
-            case AddCommand.COMMAND_WORD:
-                return generateAddHint();
-            case EditCommand.COMMAND_WORD:
-                return generateEditHint();
-            case SelectCommand.COMMAND_WORD:
-				return " Select a book";
-            case DeleteCommand.COMMAND_WORD:
-                return generateDeleteAndSelectHint();
-            case ClearCommand.COMMAND_WORD:
-                return " clears a book";
-            case ListCommand.COMMAND_WORD:
-                return " lists all books";
-            case HistoryCommand.COMMAND_WORD:
-                return " show command history";
-            case ExitCommand.COMMAND_WORD:
-                return " exits the app";
-            case HelpCommand.COMMAND_WORD:
-                return " shows user guide";
-            case UndoCommand.COMMAND_WORD:
-                return " undo command";
-			case SearchCommand.COMMAND_WORD:
-				return " search a book";
-            default:
-                return " type help for guide";
+        case AddCommand.COMMAND_WORD:
+            return generateAddHint();
+        case EditCommand.COMMAND_WORD:
+            return generateEditHint();
+        case SelectCommand.COMMAND_WORD:
+            return " Select a book";
+        case DeleteCommand.COMMAND_WORD:
+            return generateDeleteAndSelectHint();
+        case ClearCommand.COMMAND_WORD:
+            return " clears a book";
+        case ListCommand.COMMAND_WORD:
+            return " lists all books";
+        case HistoryCommand.COMMAND_WORD:
+            return " show command history";
+        case ExitCommand.COMMAND_WORD:
+            return " exits the app";
+        case HelpCommand.COMMAND_WORD:
+            return " shows user guide";
+        case UndoCommand.COMMAND_WORD:
+            return " undo command";
+        case SearchCommand.COMMAND_WORD:
+            return " search a book";
+        default:
+            return " type help for guide";
         }
     }
 
@@ -121,7 +120,7 @@ public class HintParser {
      */
     private static Optional<String> generatePrefixHintBasedOnEndArgs(Prefix... ignoredPrefixes) {
 
-        Set<Prefix> ignoredPrefixSet = Arrays.asList(ignoredPrefixes).stream().collect(Collectors.toSet());
+        Set<Prefix> ignoredPrefixSet = Arrays.stream(ignoredPrefixes).collect(Collectors.toSet());
 
         for (Prefix p : LIST_OF_PREFIXES) {
             if (ignoredPrefixSet.contains(p)) {
@@ -149,7 +148,7 @@ public class HintParser {
      */
     private static String offerHint(String defaultHint, Prefix... ignoredPrefixes) {
 
-        Set<Prefix> ignoredPrefixesSet = Arrays.asList(ignoredPrefixes).stream().collect(Collectors.toSet());
+        Set<Prefix> ignoredPrefixesSet = Arrays.stream(ignoredPrefixes).collect(Collectors.toSet());
 
         //remove ignored prefixes without losing order
         List<Prefix> prefixList = new ArrayList<>();
@@ -178,26 +177,26 @@ public class HintParser {
      */
     private static String prefixIntoParameter(Prefix prefix) {
         switch (prefix.toString()) {
-            case PREFIX_AUTHOR_STRING:
-                return "AUTHOR";
-            case PREFIX_CATEGORY_STRING:
-                return "CATEGORY";
-            case PREFIX_DESCRIPTION_STRING:
-                return "DESCRIPTION";
-            case PREFIX_ISBN_STRING:
-                return "ISBN";
-            case PREFIX_TITLE_STRING:
-                return "TITLE";
-            case PREFIX_STATUS_STRING:
-                return "STATUR";
-            case PREFIX_PRIORITY_STRING:
-                return "PRIORITY";
-            case PREFIX_RATING_STRING:
-                return "RATING";
-            case PREFIX_SORT_BY_STRING:
-                return "SORTBY";
-            default:
-                return "KEYWORD";
+        case PREFIX_AUTHOR_STRING:
+            return "AUTHOR";
+        case PREFIX_CATEGORY_STRING:
+            return "CATEGORY";
+        case PREFIX_DESCRIPTION_STRING:
+            return "DESCRIPTION";
+        case PREFIX_ISBN_STRING:
+            return "ISBN";
+        case PREFIX_TITLE_STRING:
+            return "TITLE";
+        case PREFIX_STATUS_STRING:
+            return "STATUR";
+        case PREFIX_PRIORITY_STRING:
+            return "PRIORITY";
+        case PREFIX_RATING_STRING:
+            return "RATING";
+        case PREFIX_SORT_BY_STRING:
+            return "SORTBY";
+        default:
+            return "KEYWORD";
         }
     }
 
@@ -225,11 +224,9 @@ public class HintParser {
      */
     private static String generateAddHint() {
 
-        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_REMARK);
-        if (endHintOptional.isPresent()) {
-            return endHintOptional.get();
-        }
-        return offerHint("", PREFIX_EMPTY, PREFIX_REMARK);
+        Optional<String> endHintOptional;
+        endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_REMARK);
+        return endHintOptional.orElseGet(() -> offerHint("", PREFIX_EMPTY, PREFIX_REMARK));
     }
 
     /**
@@ -242,11 +239,8 @@ public class HintParser {
         }
 
         Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_REMARK);
-        if (endHintOptional.isPresent()) {
-            return endHintOptional.get();
-        }
+        return endHintOptional.orElseGet(() -> offerHint("prefix/KEYWORD", PREFIX_EMPTY, PREFIX_REMARK));
 
-        return offerHint("prefix/KEYWORD", PREFIX_EMPTY, PREFIX_REMARK);
     }
 
     /**
@@ -255,10 +249,7 @@ public class HintParser {
     private static String generateFindHint() {
         Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_REMARK);
 
-        if (endHintOptional.isPresent()) {
-            return endHintOptional.get();
-        }
-        return offerHint("prefix/KEYWORD", PREFIX_EMPTY, PREFIX_REMARK);
+        return endHintOptional.orElseGet(() -> offerHint("prefix/KEYWORD", PREFIX_EMPTY, PREFIX_REMARK));
     }
 
     /**
@@ -266,10 +257,7 @@ public class HintParser {
      */
     private static String generateDeleteAndSelectHint() {
         Optional<String> indexHintOptional = generateIndexHint();
-        if (indexHintOptional.isPresent()) {
-            return indexHintOptional.get();
-        }
-        return "";
+        return indexHintOptional.orElse("");
     }
 
 }

@@ -3,7 +3,7 @@ package seedu.address.logic.commands;
 import seedu.address.model.Aliases;
 import seedu.address.model.UserPrefs;
 
-//@@author fishTT
+//@@author fishTT-unused
 /**
  * Creates an alias for other commands.
  */
@@ -47,7 +47,6 @@ public class AliasCommand extends UndoableCommand {
 
         aliases.addAlias(alias, command);
 
-        //@@author fishTT
         return new CommandResult(String.format(MESSAGE_ADD_SUCCESS, alias, command));
     }
 

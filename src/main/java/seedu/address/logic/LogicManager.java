@@ -44,8 +44,7 @@ public class LogicManager extends ComponentManager implements Logic {
 
     @Override
     public Command parse(String commandText) throws ParseException {
-        Command command = bookShelfParser.parseCommand(commandText);
-        return command;
+        return bookShelfParser.parseCommand(commandText);
     }
 
     @Override

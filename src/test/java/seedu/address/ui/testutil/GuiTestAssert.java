@@ -11,9 +11,7 @@ import guitests.guihandles.AliasListPanelHandle;
 import guitests.guihandles.BookCardHandle;
 import guitests.guihandles.BookDetailsPanelHandle;
 import guitests.guihandles.BookListPanelHandle;
-import guitests.guihandles.RecentBooksPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
-import guitests.guihandles.SearchResultsPanelHandle;
 import seedu.address.model.alias.Alias;
 import seedu.address.model.book.Author;
 import seedu.address.model.book.Book;
@@ -79,28 +77,6 @@ public class GuiTestAssert {
     }
 
     /**
-     * Asserts that the list in {@code searchResultsPanelHandle} displays the details of {@code books} correctly and
-     * in the correct order.
-     */
-    public static void assertListMatching(SearchResultsPanelHandle searchResultsPanelHandle, Book... books) {
-        for (int i = 0; i < books.length; i++) {
-            searchResultsPanelHandle.navigateToCard(i);
-            assertCardDisplaysBook(books[i], searchResultsPanelHandle.getBookCardHandle(i).get());
-        }
-    }
-
-    /**
-     * Asserts that the list in {@code recentBooksPanelHandle} displays the details of {@code books} correctly and
-     * in the correct order.
-     */
-    public static void assertListMatching(RecentBooksPanelHandle recentBooksPanelHandle, Book... books) {
-        for (int i = 0; i < books.length; i++) {
-            recentBooksPanelHandle.navigateToCard(i);
-            assertCardDisplaysBook(books[i], recentBooksPanelHandle.getBookCardHandle(i).get());
-        }
-    }
-
-    /**
      * Asserts that the list in {@code aliasListPanelHandle} displays the details of {@code aliases} correctly and
      * in the correct order.
      */
@@ -120,22 +96,6 @@ public class GuiTestAssert {
     }
 
     /**
-     * Asserts that the list in {@code searchResultsPanelHandle} displays the details of {@code books} correctly and
-     * in the correct order.
-     */
-    public static void assertListMatching(SearchResultsPanelHandle searchResultsPanelHandle, List<Book> books) {
-        assertListMatching(searchResultsPanelHandle, books.toArray(new Book[0]));
-    }
-
-    /**
-     * Asserts that the list in {@code recentBooksPanelHandle} displays the details of {@code books} correctly and
-     * in the correct order.
-     */
-    public static void assertListMatching(RecentBooksPanelHandle recentBooksPanelHandle, List<Book> books) {
-        assertListMatching(recentBooksPanelHandle, books.toArray(new Book[0]));
-    }
-
-    /**
      * Asserts that the list in {@code aliasListPanelHandle} displays the details of {@code aliases} correctly and
      * in the correct order.
      */
@@ -148,14 +108,6 @@ public class GuiTestAssert {
      */
     public static void assertListSize(BookListPanelHandle bookListPanelHandle, int size) {
         int numberOfBooks = bookListPanelHandle.getListSize();
-        assertEquals(size, numberOfBooks);
-    }
-
-    /**
-     * Asserts the size of the list in {@code searchResultsPanelHandle} equals to {@code size}.
-     */
-    public static void assertListSize(SearchResultsPanelHandle searchResultsPanelHandle, int size) {
-        int numberOfBooks = searchResultsPanelHandle.getListSize();
         assertEquals(size, numberOfBooks);
     }
 

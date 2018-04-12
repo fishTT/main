@@ -40,12 +40,14 @@ public class JsonDeserializer {
     }
 
     /**
-     * Converts the JSON string from Google Books API into a book shelf.
+     * Converts the JSON string from Google Books API into a book shelf,
+     * with the specified limit on the number of books to populate the book shelf with.
      */
-    public ReadOnlyBookShelf convertJsonStringToBookShelf(String json) {
+    public ReadOnlyBookShelf convertJsonStringToBookShelf(String json, int maxBookCount) {
+        assert maxBookCount >= 0;
         try {
             JsonSearchResults jsonSearchResults = mapper.readValue(json, JsonSearchResults.class);
-            return jsonSearchResults.toModelType();
+            return jsonSearchResults.toModelType(maxBookCount);
         } catch (IOException e) {
             logger.warning("Failed to convert JSON to book shelf.");
             throw new CompletionException(e);

@@ -54,34 +54,35 @@ public class SearchCommandTest {
     }
 
     @Test
-    public void execute_allFieldsSpecifiedWithSearchTerm_success() {
+    public void execute_allFieldsSpecifiedWithKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1")
-                .withCategory("1").withIsbn("1").withAuthor("1").withSearchTerm("searchterm").build();
+                .withCategory("1").withIsbn("1").withAuthor("1").withKeyWords("searchterm").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_allFieldsSpecifiedNoSearchTerm_success() {
+    public void execute_allFieldsSpecifiedNoKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1")
                 .withCategory("1").withIsbn("1").withAuthor("1").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_someFieldsSpecifiedNoSearchTerm_success() {
+    public void execute_someFieldsSpecifiedNoKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1").withIsbn("1").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_noFieldSpecifiedNoSearchTerm_success() {
+    public void execute_noFieldSpecifiedNoKeyWord_throwsAssertionError() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().build();
+        thrown.expect(AssertionError.class);
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
     public void execute_networkError_raisesExpectedEvent() {
-        SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withSearchTerm("error").build();
+        SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withKeyWords("error").build();
         SearchCommand searchCommand = new SearchCommand(searchDescriptor, false);
 
         NetworkManager networkManagerMock = mock(NetworkManager.class);

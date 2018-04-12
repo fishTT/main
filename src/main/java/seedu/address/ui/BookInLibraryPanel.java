@@ -33,12 +33,10 @@ public class BookInLibraryPanel extends UiPart<Region> {
 
     @FXML
     private StackPane browserPlaceholder;
-    private WebViewManager webViewManager;
 
-    public BookInLibraryPanel(WebViewManager webViewManager) {
+    public BookInLibraryPanel() {
         super(FXML);
 
-        this.webViewManager = webViewManager;
         registerAsAnEventHandler(this);
         getRoot().setVisible(false);
 
@@ -52,6 +50,7 @@ public class BookInLibraryPanel extends UiPart<Region> {
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
 
+        WebViewManager webViewManager = WebViewManager.getInstance();
         webViewManager.onLoadProgress(getRoot(), 0.59, () -> {
             webViewManager.executeScript(nlbResultScript);
             getRoot().setDisable(false);
@@ -59,11 +58,11 @@ public class BookInLibraryPanel extends UiPart<Region> {
     }
 
     private void loadPageWithResult(String result) {
-        webViewManager.load(browserPlaceholder, result);
+        WebViewManager.getInstance().load(browserPlaceholder, result);
     }
 
     private void clearPage() {
-        webViewManager.executeScript(clearPageScript);
+        WebViewManager.getInstance().executeScript(clearPageScript);
     }
 
     protected void hide() {
@@ -81,7 +80,7 @@ public class BookInLibraryPanel extends UiPart<Region> {
             clearPage();
             // Prevent browser from getting focus
             getRoot().setDisable(true);
-            getRoot().setVisible(true);
+            show();
             loadPageWithResult(event.getResult());
         });
     }

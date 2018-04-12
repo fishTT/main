@@ -62,8 +62,7 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the success message of executing list command with the expected
      * number of listed books.<br>
-     * 4. {@code Model}, {@code Storage}, {@code SearchResultsPanel}, and {@code RecentBooksPanel}
-     * remain unchanged.<br>
+     * 4. {@code Model} and {@code Storage} remain unchanged.<br>
      * 5. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
@@ -84,8 +83,6 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchanged();
         assertSelectedBookListCardDeselected();
-        assertSelectedSearchResultsCardDeselected();
-        assertSelectedRecentBooksCardDeselected();
 
     }
 }

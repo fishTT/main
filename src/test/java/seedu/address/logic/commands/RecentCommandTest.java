@@ -13,6 +13,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.network.NetworkManager;
+import seedu.address.testutil.TypicalBooks;
 
 //@@author qiu-siqi
 /**
@@ -34,7 +35,14 @@ public class RecentCommandTest {
     }
 
     @Test
-    public void execute_showsRecent() {
-        assertCommandSuccess(recentCommand, model, RecentCommand.MESSAGE_SUCCESS, expectedModel);
+    public void execute_showsEmptyRecent() {
+        assertCommandSuccess(recentCommand, model, String.format(RecentCommand.MESSAGE_SUCCESS, 0), expectedModel);
+    }
+
+    @Test
+    public void execute_showsNonEmptyRecent() {
+        model.addRecentBook(TypicalBooks.ARTEMIS);
+        expectedModel.addRecentBook(TypicalBooks.ARTEMIS);
+        assertCommandSuccess(recentCommand, model, String.format(RecentCommand.MESSAGE_SUCCESS, 1), expectedModel);
     }
 }

@@ -41,6 +41,8 @@ public class JsonDeserializerTest {
             new File(TEST_DATA_SEARCH_FOLDER + "ValidResponseDuplicateBooks.json");
     public static final File VALID_SEARCH_RESPONSE_FILE = new File(TEST_DATA_SEARCH_FOLDER + "ValidResponse.json");
 
+    private static final int MAXIMUM_BOOK_COUNT = 30;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -88,7 +90,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_validResponse_success() throws Exception {
         String json = FileUtil.readFromFile(VALID_SEARCH_RESPONSE_FILE);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals(3, bookShelf.size());
         assertEquals("The Book Without a Title", book1.getTitle().title);
@@ -98,7 +100,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_validResponseDuplicateBooks_success() throws Exception {
         String json = FileUtil.readFromFile(VALID_SEARCH_RESPONSE_DUPLICATE_BOOKS);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals(1, bookShelf.size());
         assertEquals("The Book Without a Title", book1.getTitle().title);
@@ -108,7 +110,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_validResponseNoId_success() throws Exception {
         String json = FileUtil.readFromFile(VALID_SEARCH_RESPONSE_NO_ID_FILE);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals("The Book Without a Title", book1.getTitle().title);
         assertEquals("", book1.getDescription().description);
@@ -120,7 +122,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_invalidResponseNoIsbn_ignoresBookWithoutIsbn() throws Exception {
         String json = FileUtil.readFromFile(INVALID_SEARCH_RESPONSE_NO_ISBN_FILE);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals("The Book Without a Title 2", book1.getTitle().title);
         Book book2 = bookShelf.getBookList().get(1);
@@ -131,14 +133,14 @@ public class JsonDeserializerTest {
     public void convertJsonStringToBookShelf_invalidResponseWrongType_throwsCompletionException() throws Exception {
         thrown.expect(CompletionException.class);
         String json = FileUtil.readFromFile(INVALID_SEARCH_RESPONSE_WRONG_TYPE_FILE);
-        deserializer.convertJsonStringToBookShelf(json);
+        deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
     }
 
     @Test
     public void convertJsonStringToBookShelf_errorResponse_throwsCompletionException() throws Exception {
         thrown.expect(CompletionException.class);
         String json = FileUtil.readFromFile(ERROR_SEARCH_RESPONSE_FILE);
-        deserializer.convertJsonStringToBookShelf(json);
+        deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
     }
 
 }

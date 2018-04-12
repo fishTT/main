@@ -106,7 +106,7 @@ public class EditCommandTest {
     public void executeUndo_validIndexUnfilteredList_success() throws Exception {
         UndoStack undoStack = new UndoStack();
         UndoCommand undoCommand = prepareUndoCommand(model, undoStack);
-        Book editedBook = new BookBuilder().build();
+        Book editedBook = model.getDisplayBookList().get(INDEX_FIRST_BOOK.getZeroBased());
         EditDescriptor descriptor = new EditDescriptorBuilder(editedBook).build();
         EditCommand editCommand = prepareCommand(INDEX_FIRST_BOOK, descriptor);
         Model expectedModel = new ModelManager(new BookShelf(model.getBookShelf()), new UserPrefs());
@@ -116,7 +116,7 @@ public class EditCommandTest {
         undoStack.push(editCommand);
 
         // undo -> reverts book shelf back to previous state
-        assertCommandSuccess(undoCommand, model, UndoCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(undoCommand, model, String.format(EditCommand.UNDO_SUCCESS, editedBook), expectedModel);
     }
 
     @Test

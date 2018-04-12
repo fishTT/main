@@ -344,8 +344,8 @@ image::DeleteCommand.png[width="700"]
 
 If you regret your deletion and wish to undo it, enter `undo`.
 
-Bibliotek shows `Undo success!` to indicate that your `undo` is successful. `Harry Potter and the Classical World` is back in your
-book shelf as seen in the left panel.
+Bibliotek shows `Successfully undone deleting of TITLE - Authors: AUTHORS.`
+to indicate that your `undo` of the deletion is successful. `Harry Potter and the Classical World` is back in your book shelf as seen in the left panel.
 
 image::UndoCommand.png[width="700"]
 

@@ -23,13 +23,14 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
     public void reviews() {
         /* ------------ Perform reviews operations on the shown book list ------------ */
         String command = "   " + ReviewsCommand.COMMAND_WORD + " " + INDEX_FIRST_BOOK.getOneBased() + "   ";
-        assertCommandSuccess(command, getModel().getDisplayBookList().get(INDEX_FIRST_BOOK.getZeroBased()));
+
+        assertCommandSuccess(command, getModel().getDisplayBookList().get(INDEX_FIRST_BOOK.getZeroBased()), getModel());
 
         /* ------------ Perform reviews operations on the filtered book list ------------ */
         executeCommand(ListCommand.COMMAND_WORD + " s/unread");
         Index bookCount = Index.fromOneBased(getModel().getDisplayBookList().size());
         command = ReviewsCommand.COMMAND_WORD + " " + bookCount.getOneBased();
-        assertCommandSuccess(command, getModel().getDisplayBookList().get(bookCount.getZeroBased()));
+        assertCommandSuccess(command, getModel().getDisplayBookList().get(bookCount.getZeroBased()), getModel());
 
         /* ------------ Perform invalid reviews operations ------------ */
         /* Case: invalid index (0) -> rejected */
@@ -46,13 +47,19 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
 
         /* ------------ Perform reviews operations on the shown search results list ------------ */
         executeBackgroundCommand(SearchCommand.COMMAND_WORD + " hello", SearchCommand.MESSAGE_SEARCHING);
-        assertCommandSuccess(ReviewsCommand.COMMAND_WORD + " 1", getModel().getSearchResultsList().get(0));
+
+        Model expectedModel = getModel();
+        assertCommandSuccess(ReviewsCommand.COMMAND_WORD + " 1",
+                getModel().getSearchResultsList().get(0), expectedModel);
         assertCommandFailure(ReviewsCommand.COMMAND_WORD + " 39", MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
 
         /* ------------ Perform reviews operations on the shown recent books list ------------ */
         executeCommand(SelectCommand.COMMAND_WORD + " 1");
         executeCommand(RecentCommand.COMMAND_WORD);
-        assertCommandSuccess(ReviewsCommand.COMMAND_WORD + " 1", getModel().getRecentBooksList().get(0));
+
+        expectedModel = getModel();
+        assertCommandSuccess(ReviewsCommand.COMMAND_WORD + " 1",
+                getModel().getRecentBooksList().get(0), expectedModel);
         assertCommandFailure(ReviewsCommand.COMMAND_WORD + " 51", MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
     }
 
@@ -62,17 +69,14 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the load successful message.<br>
      * 4. {@code Model} and {@code Storage} remain unchanged.<br>
-     * 5. Any selections in {@code BookListPanel}, {@code SearchResultsPanel},
-     *    and {@code RecentBooksPanel} are all deselected.<br>
+     * 5. Selection in {@code BookListPanel} is deselected.<br>
      * 6. {@code BookReviewsPanel} is visible.
      * 7. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
-    private void assertCommandSuccess(String command, Book toLoad) {
-        Model expectedModel = getModel();
-
+    private void assertCommandSuccess(String command, Book toLoad, Model expectedModel) {
         executeCommand(command);
         assertCommandBoxShowsDefaultStyle();
 
@@ -80,8 +84,6 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
 
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertSelectedBookListCardDeselected();
-        assertSelectedSearchResultsCardDeselected();
-        assertSelectedRecentBooksCardDeselected();
         assertBookReviewsPanelVisible();
         assertStatusBarUnchanged();
     }

@@ -33,12 +33,10 @@ public class BookReviewsPanel extends UiPart<Region> {
 
     @FXML
     private StackPane browserPlaceholder;
-    private WebViewManager webViewManager;
 
-    public BookReviewsPanel(WebViewManager webViewManager) {
+    public BookReviewsPanel() {
         super(FXML);
 
-        this.webViewManager = webViewManager;
         registerAsAnEventHandler(this);
         getRoot().setVisible(false);
 
@@ -52,6 +50,7 @@ public class BookReviewsPanel extends UiPart<Region> {
         // To prevent triggering events for typing inside the loaded Web page.
         getRoot().setOnKeyPressed(Event::consume);
 
+        WebViewManager webViewManager = WebViewManager.getInstance();
         webViewManager.onLoadSuccess(getRoot(), () -> webViewManager.executeScript(bookReviewsScript));
     }
 
@@ -60,11 +59,11 @@ public class BookReviewsPanel extends UiPart<Region> {
     }
 
     private void loadPage(String url) {
-        webViewManager.load(browserPlaceholder, url);
+        WebViewManager.getInstance().load(browserPlaceholder, url);
     }
 
     private void clearPage() {
-        webViewManager.executeScript(clearPageScript);
+        WebViewManager.getInstance().executeScript(clearPageScript);
     }
 
     protected void hide() {
@@ -79,7 +78,7 @@ public class BookReviewsPanel extends UiPart<Region> {
     private void handleShowBookReviewsRequestEvent(ShowBookReviewsRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         clearPage();
-        getRoot().setVisible(true);
+        show();
         loadPageForBook(event.getBook());
     }
 }

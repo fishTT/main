@@ -12,6 +12,8 @@ import seedu.address.model.book.Book;
  * API of the Logic component
  */
 public interface Logic {
+    Command parse(String commandText) throws ParseException;
+
     /**
      * Executes the command and returns the result.
      * @param commandText The command as entered by the user.

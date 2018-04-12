@@ -15,6 +15,8 @@ import javafx.scene.layout.StackPane;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.CommandInputChangedEvent;
+import seedu.address.commons.events.ui.DisableCommandBoxRequestEvent;
+import seedu.address.commons.events.ui.EnableCommandBoxRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.util.TextUtil;
 import seedu.address.logic.ListElementPointer;

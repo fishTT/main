@@ -52,6 +52,11 @@ public class AliasCommand extends UndoableCommand {
     }
 
     @Override
+    protected String undo() {
+        return null;
+    }
+
+    @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof AliasCommand // instanceof handles nulls

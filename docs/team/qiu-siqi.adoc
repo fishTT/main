@@ -1,0 +1,60 @@
+= Qiu Siqi - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: Bibliotek
+
+---
+
+== Overview
+
+Bibliotek is a free book cataloguing application that is simple, fast, and easy to use. It is targeted at heavy readers who require a hassle-free way of managing and keep tracking of their read and unread books.
+
+== Summary of contributions
+
+* *Major enhancement*: Added a command to *search for books in National Library Board (NLB) catalogue*
+** What it does: Allows the user to easily check for the availability of books in NLB libraries.
+** Justification: The user may wish to check if a book is available in the library before deciding whether to read it, or may just want a convenient way of searching for books in the library.
+** Highlights: This function paves the way to extensions beyond NLB libraries and to customized automated book availability checking; functionalities which make Bibliotek more unique.
+
+* *Minor enhancement*: Added the ability to *view recently selected books*
+** What it does: Allows the user to view his recently selected books.
+** Justification: The user may have recently selected a book in one of his/her searches, and regret not adding that book into his/her book shelf. With this function, he/she can easily locate that book without having to perform the searches again.
+
+* *Code contributed*: [https://github.com/CS2103JAN2018-F14-B4/main/blob/master/collated/functional/qiu-siqi.md[Functional code]] [https://github.com/CS2103JAN2018-F14-B4/main/blob/master/collated/test/qiu-siqi.md.com[Test code]]
+
+* *Other contributions*:
+
+** Project management:
+*** Maintained the issue tracker on Github.
+** Enhancements to existing features:
+*** Morphed Address Book 4 into Bibliotek (Pull requests https://github.com/CS2103JAN2018-F14-B4/main/pull/56[#56], https://github.com/CS2103JAN2018-F14-B4/main/pull/57[#57], https://github.com/CS2103JAN2018-F14-B4/main/pull/72[#72])
+*** Fixed bugs (Pull requests https://github.com/CS2103JAN2018-F14-B4/main/pull/104[#104], https://github.com/CS2103JAN2018-F14-B4/main/pull/107[#107], https://github.com/CS2103JAN2018-F14-B4/main/pull/116[#116])
+*** Refactored code (Pull requests https://github.com/CS2103JAN2018-F14-B4/main/pull/156[#156], https://github.com/CS2103JAN2018-F14-B4/main/pull/169[#169])
+*** Made individual commands handle undo themselves (Pull request https://github.com/CS2103JAN2018-F14-B4/main/pull/170[#170])
+** Documentation:
+*** Updated the contents of User Guide and Developer Guide: (Pull requests https://github.com/CS2103JAN2018-F14-B4/main/pull/43[#43], https://github.com/CS2103JAN2018-F14-B4/main/pull/67[#67], https://github.com/CS2103JAN2018-F14-B4/main/pull/68[#68], https://github.com/CS2103JAN2018-F14-B4/main/pull/102[#102], https://github.com/CS2103JAN2018-F14-B4/main/pull/155[#155])
+** Community:
+*** PRs reviewed: (Pull requests https://github.com/CS2103JAN2018-F14-B4/main/pull/58[#58], https://github.com/CS2103JAN2018-F14-B4/main/pull/62[#62], https://github.com/CS2103JAN2018-F14-B4/main/pull/91[#91], https://github.com/CS2103JAN2018-F14-B4/main/pull/134[#134])
+
+== Contributions to the User Guide
+
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+include::../UserGuide.adoc[tag=library]
+
+include::../UserGuide.adoc[tag=recent]
+
+== Contributions to the Developer Guide
+
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
+
+include::../DeveloperGuide.adoc[tag=library]
+
+include::../DeveloperGuide.adoc[tag=recent]
+

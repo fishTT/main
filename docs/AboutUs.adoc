@@ -22,7 +22,7 @@ Responsibilities: Dev Ops + Model
 
 === Qiu Siqi
 image::qiu-siqi.png[width="150", align="left"]
-{empty}[http://github.com/qiu-siqi[github]] [<<johndoe#, portfolio>>]
+{empty}[http://github.com/qiu-siqi[github]] [<<qiu-siqi#, portfolio>>]
 
 Role: Developer +
 Responsibilities: Logic

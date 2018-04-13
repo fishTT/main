@@ -476,6 +476,7 @@ image::UndoRedoActivityDiagram.png[width="550"]
 **Additional Info:** See the discussion  https://github.com/se-edu/addressbook-level4/issues/390#issuecomment-298936672[here].
 // end::undoredo[]
 
+// tag::edit[]
 === Edit status, priority, and rating of books: `edit` command
 
 ==== Current implementation
@@ -489,14 +490,27 @@ When `edit` command is entered,
 . The `Book` to edit (`bookToEdit`) is identified by the index. Another `Book` (`editedBook`) is created based on the specified parameters.
 . `editedBook` replaces `bookToEdit` in `BookShelf`.
 
+
+Sequence Diagram
+
+image::editseq.png[width="550"]
+
+Default value of the book.
+
+image::defaultbook.png[width="550"]
+
+The book after you edit (r/4, s/r, p/h).
+
+image::newbook.png[width="550"]
+
 ==== Design considerations
 
 ===== Aspect: Presentation of rating
 
-* **Alternative 1 (current choice):** Show users the rating as a number.
+* **Alternative 1:** Show users the rating as a number.
 ** Pros: Easy to implement.
 ** Cons: Not aesthetically appealing.
-* **Alternative 2:** Show users the rating as stars.
+* **Alternative 2 (current choice):** Show users the rating as stars.
 ** Pros: Difficult to implement.
 ** Cons: Improves the aesthetic appeal and clarity.
 
@@ -508,28 +522,32 @@ When `edit` command is entered,
 * **Alternative 2:** Unspecified parameters are set to default value.
 ** Pros: Easy to implement.
 ** Cons: Users need to specify all parameters to change one.
+// end::edit[]
 
+// tag::recent[]
 === View recently selected books: `recent` command
+
+The `recent` command allows the user to view books that he/she recently selected.
+This allows the user to easily look back for a particular book, and to add it into his/her book shelf without having to perform a search again.
 
 ==== Current implementation
 
-When `recent` command is entered, eventually `SwitchToRecentBooksRequestEvent` is posted to the
-`EventCenter`. The interaction between components is shown in the diagram below.
+Recently selected books are stored in a `UniqueBookCircularList` which resides in `ModelManager`.
+Whenever a new book is selected, `ModelManager` handles the `BookListSelectionChangedEvent`
+and adds the book into the list.
+
+When `recent` is entered, it will be parsed into a `RecentCommand`, which when executed, sets the `ActiveListType` to `RECENT_BOOKS`.
+It then posts `ActiveListChangedEvent` to the `EventCenter` to signal this change. The interaction between components is shown in the diagram below.
 
 image::SequenceDiagramRecentCommandLogic.png[width="650"]
 
-`SwitchToRecentBooksRequestEvent` is handled by `LogicManager` and `MainWindow`.
+NOTE: The commands that users can perform on different `ActiveListType` differ, for example users cannot delete books if the `ActiveListType` is `RECENT_BOOKS`.
+
+`ActiveListChangedEvent` is handled by `MainWindow`.
 
 image::SequenceDiagramRecentCommandEvent.png[width="650"]
 
-`LogicManager` sets the `ActiveListType` to `RECENT_BOOKS`. The commands that users can perform on this list may differ from others, for example users
-cannot delete books from this list. +
-`MainWindow` hides the currently shown Panel and shows `RecentBooksPanel` which is populated by the
-stored recently selected books.
-
-Recently selected books are stored in a `UniqueBookCircularList` which resides in `ModelManager`.
-Whenever a new book is selected, `ModelManager` handles the `xxxSelectionChangedEvent`
-and adds the book into the list.
+`MainWindow` sets the list shown in `BookListPanel` to the list of recently selected books.
 
 `UniqueBookCircularList` has size 50 by default. For illustration purposes, assume we have a
 `UniqueBookCircularList` of size 3 that is empty at the start. `ActiveListType` is `BOOK_SHELF`.
@@ -537,30 +555,30 @@ and adds the book into the list.
 The user performs `select 1` to view information on the 1st book in the book shelf. The
 selected book is added onto the `UniqueBookCircularList`.
 
-image::RecentCommandListOne.png[width="650"]
+image::RecentCommandListOne.png[width="550"]
 
 NOTE: If select fails to execute (eg. given index is invalid), the list will remain unchanged.
 
 The user then selects another book with `select 2`. The book is added to the front of the `UniqueBookCircularList`.
 
-image::RecentCommandListTwo.png[width="650"]
+image::RecentCommandListTwo.png[width="550"]
 
 NOTE: Selecting a book directly from the UI (without using `select` command) will also update the list according.
 
 Now if the user performs `select 1` again, the book `One`, which already exists in the list, will be removed
 from the list and added again so that it is in the first index of the list (most recently selected).
 
-image::RecentCommandListThree.png[width="650"]
+image::RecentCommandListThree.png[width="550"]
 
 The user continues to select books, and the same operations will apply.
 
-image::RecentCommandListFour.png[width="650"]
+image::RecentCommandListFour.png[width="550"]
 
-The `UniqueBookCircularList` is now full (`size = 3`). When user performs `select 4`, since the book
+The `UniqueBookCircularList` is now full. When user performs `select 4`, since the book
 `Four` is not in the list, the book at the last index is removed to make space for book `Four`.
 This is because the book at the last index is the least recent selection.
 
-image::RecentCommandListFive.png[width="650"]
+image::RecentCommandListFive.png[width="550"]
 
 NOTE: `UniqueBookCircularList::equals` is order sensitive since the order determines the recency.
 
@@ -600,13 +618,177 @@ by only showing these books.
 * **Alternative 2:** Use `BookShelf`.
 ** Pros: Re-use of existing data structure.
 ** Cons: BookShelf supports functionalities that are not needed to store recently selected books.
+// end::recent[]
 
-// tag::dataencryption[]
-=== [Proposed] Data Encryption
+// tag::library[]
+=== Find a book in NLB library: `library` command
 
-_{Explain here how the data encryption feature will be implemented}_
+The `library` command allows the user to easily check for the availability of books in NLB libraries.
+This eliminates the need to manually enter search information into the NLB catalogue. The user can use this information to decide when or whether to read a book.
 
-// end::dataencryption[]
+==== Current implementation
+
+
+
+==== Design considerations
+
+===== Aspect: How to show the book availability
+
+* **Alternative 1 (current choice):** Load the webpage using a `WebView`.
+** Pros: Immune to changes in structure of that webpage.
+** Cons: Lesser flexibility in structure and content. Also subject to limitations of `WebView`.
+* **Alternative 2:** Extract the relevant information from the HTTP response and design a new panel to show the results.
+** Pros: Greater control over structure and content.
+** Cons: Vulnerable to changes in structure of that webpage.
+
+===== Aspect: Using advanced search versus basic search
+
+* **Alternative 1 (current choice):** Use basic search, using a HTTP GET request.
+** Pros: Faster response time.
+** Cons: Searched keyword seem to only be matched to title or authors.
+* **Alternative 2:** Use advanced search, using a HTTP POST request.
+** Pros: Can limit the search results using more parameters such as year or ISBN.
+** Cons: Slower response time.
+
+===== Aspect: Whether to load in `WebView` directly or pre-process through `Network` component
+
+* **Alternative 1 (current choice):** Pre-process HTTP request response in `Network` component, then send intended URL to `WebView`.
+** Pros: Processing happens behind the scene, and does not distract user.
+** Cons: User is subject to waiting times without feedback on progress. Furthermore the control flow becomes more complicated since an URL still needs to be passed to and loaded on the `WebView` eventually.
+* **Alternative 2:** Load search URL in `WebView` and navigate to intended page using script.
+** Pros: Easier to implement. Eliminate the need to modify `Network` component.
+** Cons: User will be able to see the navigation between pages.
+// end::library[]
+
+// tag::encrypt[]
+=== Data Encryption
+
+==== Current implementation
+
+* **When `encrypt` command is entered**
+
+. `EncryptCommand` is processed to set isEncrypt to be true.
+
+. The `Bibliotek` cannot be run any command except `decrypt` and `help` command.
+
+* If you enter a wrong key.
+
+image::shouldbedecryptfirst.png[width="650"]
+
+* **When the `Bibliotek` is encrypted and `decrypt` command is entered**
+
+. `DecryptCommandParser` will extract key from the user input.
+. `DecryptCommandParser` creates an `DecryptCommand` the key.
+. `DecryptCommand` is preprocessed to check that key is correct(decode the key from the storage).
+. `DecryptCommand` is processed to set isEncrypt to be false.
+
+* If your entered key is correct
+
+image::correctkey.png[width="650"]
+
+* If your entered key is wrong
+
+image::wrongkey.png[width="650"]
+
+
+* **When `setKey` command is entered**
+
+. `setKeyCommandParser` will extract the old key and new key from the user input.
+. `setKeyCommandParser` checks that  two parameters are present, and that the parameters are valid.
+. `setKeyCommandParser` creates an `setKeyCommand` with the parameters.
+. `setKeyCommand` is preprocessed to check that oldKey is correct.
+. If the oldKye is correct, `setKeyCommand` will send a setKey command to LogicManager.
+. LogicManager will send set_new_key request to ModelManger.
+. ModelManager indicate the keyChangedevent and handle it, and set the bookshelf's key to be new key.
+. ModelManager will encode the key, before indicate the keyChangedevent.
+. StorageManager handle the event by update the bibliotek with the new key(encoded key).
+
+* If you entered old key is correct.
+
+image::setsuccess.png[width="650"]
+
+* If you entered old key is incorrect.
+
+image::wrongkey(set).png[width="650"]
+
+* The encode key are implement in this way:
+[source,java]
+----
+    public static String encrypKey(String mykey) throws Exception {
+        byte[] byarray = encrypt(mykey.getBytes(ENCODE), defaultKey.getBytes(ENCODE));
+        String encryptkey = new BASE64Encoder().encode(byarray);
+        return encryptkey;
+    }
+
+    public static byte[] encrypt(byte[] mykey, byte[] key) throws Exception {
+        SecureRandom secureRandom = new SecureRandom();
+
+        DESKeySpec desKeySpec = new DESKeySpec(key);
+
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(DES);
+        SecretKey securekey = secretKeyFactory.generateSecret(desKeySpec);
+
+        Cipher cipher = Cipher.getInstance(DES);
+
+        cipher.init(Cipher.ENCRYPT_MODE, securekey, secureRandom);
+
+        return cipher.doFinal(mykey);
+    }
+----
+
+* The encode key are implement in this way:
+[source,java]
+----
+    public static String decryptKey(String yourkey) throws IOException, Exception {
+        if (yourkey == null) {
+            return null;
+        }
+        BASE64Decoder base64Decoder = new BASE64Decoder();
+        byte[] decodeBuffer = base64Decoder.decodeBuffer(yourkey);
+        byte[] bytes = decrypt(decodeBuffer, defaultKey.getBytes(ENCODE));
+        return new String(bytes, ENCODE);
+    }
+
+    private static byte[] decrypt(byte[] yourkey, byte[] key) throws Exception {
+
+        SecureRandom secureRandom = new SecureRandom();
+
+        DESKeySpec desKeySpec = new DESKeySpec(key);
+
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(DES);
+        SecretKey securekey = secretKeyFactory.generateSecret(desKeySpec);
+
+        Cipher cipher = Cipher.getInstance(DES);
+
+        cipher.init(Cipher.DECRYPT_MODE, securekey, secureRandom);
+
+        return cipher.doFinal(yourkey);
+    }
+----
+The default key "admin" will be stored as:
+
+image::password_admin.png[width="650"]
+// end::encrypt[]
+
+==== Design considerations
+
+===== Aspect: Whether to use three commands instead of only one
+
+* **Alternative 1 (current choice):** Use three commands to do the encrypt, decrypt and setkey actions
+** Pros: Users can clearly know what they can do about the key.
+** Cons: Users should learn two more commands
+* **Alternative 2:** Use only one setKey command to solve all three features.
+** Pros: Seem that users can eliminate the typing.
+** Cons: Users will feel confuse, not so clear about the command.
+
+===== Aspect: Whether to encode the key before store it
+
+* **Alternative 1 (current choice):** Stores the encoded key.
+** Pros: Others cannot know users' key easily.
+** Cons: Difficult to implement.
+* **Alternative 2:** Store the text form key.
+** Pros: Easy to implement.
+** Cons: Others can know users' key easily.
 
 === Logging
 

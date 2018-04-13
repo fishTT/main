@@ -249,30 +249,32 @@ Lists books in your book shelf that contains `Andy Weir` in one of the authors' 
 * `list t/Babylon's Ashes c/Science Fiction` +
 Lists `Science Fiction` books in your book shelf that contains `Babylon's Ashes` in the title.
 
+// tag::edit[]
 [[edit-command]]
 === Editing a book : `edit` _(since v1.4)_
 
-After reading a book, you may want to give the book a rating or set the book as read. Or, you may want
-to change the priority of books to remind yourself what you should read next. These can be done using `edit`. +
+When you using the Bibliotek to read books, you may want to rate on one book you read, set the status to remind you the reading situation,
+or set the priority of the book to remind yourself what to read next. These can be done using `edit`. +
 Format: `edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
 
 ****
-* Edits the book at the specified `INDEX`. The index refers to the index number shown in the most recent listing. The index *must be a positive integer* 1, 2, 3, ...
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* `STATUS` must be one of the following (items in parenthesis are aliases): `read` (`r`), `unread` (`u`), or `reading` (`rd`).
-* `PRIORITY` must be one of the following (items in parenthesis are aliases): `none` (`n`), `low` (`l`), `medium` (`m`), or `high` (`h`).
-* `RATING` must be a valid rating from 0 to 5, or -1, to select unrated books.
+* For the index, you should provide a integer which in the range of your list.
+* You should provide at least one field to edit.
+* Before you edit, every book has a default value for rating("-1"), status("none") and priority("unread").
+* For the rating format, the range of the rating should be between -1 and 5. (-1 is for unrated books).
+* For the status format, you should choose one of aliases(or full name) following: `read`(`r`), `unread`(`ur`), or `reading`(`rd`).
+* For the priority format, you should choose one of aliases(or full name) following: `none`(`n`), `low`(`l`), `medium`(`m`) or `high`(`h`).
 ****
 
-WARNING: You can only perform `edit` when the list shown is from your book shelf.
+WARNING: You can only edit books from the list using the index.
 
 Examples:
 
-* `edit 1 p/high` +
-Changes the priority of the 1st book to `HIGH`.
-* `edit 2 s/read r/5` +
-Marks the 2nd book as `READ` and changes its rating to `5`.
+* `edit 3 p/low` +
+Changes the priority of the 3rd book to `LOW`.
+* `edit 1 s/read p/low r/4` +
+Marks the 1nd book as `READ`, changes its priority to `LOW`, and changes its rating to `4`.
+// end::edit[]
 
 [[delete-command]]
 === Deleting a book : `delete`
@@ -364,6 +366,7 @@ The `undo` command fails as there are no undoable commands executed previously.
 `undo` (reverses the `delete 1` command) +
 
 [[recent-command]]
+// tag::recent[]
 === Listing recently viewed books : `recent` _(since v1.2)_
 
 You recently selected a book in one of your searches but did not add it into your
@@ -399,6 +402,8 @@ You can then enter `add 4` to add the book into your book shelf.
 
 NOTE: If you don't see the intended book in the list, then too many book selections have been performed after
 that book.
+// end::recent[]
+
 
 [[reviews-command]]
 === Viewing book reviews : `reviews` _(since v1.3)_
@@ -434,6 +439,7 @@ Other examples:
 Shows online reviews of 1st book in the search results.
 
 [[library-command]]
+// tag::library[]
 === Finding a book in the library : `library` _(since v1.5)_
 
 If you want to know whether a book is available in the library, use `library`. +
@@ -464,6 +470,7 @@ image::LibraryCommandAfter.png[width="700"]
 
 NOTE: If Bibliotek shows `Failed to retrieve information from online.`,
 it means your search request has timed out. You should try again after some time.
+// end::library[]
 
 [[history-command]]
 === Listing entered commands : `history`
@@ -664,19 +671,42 @@ Do want to type faster? Fret not! Just press 'Tab' and Bibliotek will automatica
 complete your commands for you. +
 // end::autocomplete[]
 
-[[setpassword-command]]
-=== Setting a password : `setpassword` _(coming in v2.0)_
+[[setKey-command]]
+=== Setting a key to bibliotek : `setKey` _(coming in v1.5)_
 
-If you want to keep your data secure, you can opt to set a password for the application. +
-Format: `setpassword p/PASSWORD`
+If you want to keep your data secure, you can opt to set a key for bibliotek. +
+Format: `setKey old/OLDKEY new/NEWKEY`
 
 [NOTE]
 ====
-You will be prompted for the password upon starting up the application. You will
-not need to enter it again thereafter (ie. when using commands).
+You will be given a default key: admin, when you open bibliotek for the first time.
 ====
 
-TIP: Remove your password using `setpassword p/`
+TIP: You should remember your key after setting a new one.
+
+// tag::encrypt[]
+[[Decrypt-command]]
+=== Decrypt the bibliotek : `decrypt` _(coming in v1.5)_
+
+If you want to decrypt your bibliotek if your bibliotek is encrypted, you can decrypt it using DecryptCommand. +
+Format: `decrypt YOUR_KEY`
+
+[NOTE]
+====
+You will be given a default key: admin, when you open bibliotek for the first time.
+====
+
+[[Encrypt-command]]
+=== Decrypt the bibliotek : `encrypt` _(coming in v1.5)_
+
+If you want to encrypt your bibliotek, you can encrypt it using EncryptCommand. +
+Format: `encrypt`
+
+[NOTE]
+====
+You should remember your key before you do this command.
+====
+// end::encrypt[]
 
 [[settings-command]]
 === Changing settings: `settings` _(coming in v2.0)_
@@ -739,11 +769,13 @@ e.g. `add 1`
 e.g. `addalias read cmd/edit s/read p/none`
 |*Aliases* |`aliases`
 |*Clear* |`clear`
+|*Decrypt* |`decrypt YOUR_KEY`
 |*Delete* |`delete INDEX`
 |*Delete Alias* |`deletealias ALIAS_NAME`
 |*Edit* |`edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
 
 e.g. `edit 2 s/READ r/5`
+|*Encrypt* |`encrypt`
 |*Exit* |`exit`
 |*Help* |`help`
 |*History* |`history`
@@ -754,6 +786,9 @@ e.g. `edit 2 s/READ r/5`
 |*Search* |`search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]`
 
 e.g. `search t/Babylon's Ashes c/Science Fiction`
+|*SetKey* |`setKey [old/OLDKEY] [new/NEWKEY]`
+
+e.g. `setkey old/admin new/haha`
 |*Select* |`select INDEX`
 |*Theme* |`theme THEME_NAME`
 |*Undo* |`undo`

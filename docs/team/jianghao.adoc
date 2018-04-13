@@ -14,7 +14,7 @@ Bibliotek is a desktop address book application used for teaching Software Engin
 
 * **Autocomplete commands and hint alias** (major)
 ** Added tab to autocomplete commands.
-** Added a hint Commandbox to show hint of alias.
+** Added a hint Command box to show hint of alias.
 ** This allows the user to type commands quickly and know what to type for alias of the input command.
 * **Quotes about book** (minor)
 ** Add a welcome panel to display a random quotes about books.
@@ -27,7 +27,7 @@ Bibliotek is a desktop address book application used for teaching Software Engin
 ** Enhancements to existing features:
 *** Add a welcome panel to display quotes about books (Pull requests https://github.com/CS2103JAN2018-F14-B4/main/pull/132[#132])
 *** Add a autocomplete function to autocomplete command.
-*** Add a hintCommandBox to show hint of input command. 
+*** Add a hintCommandBox to show hint of input command.
 ** Documentation:
 *** Did cosmetic tweaks to existing contents of the Developer Guide: https://github.com/CS2103JAN2018-F14-B4/main/pull/52[#52]
 

@@ -660,7 +660,7 @@ Format: `fontsize FONT_SIZE`
 // tag::autocomplete[]
 === Autocompleting commands : `Tab` _(coming in v2.0)_
 
-Do want to type faster? Fret not! Just press 'Tab' and Bibliotek will automatically 
+Do want to type faster? Fret not! Just press 'Tab' and Bibliotek will automatically
 complete your commands for you. +
 // end::autocomplete[]
 

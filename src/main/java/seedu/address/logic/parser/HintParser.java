@@ -5,13 +5,13 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_AUTHOR;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_AUTHOR_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY_STRING;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMPTY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING_STRING;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT_BY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT_BY_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS_STRING;
@@ -54,11 +54,6 @@ public class HintParser {
      * Parses {@code String input} and returns an appropriate hint.
      */
     public static String generateHint(String input) {
-        //the ordering matters as prefix hints are generated inorder
-        assert LIST_OF_PREFIXES.equals(Arrays.asList(
-                PREFIX_AUTHOR, PREFIX_CATEGORY, PREFIX_ISBN,
-                PREFIX_TITLE, PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING, PREFIX_SORT_BY));
-
         String[] command;
 
         try {
@@ -102,7 +97,7 @@ public class HintParser {
         case UndoCommand.COMMAND_WORD:
             return " undo last modification";
         case SearchCommand.COMMAND_WORD:
-            return " search for books";
+            return generateSearchHint();
         default:
             return " type help for guide";
         }
@@ -219,6 +214,14 @@ public class HintParser {
     }
 
     /**
+     * Returns a hint specific to the delete command.
+     */
+    private static String generateDeleteHint() {
+        Optional<String> indexHintOptional = generateIndexHint();
+        return indexHintOptional.orElse(" delete a book");
+    }
+
+    /**
      * Returns a hint specific to the edit command.
      */
     private static String generateEditHint() {
@@ -243,10 +246,12 @@ public class HintParser {
     }
 
     /**
-     * Returns a hint specific to the delete command.
+     * Returns a hint specific to the search command.
      */
-    private static String generateDeleteHint() {
-        Optional<String> indexHintOptional = generateIndexHint();
-        return indexHintOptional.orElse(" delete a book");
+    private static String generateSearchHint() {
+        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_ISBN,
+                PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY);
+        return endHintOptional.orElseGet(() -> offerHint(" search for books", PREFIX_EMPTY, PREFIX_ISBN,
+                PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY));
     }
 }

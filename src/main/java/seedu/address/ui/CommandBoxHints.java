@@ -1,10 +1,7 @@
 package seedu.address.ui;
 
-import com.google.common.eventbus.Subscribe;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import seedu.address.commons.events.ui.CommandInputChangedEvent;
 import seedu.address.commons.util.TextUtil;
 import seedu.address.logic.Logic;
 import seedu.address.logic.parser.HintParser;
@@ -22,7 +19,7 @@ public class CommandBoxHints extends UiPart<TextField> {
     @FXML
     private TextField commandBoxHints;
 
-    public CommandBoxHints(Logic logic, TextField commandTextField) {
+    protected CommandBoxHints(Logic logic, TextField commandTextField) {
         super(FXML);
         registerAsAnEventHandler(this);
         this.hintParser = new HintParser(logic);
@@ -36,9 +33,16 @@ public class CommandBoxHints extends UiPart<TextField> {
         });
     }
 
-    @Subscribe
-    private void handleCommandInputChangedEvent(CommandInputChangedEvent event) {
-        String userInput = event.currentInput;
+    @FXML
+    private void handleOnClick() {
+        commandTextField.requestFocus();
+        commandTextField.positionCaret(commandTextField.getText().length());
+    }
+
+    /**
+     * Updates the hint based on the updated user input.
+     */
+    protected void updateHint(String userInput) {
         if (userInput.isEmpty()) {
             commandBoxHints.setText("Enter command here...");
             return;
@@ -47,19 +51,11 @@ public class CommandBoxHints extends UiPart<TextField> {
         commandBoxHints.setText(hint);
     }
 
-    @FXML
-    private void handleOnClick() {
-        commandTextField.requestFocus();
-        commandTextField.positionCaret(commandTextField.getText().length());
+    protected void hide() {
+        commandBoxHints.setVisible(false);
     }
 
-    protected void disable() {
-        commandBoxHints.setEditable(false);
-        commandBoxHints.setFocusTraversable(false);
-    }
-
-    protected void enable() {
-        commandBoxHints.setEditable(true);
-        commandBoxHints.setFocusTraversable(true);
+    protected void show() {
+        commandBoxHints.setVisible(true);
     }
 }

@@ -389,7 +389,7 @@ body {
     -fx-text-fill: #F70D1A;
 }
 
-#commandBoxItems {
+#commandBox {
     -fx-background-color: #f9f9f9;
     -fx-background-insets: 0;
     -fx-background-radius: 6px;
@@ -408,7 +408,7 @@ body {
 }
 
 #commandBoxHints {
-    -fx-opacity: 0.4;
+    -fx-opacity: 0.35;
 }
 
 .command-box-disabled {
@@ -420,7 +420,7 @@ body {
     -fx-background-radius: 0;
 }
 
-#commandBoxItems, #resultDisplay, #bookListContainer, #bookDetailsContainer {
+#commandBox, #resultDisplay, #bookListContainer, #bookDetailsContainer {
     -fx-highlight-text-fill: #222;
     -fx-effect: dropShadow(three-pass-box, #d5d5d5, 8, 0, 2, 2);
 }

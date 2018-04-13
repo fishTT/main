@@ -6,15 +6,13 @@ import com.google.common.eventbus.Subscribe;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.ui.CommandInputChangedEvent;
 import seedu.address.commons.events.ui.DisableCommandBoxRequestEvent;
 import seedu.address.commons.events.ui.EnableCommandBoxRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
@@ -52,17 +50,8 @@ public class CommandBox extends UiPart<Region> {
         this.logic = logic;
         registerAsAnEventHandler(this);
 
-        commandTextField.textProperty().addListener((ob, o, n) -> {
-            // expand the textfield
-            double width = TextUtil.computeTextWidth(commandTextField,
-                    commandTextField.getText(), 0.0D) + 2;
-            double halfWindowWidth = (getRoot().getParent() == null)
-                    ? 250 : ((Region) getRoot().getParent()).getWidth() / 2;
-            width = Math.max(1, width);
-            width = (width > halfWindowWidth) ? halfWindowWidth : width;
-            commandTextField.setPrefWidth(width);
-            commandTextField.setAlignment(Pos.CENTER_RIGHT);
-        });
+        commandBox.widthProperty().addListener((ob, o, n) -> resizeCommandTextField());
+        commandTextField.textProperty().addListener((ob, o, n) -> resizeCommandTextField());
 
         commandBoxItems.setOnMouseClicked((event) -> {
             commandTextField.requestFocus();
@@ -71,14 +60,12 @@ public class CommandBox extends UiPart<Region> {
 
         commandBoxHints = new CommandBoxHints(logic, commandTextField);
         commandBoxItems.getChildren().add(commandBoxHints.getRoot());
-        commandTextField.prefColumnCountProperty().bind(commandTextField.textProperty().length());
+        HBox.setHgrow(commandBoxHints.getRoot(), Priority.ALWAYS);
 
-        // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((observable, oldInput, newInput) ->
                 setStyleByValidityOfInput(newInput));
-        // posts a CommandInputChangedEvent whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((observable, oldInput, newInput) ->
-                EventsCenter.getInstance().post(new CommandInputChangedEvent(newInput)));
+                commandBoxHints.updateHint(newInput));
         historySnapshot = logic.getHistorySnapshot();
     }
 
@@ -131,6 +118,18 @@ public class CommandBox extends UiPart<Region> {
         }
 
         replaceText(historySnapshot.next());
+    }
+
+    /** Resizes the command text field based on the width of its containing text. */
+    private void resizeCommandTextField() {
+        double width = TextUtil.computeTextWidth(commandTextField,
+                commandTextField.getText(), 0.0D) + 3;
+        double halfWindowWidth = (getRoot().getParent() == null)
+                ? 250 : ((Region) getRoot().getParent()).getWidth() / 2;
+        width = Math.max(1, width);
+        width = (width > halfWindowWidth) ? halfWindowWidth : width;
+        commandTextField.setPrefWidth(width);
+        commandTextField.setMinWidth(width);
     }
 
     /**
@@ -218,15 +217,15 @@ public class CommandBox extends UiPart<Region> {
     private void handleDisableCommandBoxRequestEvent(DisableCommandBoxRequestEvent event) {
         commandTextField.setEditable(false);
         commandTextField.setFocusTraversable(false);
-        commandBoxHints.disable();
-        commandBoxItems.getStyleClass().add(DISABLED_STYLE_CLASS);
+        commandBoxHints.hide();
+        commandBox.getStyleClass().add(DISABLED_STYLE_CLASS);
     }
 
     @Subscribe
     private void handleEnableCommandBoxRequestEvent(EnableCommandBoxRequestEvent event) {
         commandTextField.setEditable(true);
         commandTextField.setFocusTraversable(true);
-        commandBoxHints.enable();
-        commandBoxItems.getStyleClass().remove(DISABLED_STYLE_CLASS);
+        commandBoxHints.show();
+        commandBox.getStyleClass().remove(DISABLED_STYLE_CLASS);
     }
 }

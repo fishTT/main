@@ -389,14 +389,12 @@ body {
     -fx-text-fill: #F70D1A;
 }
 
-#commandBoxItems {
+#commandBox {
     -fx-background-color: transparent #383838 transparent #383838;
     -fx-background-insets: 0;
     -fx-border-color: #383838 #383838 #ffffff #383838;
     -fx-border-insets: 0;
     -fx-border-width: 1;
-    -fx-background-radius: 6px;
-    -fx-border-radius: 6px;
     -fx-padding: 6px 10px 6px 10px;
 }
 
@@ -411,7 +409,7 @@ body {
 }
 
 #commandBoxHints {
-    -fx-opacity: 0.4;
+    -fx-opacity: 0.35;
 }
 
 .command-box-disabled {

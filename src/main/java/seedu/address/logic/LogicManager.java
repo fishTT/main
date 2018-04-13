@@ -60,7 +60,7 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public String[] parse(String commandText) throws ParseException {
         String processedText = bookShelfParser.applyCommandAlias(commandText);
-        final Matcher matcher = BookShelfParser.BASIC_COMMAND_FORMAT.matcher(processedText.trim());
+        final Matcher matcher = BookShelfParser.BASIC_COMMAND_FORMAT.matcher(processedText);
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }

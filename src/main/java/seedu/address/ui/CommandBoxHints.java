@@ -19,7 +19,7 @@ public class CommandBoxHints extends UiPart<TextField> {
     @FXML
     private TextField commandBoxHints;
 
-    private TextField commandTextField;
+    private final TextField commandTextField;
 
     public CommandBoxHints(TextField commandTextField) {
         super(FXML);
@@ -28,24 +28,21 @@ public class CommandBoxHints extends UiPart<TextField> {
 
         commandBoxHints.textProperty().addListener((ob, o, n) -> {
             // expand the textfield
-            double width = TextUtil.computeTextWidth(commandBoxHints.getFont(),
-                    commandBoxHints.getText(), 0.0D) + 1;
-            width = (width < 1) ? 1 : width;
+            double width = TextUtil.computeTextWidth(commandBoxHints, commandBoxHints.getText(), 0.0D) + 1;
+            width = Math.max(1, width);
             commandBoxHints.setPrefWidth(width);
         });
     }
-
 
     @Subscribe
     private void handleCommandInputChangedEvent(CommandInputChangedEvent event) {
         String userInput = event.currentInput;
         if (userInput.isEmpty()) {
-            commandBoxHints.setText("Enter Command Here");
+            commandBoxHints.setText("Enter command here...");
             return;
         }
         String hint = generateHint(userInput);
         commandBoxHints.setText(hint);
-
     }
 
     @FXML
@@ -54,5 +51,13 @@ public class CommandBoxHints extends UiPart<TextField> {
         commandTextField.positionCaret(commandTextField.getText().length());
     }
 
+    protected void disable() {
+        commandBoxHints.setEditable(false);
+        commandBoxHints.setFocusTraversable(false);
+    }
 
+    protected void enable() {
+        commandBoxHints.setEditable(true);
+        commandBoxHints.setFocusTraversable(true);
+    }
 }

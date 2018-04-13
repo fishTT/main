@@ -44,6 +44,7 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private HBox commandBoxItems;
 
+    private final CommandBoxHints commandBoxHints;
 
     public CommandBox(Logic logic) {
         super(FXML);
@@ -52,10 +53,10 @@ public class CommandBox extends UiPart<Region> {
 
         commandTextField.textProperty().addListener((ob, o, n) -> {
             // expand the textfield
-            double width = TextUtil.computeTextWidth(commandTextField.getFont(),
+            double width = TextUtil.computeTextWidth(commandTextField,
                     commandTextField.getText(), 0.0D) + 2;
-            double halfWindowWidth = (MainWindow.getInstance() == null)
-                    ? 250 : MainWindow.getInstance().getRoot().getWidth() / 2;
+            double halfWindowWidth = (getRoot().getParent() == null)
+                    ? 250 : ((Region) getRoot().getParent()).getWidth() / 2;
             width = (width < 1) ? 1 : width;
             width = (width > halfWindowWidth) ? halfWindowWidth : width;
             commandTextField.setPrefWidth(width);
@@ -67,7 +68,7 @@ public class CommandBox extends UiPart<Region> {
             commandTextField.positionCaret(commandTextField.getText().length());
         });
 
-        CommandBoxHints commandBoxHints = new CommandBoxHints(commandTextField);
+        commandBoxHints = new CommandBoxHints(commandTextField);
         commandBoxItems.getChildren().add(commandBoxHints.getRoot());
         commandTextField.prefColumnCountProperty().bind(commandTextField.textProperty().length());
 
@@ -217,11 +218,15 @@ public class CommandBox extends UiPart<Region> {
     private void handleDisableCommandBoxRequestEvent(DisableCommandBoxRequestEvent event) {
         commandTextField.setEditable(false);
         commandTextField.setFocusTraversable(false);
+        commandBoxHints.disable();
+        commandBoxItems.getStyleClass().add("command-box-disabled");
     }
 
     @Subscribe
     private void handleEnableCommandBoxRequestEvent(EnableCommandBoxRequestEvent event) {
         commandTextField.setEditable(true);
         commandTextField.setFocusTraversable(true);
+        commandBoxHints.enable();
+        commandBoxItems.getStyleClass().remove("command-box-disabled");
     }
 }

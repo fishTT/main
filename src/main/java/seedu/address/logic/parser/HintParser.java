@@ -5,16 +5,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_AUTHOR;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_AUTHOR_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_CATEGORY_STRING;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_DESCRIPTION_STRING;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMPTY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING_STRING;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT_BY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT_BY_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
@@ -45,8 +41,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 
 //@@author fishTT
 /**
- * Class that is responsible for generating hints based on user input
- * Contains one public method generateHint which returns an appropriate hint based on input
+ * Class that is responsible for generating hints based on user input.
+ * Contains one public method generateHint which returns an appropriate hint based on input.
  */
 public class HintParser {
 
@@ -55,12 +51,12 @@ public class HintParser {
     private static String userInput;
 
     /**
-     * Parses {@code String input} and returns an appropriate hint
+     * Parses {@code String input} and returns an appropriate hint.
      */
     public static String generateHint(String input) {
         //the ordering matters as prefix hints are generated inorder
         assert LIST_OF_PREFIXES.equals(Arrays.asList(
-                PREFIX_AUTHOR, PREFIX_CATEGORY, PREFIX_DESCRIPTION, PREFIX_ISBN,
+                PREFIX_AUTHOR, PREFIX_CATEGORY, PREFIX_ISBN,
                 PREFIX_TITLE, PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING, PREFIX_SORT_BY));
 
         String[] command;
@@ -74,15 +70,14 @@ public class HintParser {
         userInput = input;
         commandWord = command[0];
         arguments = command[1];
-        String hintContent = generateHintContent();
 
-        return hintContent;
+        return generateHintContent();
     }
 
     /**
-     * returns an appropriate hint based on commandWord and arguments
-     * userInput and arguments are referenced to decide whether whitespace should be added to
-     * the front of the hint
+     * Returns an appropriate hint based on commandWord and arguments.
+     * References userInput and arguments to decide whether whitespace should be added to
+     * the front of the hint.
      */
     private static String generateHintContent() {
         switch (commandWord) {
@@ -91,39 +86,39 @@ public class HintParser {
         case EditCommand.COMMAND_WORD:
             return generateEditHint();
         case SelectCommand.COMMAND_WORD:
-            return " Select a book";
+            return generateSelectHint();
         case DeleteCommand.COMMAND_WORD:
-            return generateDeleteAndSelectHint();
+            return generateDeleteHint();
         case ClearCommand.COMMAND_WORD:
-            return " clears a book";
+            return " clear book shelf";
         case ListCommand.COMMAND_WORD:
-            return " lists all books";
+            return " list books";
         case HistoryCommand.COMMAND_WORD:
             return " show command history";
         case ExitCommand.COMMAND_WORD:
-            return " exits the app";
+            return " exit the app";
         case HelpCommand.COMMAND_WORD:
-            return " shows user guide";
+            return " show user guide";
         case UndoCommand.COMMAND_WORD:
-            return " undo command";
+            return " undo last modification";
         case SearchCommand.COMMAND_WORD:
-            return " search a book";
+            return " search for books";
         default:
             return " type help for guide";
         }
     }
 
     /**
-     * parses the end of arguments to check if user is currently typing a prefix that is not in ignoredPrefixes
-     * returns hint if user is typing a prefix
-     * returns empty Optional if user is not typing a prefix
+     * Parses the end of arguments to check if user is currently typing a prefix that is in prefixes.
+     * Returns hint if user is typing a prefix.
+     * Returns empty Optional if user is not typing a prefix.
      */
-    private static Optional<String> generatePrefixHintBasedOnEndArgs(Prefix... ignoredPrefixes) {
+    private static Optional<String> generatePrefixHintBasedOnEndArgs(Prefix... prefixes) {
 
-        Set<Prefix> ignoredPrefixSet = Arrays.stream(ignoredPrefixes).collect(Collectors.toSet());
+        Set<Prefix> prefixSet = Arrays.stream(prefixes).collect(Collectors.toSet());
 
         for (Prefix p : LIST_OF_PREFIXES) {
-            if (ignoredPrefixSet.contains(p)) {
+            if (!prefixSet.contains(p)) {
                 continue;
             }
             String prefixLetter = " " + (p.getPrefix().toCharArray()[0]); // " n"
@@ -140,20 +135,19 @@ public class HintParser {
     }
 
     /**
-     * Currently this method is always called after generatePrefixHintBasedOnEndArgs
-     * It parses arguments to check for parameters that have not been filled up
-     * {@code ignoredPrefixes} are omitted during this check
-     * returns hint for parameter that is not present
-     * returns returns {@code defaultHint} if all parameters are present
+     * Currently this method is always called after generatePrefixHintBasedOnEndArgs.
+     * It parses arguments to check for parameters that have not been filled up.
+     * Only the specified {@code prefixes} will be checked.
+     * Returns hint for parameter that is not present.
+     * Returns returns {@code defaultHint} if all parameters are present.
      */
-    private static String offerHint(String defaultHint, Prefix... ignoredPrefixes) {
+    private static String offerHint(String defaultHint, Prefix... prefixes) {
 
-        Set<Prefix> ignoredPrefixesSet = Arrays.stream(ignoredPrefixes).collect(Collectors.toSet());
+        Set<Prefix> prefixSet = Arrays.stream(prefixes).collect(Collectors.toSet());
 
-        //remove ignored prefixes without losing order
         List<Prefix> prefixList = new ArrayList<>();
         for (Prefix p : LIST_OF_PREFIXES) {
-            if (!ignoredPrefixesSet.contains(p)) {
+            if (prefixSet.contains(p)) {
                 prefixList.add(p);
             }
         }
@@ -173,7 +167,7 @@ public class HintParser {
     }
 
     /**
-     * returns a parameter based on {@code prefix}
+     * Returns a parameter based on {@code prefix}.
      */
     private static String prefixIntoParameter(Prefix prefix) {
         switch (prefix.toString()) {
@@ -181,30 +175,27 @@ public class HintParser {
             return "AUTHOR";
         case PREFIX_CATEGORY_STRING:
             return "CATEGORY";
-        case PREFIX_DESCRIPTION_STRING:
-            return "DESCRIPTION";
         case PREFIX_ISBN_STRING:
             return "ISBN";
         case PREFIX_TITLE_STRING:
             return "TITLE";
         case PREFIX_STATUS_STRING:
-            return "STATUR";
+            return "STATUS";
         case PREFIX_PRIORITY_STRING:
             return "PRIORITY";
         case PREFIX_RATING_STRING:
             return "RATING";
         case PREFIX_SORT_BY_STRING:
-            return "SORTBY";
+            return "SORT_BY";
         default:
             return "KEYWORD";
         }
     }
 
     /**
-     * parses arguments to check if index is present
-     * checks on userInput to handle whitespace
-     * returns "index" if index is not present
-     * else returns an empty Optional
+     * Parses arguments to check if index is present.
+     * Checks on userInput to handle whitespace.
+     * Returns "index" if index is not present, else returns an empty Optional.
      */
     private static Optional<String> generateIndexHint() {
         String whitespace = userInput.endsWith(" ") ? "" : " ";
@@ -220,17 +211,15 @@ public class HintParser {
     }
 
     /**
-     * returns a hint specific to the add command
+     * Returns a hint specific to the add command.
      */
     private static String generateAddHint() {
-
-        Optional<String> endHintOptional;
-        endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_REMARK);
-        return endHintOptional.orElseGet(() -> offerHint("", PREFIX_EMPTY, PREFIX_REMARK));
+        Optional<String> indexHintOptional = generateIndexHint();
+        return indexHintOptional.orElse(" add a book");
     }
 
     /**
-     * returns a hint specific to the edit command
+     * Returns a hint specific to the edit command.
      */
     private static String generateEditHint() {
         Optional<String> indexHintOptional = generateIndexHint();
@@ -238,26 +227,26 @@ public class HintParser {
             return indexHintOptional.get();
         }
 
-        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_REMARK);
-        return endHintOptional.orElseGet(() -> offerHint("prefix/KEYWORD", PREFIX_EMPTY, PREFIX_REMARK));
+        Optional<String> endHintOptional =
+                generatePrefixHintBasedOnEndArgs(PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING);
+        return endHintOptional.orElseGet(() -> offerHint(" edit a book",
+                PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING));
 
     }
 
     /**
-     * returns a hint specific to the find command
+     * Returns a hint specific to the select command.
      */
-    private static String generateFindHint() {
-        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_REMARK);
-
-        return endHintOptional.orElseGet(() -> offerHint("prefix/KEYWORD", PREFIX_EMPTY, PREFIX_REMARK));
-    }
-
-    /**
-     * returns a hint specific to the select and delete command
-     */
-    private static String generateDeleteAndSelectHint() {
+    private static String generateSelectHint() {
         Optional<String> indexHintOptional = generateIndexHint();
-        return indexHintOptional.orElse("");
+        return indexHintOptional.orElse(" select a book");
     }
 
+    /**
+     * Returns a hint specific to the delete command.
+     */
+    private static String generateDeleteHint() {
+        Optional<String> indexHintOptional = generateIndexHint();
+        return indexHintOptional.orElse(" delete a book");
+    }
 }

@@ -1,36 +1,26 @@
 package seedu.address.commons.util;
 
-import javafx.scene.text.Font;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 
 /**
  * Helper functions for handling text in JavaFX TextFields
  */
 
 //@@author fishTT
-
 public class TextUtil {
 
-    static final Text HELPER;
-    static final double DEFAULT_WRAPPING_WIDTH;
-    static final double DEFAULT_LINE_SPACING;
-    static final String DEFAULT_TEXT;
-    static final TextBoundsType DEFAULT_BOUNDS_TYPE;
-    static {
-        HELPER = new Text();
-        DEFAULT_WRAPPING_WIDTH = HELPER.getWrappingWidth();
-        DEFAULT_LINE_SPACING = HELPER.getLineSpacing();
-        DEFAULT_TEXT = HELPER.getText();
-        DEFAULT_BOUNDS_TYPE = HELPER.getBoundsType();
-    }
+    private static final Text HELPER;
+    private static final double DEFAULT_WRAPPING_WIDTH;
+    private static final double DEFAULT_LINE_SPACING;
 
     /**
-     * Return's Text Width based on {@code Font font, String text}
+     * Return's Text Width based on {@code TextField textField, String text}
      */
-    public static double computeTextWidth(Font font, String text, double help0) {
+    public static double computeTextWidth(TextField textField, String text, double help0) {
         HELPER.setText(text);
-        HELPER.setFont(font);
+        HELPER.setFont(textField.getFont());
+        HELPER.setStyle(textField.getStyle());
 
         HELPER.setWrappingWidth(0.0D);
         HELPER.setLineSpacing(0.0D);
@@ -40,8 +30,13 @@ public class TextUtil {
 
         HELPER.setWrappingWidth(DEFAULT_WRAPPING_WIDTH);
         HELPER.setLineSpacing(DEFAULT_LINE_SPACING);
-        HELPER.setText(DEFAULT_TEXT);
         return d;
+    }
+
+    static {
+        HELPER = new Text();
+        DEFAULT_WRAPPING_WIDTH = HELPER.getWrappingWidth();
+        DEFAULT_LINE_SPACING = HELPER.getLineSpacing();
     }
 }
 

@@ -390,29 +390,36 @@ body {
     -fx-text-fill: #F70D1A;
 }
 
-#commandTextField {
+#commandBoxItems {
     -fx-background-color: transparent #ECEFF1 transparent #ECEFF1;
     -fx-background-insets: 0;
     -fx-border-color: #ECEFF1 #ECEFF1 #B0BEC5 #ECEFF1;
-    -fx-border-insets: 0;
-    -fx-border-width: 1;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-padding: 6px 10px 6px 10px;
+}
+
+#commandTextField, #commandBoxHints {
+    -fx-background-color: transparent #ECEFF1 transparent #ECEFF1;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
     -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
     -fx-font-size: 13pt;
     -fx-text-fill: #222;
+    -fx-padding: 0;
 }
 
-#commandTextField:readonly {
+#commandBoxHints {
+    -fx-opacity: 0.4;
+}
+
+.command-box-disabled {
     -fx-opacity: 0.8;
 }
 
 #resultDisplay .content {
-    -fx-background-color: #f9f9f9;
+    -fx-background-color: transparent, #ECEFF1, transparent, #ECEFF1;
     -fx-background-radius: 0;
-}
-
-#commandTextField, #resultDisplay, #bookListContainer, #bookDetailsContainer {
-    -fx-highlight-text-fill: #222;
-    -fx-effect: dropShadow(three-pass-box, #d5d5d5, 8, 0, 2, 2);
 }
 
 #description {

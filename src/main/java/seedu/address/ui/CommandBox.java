@@ -31,6 +31,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
+    private static final String DISABLED_STYLE_CLASS = "command-box-disabled";
     private static final String FXML = "CommandBox.fxml";
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -57,7 +58,7 @@ public class CommandBox extends UiPart<Region> {
                     commandTextField.getText(), 0.0D) + 2;
             double halfWindowWidth = (getRoot().getParent() == null)
                     ? 250 : ((Region) getRoot().getParent()).getWidth() / 2;
-            width = (width < 1) ? 1 : width;
+            width = Math.max(1, width);
             width = (width > halfWindowWidth) ? halfWindowWidth : width;
             commandTextField.setPrefWidth(width);
             commandTextField.setAlignment(Pos.CENTER_RIGHT);
@@ -68,7 +69,7 @@ public class CommandBox extends UiPart<Region> {
             commandTextField.positionCaret(commandTextField.getText().length());
         });
 
-        commandBoxHints = new CommandBoxHints(commandTextField);
+        commandBoxHints = new CommandBoxHints(logic, commandTextField);
         commandBoxItems.getChildren().add(commandBoxHints.getRoot());
         commandTextField.prefColumnCountProperty().bind(commandTextField.textProperty().length());
 
@@ -185,12 +186,11 @@ public class CommandBox extends UiPart<Region> {
             return;
         }
 
-        try {
-            logic.parse(input);
-        } catch (ParseException e) {
+        if (!logic.isValidCommand(input)) {
             setStyleToIndicateCommandFailure();
             return;
         }
+
         setStyleToDefault();
     }
 
@@ -219,7 +219,7 @@ public class CommandBox extends UiPart<Region> {
         commandTextField.setEditable(false);
         commandTextField.setFocusTraversable(false);
         commandBoxHints.disable();
-        commandBoxItems.getStyleClass().add("command-box-disabled");
+        commandBoxItems.getStyleClass().add(DISABLED_STYLE_CLASS);
     }
 
     @Subscribe
@@ -227,6 +227,6 @@ public class CommandBox extends UiPart<Region> {
         commandTextField.setEditable(true);
         commandTextField.setFocusTraversable(true);
         commandBoxHints.enable();
-        commandBoxItems.getStyleClass().remove("command-box-disabled");
+        commandBoxItems.getStyleClass().remove(DISABLED_STYLE_CLASS);
     }
 }

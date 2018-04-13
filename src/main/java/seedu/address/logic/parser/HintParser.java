@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.Logic;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
@@ -46,18 +47,23 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class HintParser {
 
-    private static String commandWord;
-    private static String arguments;
-    private static String userInput;
+    private final Logic logic;
+    private String commandWord;
+    private String arguments;
+    private String userInput;
+
+    public HintParser(Logic logic) {
+        this.logic = logic;
+    }
 
     /**
      * Parses {@code String input} and returns an appropriate hint.
      */
-    public static String generateHint(String input) {
+    public String generateHint(String input) {
         String[] command;
 
         try {
-            command = ParserUtil.parseCommandAndArguments(input);
+            command = logic.parse(input);
         } catch (ParseException e) {
             return " type help for guide";
         }
@@ -74,7 +80,7 @@ public class HintParser {
      * References userInput and arguments to decide whether whitespace should be added to
      * the front of the hint.
      */
-    private static String generateHintContent() {
+    private String generateHintContent() {
         switch (commandWord) {
         case AddCommand.COMMAND_WORD:
             return generateAddHint();
@@ -108,7 +114,7 @@ public class HintParser {
      * Returns hint if user is typing a prefix.
      * Returns empty Optional if user is not typing a prefix.
      */
-    private static Optional<String> generatePrefixHintBasedOnEndArgs(Prefix... prefixes) {
+    private Optional<String> generatePrefixHintBasedOnEndArgs(Prefix... prefixes) {
 
         Set<Prefix> prefixSet = Arrays.stream(prefixes).collect(Collectors.toSet());
 
@@ -136,7 +142,7 @@ public class HintParser {
      * Returns hint for parameter that is not present.
      * Returns returns {@code defaultHint} if all parameters are present.
      */
-    private static String offerHint(String defaultHint, Prefix... prefixes) {
+    private String offerHint(String defaultHint, Prefix... prefixes) {
 
         Set<Prefix> prefixSet = Arrays.stream(prefixes).collect(Collectors.toSet());
 
@@ -192,7 +198,7 @@ public class HintParser {
      * Checks on userInput to handle whitespace.
      * Returns "index" if index is not present, else returns an empty Optional.
      */
-    private static Optional<String> generateIndexHint() {
+    private Optional<String> generateIndexHint() {
         String whitespace = userInput.endsWith(" ") ? "" : " ";
         try {
             ParserUtil.parseIndex(arguments);
@@ -208,7 +214,7 @@ public class HintParser {
     /**
      * Returns a hint specific to the add command.
      */
-    private static String generateAddHint() {
+    private String generateAddHint() {
         Optional<String> indexHintOptional = generateIndexHint();
         return indexHintOptional.orElse(" add a book");
     }
@@ -216,7 +222,7 @@ public class HintParser {
     /**
      * Returns a hint specific to the delete command.
      */
-    private static String generateDeleteHint() {
+    private String generateDeleteHint() {
         Optional<String> indexHintOptional = generateIndexHint();
         return indexHintOptional.orElse(" delete a book");
     }
@@ -224,7 +230,7 @@ public class HintParser {
     /**
      * Returns a hint specific to the edit command.
      */
-    private static String generateEditHint() {
+    private String generateEditHint() {
         Optional<String> indexHintOptional = generateIndexHint();
         if (indexHintOptional.isPresent()) {
             return indexHintOptional.get();
@@ -240,7 +246,7 @@ public class HintParser {
     /**
      * Returns a hint specific to the select command.
      */
-    private static String generateSelectHint() {
+    private String generateSelectHint() {
         Optional<String> indexHintOptional = generateIndexHint();
         return indexHintOptional.orElse(" select a book");
     }
@@ -248,7 +254,7 @@ public class HintParser {
     /**
      * Returns a hint specific to the search command.
      */
-    private static String generateSearchHint() {
+    private String generateSearchHint() {
         Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_EMPTY, PREFIX_ISBN,
                 PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY);
         return endHintOptional.orElseGet(() -> offerHint(" search for books", PREFIX_EMPTY, PREFIX_ISBN,

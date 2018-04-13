@@ -1,20 +1,16 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.book.Author;
 import seedu.address.model.book.Category;
@@ -36,11 +32,6 @@ import seedu.address.model.book.Title;
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-
-    /**
-     * Used for initial separation of command word and args.
-     */
-    public static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -175,22 +166,5 @@ public class ParserUtil {
         } catch (IllegalArgumentException e) {
             throw new ParseException(Messages.MESSAGE_INVALID_RATING);
         }
-    }
-
-    /**
-     * Parses {@code String userInput} and returns an array of {commandWord, arguments} if valid.
-     */
-    public static String[] parseCommandAndArguments(String userInput) throws ParseException {
-        requireNonNull(userInput);
-
-        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
-        if (!matcher.matches()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
-        }
-
-        String commandWord = matcher.group("commandWord");
-        final String arguments = matcher.group("arguments");
-
-        return new String[] {commandWord, arguments};
     }
 }

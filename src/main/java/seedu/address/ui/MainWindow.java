@@ -35,6 +35,7 @@ import seedu.address.model.UserPrefs;
 public class MainWindow extends UiPart<Stage> {
 
     private static final String FXML = "MainWindow.fxml";
+
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
     private Stage primaryStage;

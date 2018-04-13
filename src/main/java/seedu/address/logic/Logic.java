@@ -31,7 +31,6 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
-
     /** Returns an unmodifiable view of the list that is currently active. */
     ObservableList<Book> getActiveList();
 

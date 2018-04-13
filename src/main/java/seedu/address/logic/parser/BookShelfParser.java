@@ -41,14 +41,14 @@ public class BookShelfParser {
     /**
      * Used for initial separation of command word and args.
      */
-    public static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("\\s*(?<commandWord>\\S+)(?<arguments>.*)");
+    public static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile(" *(?<commandWord>\\S+)(?<arguments>.*)");
 
     //@@author takuyakanbr
     /**
      * Used for pre-processing the user input, before the application of a command alias.
      */
     private static final Pattern ALIASED_COMMAND_FORMAT =
-            Pattern.compile("\\s*(?<aliasName>\\S+)(?<unnamedArgs>((?! [\\w]+\\/.*)[\\S ])*)(?<namedArgs>.*)");
+            Pattern.compile(" *(?<aliasName>\\S+)(?<unnamedArgs>((?! [\\w]+\\/.*)[\\S ])*)(?<namedArgs>.*)");
 
     private static final int MAX_COMMAND_WORD_LENGTH = 12;
 

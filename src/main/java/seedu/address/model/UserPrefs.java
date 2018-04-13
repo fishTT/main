@@ -16,7 +16,6 @@ public class UserPrefs {
     private String bookShelfName = "MyBookShelf";
     private Theme appTheme = Theme.DEFAULT_THEME;
 
-    //@@author fishTT
     public UserPrefs() {
         windowSettings = new WindowSettings();
     }
@@ -90,8 +89,7 @@ public class UserPrefs {
 
     @Override
     public String toString() {
-        StringBuilder sb;
-        sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("Window Settings : ").append(windowSettings.toString());
         sb.append("\nBook shelf file location : ").append(bookShelfFilePath);
         sb.append("\nAlias list file location: ").append(aliasListFilePath);

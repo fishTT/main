@@ -14,8 +14,6 @@ import static seedu.address.testutil.TypicalAliases.UNREAD;
 import static seedu.address.testutil.TypicalAliases.getTypicalAliasList;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_BOOK;
 
-import java.util.List;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

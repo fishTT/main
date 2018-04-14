@@ -51,9 +51,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class HintParser {
 
     private final Logic logic;
-    private String commandWord;
-    private String arguments;
-    private String userInput;
 
     public HintParser(Logic logic) {
         this.logic = logic;
@@ -71,34 +68,28 @@ public class HintParser {
             return "";
         }
 
-        userInput = input;
-        commandWord = command[0];
-        arguments = command[1];
-
-        return generateHintContent();
+        return generateHintContent(command[0], command[1]);
     }
 
     /**
      * Returns an appropriate hint based on commandWord and arguments.
-     * References userInput and arguments to decide whether whitespace should be added to
-     * the front of the hint.
      */
-    private String generateHintContent() {
+    private static String generateHintContent(String commandWord, String arguments) {
         switch (commandWord) {
         case AddAliasCommand.COMMAND_WORD:
-            return generateAddAliasHint();
+            return generateAddAliasHint(arguments);
         case AddCommand.COMMAND_WORD:
-            return generateHintForIndexedCommand(" add a book");
+            return generateHintForIndexedCommand(arguments, " add a book");
         case AliasesCommand.COMMAND_WORD:
             return " list all command aliases";
         case ClearCommand.COMMAND_WORD:
             return " clear book shelf";
         case DeleteAliasCommand.COMMAND_WORD:
-            return generateDeleteAliasHint();
+            return generateDeleteAliasHint(arguments);
         case DeleteCommand.COMMAND_WORD:
-            return generateHintForIndexedCommand(" delete a book");
+            return generateHintForIndexedCommand(arguments, " delete a book");
         case EditCommand.COMMAND_WORD:
-            return generateEditHint();
+            return generateEditHint(arguments);
         case ExitCommand.COMMAND_WORD:
             return " exit the app";
         case HelpCommand.COMMAND_WORD:
@@ -106,19 +97,19 @@ public class HintParser {
         case HistoryCommand.COMMAND_WORD:
             return " show command history";
         case LibraryCommand.COMMAND_WORD:
-            return generateHintForIndexedCommand(" find book in library");
+            return generateHintForIndexedCommand(arguments, " find book in library");
         case ListCommand.COMMAND_WORD:
-            return generateListHint();
+            return generateListHint(arguments);
         case RecentCommand.COMMAND_WORD:
             return " view recently selected books";
         case ReviewsCommand.COMMAND_WORD:
-            return generateHintForIndexedCommand(" view book review");
+            return generateHintForIndexedCommand(arguments, " view book review");
         case SearchCommand.COMMAND_WORD:
-            return generateSearchHint();
+            return generateSearchHint(arguments);
         case SelectCommand.COMMAND_WORD:
-            return generateHintForIndexedCommand(" select a book");
+            return generateHintForIndexedCommand(arguments, " select a book");
         case ThemeCommand.COMMAND_WORD:
-            return generateThemeHint();
+            return generateThemeHint(arguments);
         case UndoCommand.COMMAND_WORD:
             return " undo last modification";
         default:
@@ -132,7 +123,7 @@ public class HintParser {
      * Returns hint if user is typing a prefix.
      * Returns empty Optional if user is not typing a prefix.
      */
-    private Optional<String> generatePrefixHintBasedOnEndArgs(Prefix... prefixes) {
+    private static Optional<String> generatePrefixHintBasedOnEndArgs(String arguments, Prefix... prefixes) {
         for (Prefix p : prefixes) {
             String prefixString = p.getPrefix();
             String parameter = prefixIntoParameter(p);
@@ -146,13 +137,13 @@ public class HintParser {
     }
 
     /**
-     * Parses arguments to check for parameters that have not been used.
-     * Only the specified {@code prefixes} will be checked.
-     * Returns hint for all parameter that are not present.
-     * Returns {@code defaultHint} if all parameters are present.
+     * Parses arguments to check for all optional parameters that have not been used,
+     * from among the optional parameters as specified by {@code prefixes}.
+     * @return a hint showing all the parameters that are not present,
+     *         or {@code defaultHint} if all parameters are present.
      */
-    private String showUnusedParameters(String defaultHint, String preamble, Prefix... prefixes) {
-        String whitespace = userInput.endsWith(" ") ? "" : " ";
+    private static String showUnusedParameters(String arguments, String defaultHint,
+                                               String preamble, Prefix... prefixes) {
         ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(arguments, prefixes);
 
         StringBuilder sb = new StringBuilder();
@@ -167,30 +158,27 @@ public class HintParser {
             }
         }
         if (sb.length() == 0) {
-            return whitespace + defaultHint;
+            return getHintPadding(arguments) + defaultHint;
         }
-        return whitespace + sb.toString();
+        return getHintPadding(arguments) + sb.toString();
     }
 
     //@@author fishTT
     /**
-     * Currently this method is always called after generatePrefixHintBasedOnEndArgs.
-     * It parses arguments to check for parameters that have not been filled up.
-     * Only the specified {@code prefixes} will be checked.
-     * Returns hint for parameter that is not present.
-     * Returns {@code defaultHint} if all parameters are present.
+     * Parses arguments to check for the next required parameter that has not been used,
+     * from among the required parameters as specified by {@code prefixes}.
+     * @return a hint for the parameter that is not present, or {@code defaultHint} if all parameters are present.
      */
-    private String offerHint(String defaultHint, Prefix... prefixes) {
-        String whitespace = userInput.endsWith(" ") ? "" : " ";
+    private static String showNextParameter(String arguments, String defaultHint, Prefix... prefixes) {
         ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(arguments, prefixes);
 
         for (Prefix p : prefixes) {
             Optional<String> parameterOptional = argumentMultimap.getValue(p);
             if (!parameterOptional.isPresent()) {
-                return whitespace + p.getPrefix() + prefixIntoParameter(p);
+                return getHintPadding(arguments) + p.getPrefix() + prefixIntoParameter(p);
             }
         }
-        return whitespace + defaultHint;
+        return getHintPadding(arguments) + defaultHint;
     }
 
     /**
@@ -226,8 +214,7 @@ public class HintParser {
      * Checks on userInput to handle whitespace.
      * Returns "index" if index is not present, else returns an empty Optional.
      */
-    private Optional<String> generateIndexHint() {
-        String whitespace = userInput.endsWith(" ") ? "" : " ";
+    private static Optional<String> generateIndexHint(String arguments) {
         try {
             ParserUtil.parseIndex(arguments);
             return Optional.empty();
@@ -235,7 +222,7 @@ public class HintParser {
             if (arguments.matches(".*\\s\\d+\\s.*")) {
                 return Optional.empty();
             }
-            return Optional.of(whitespace + "INDEX");
+            return Optional.of(getHintPadding(arguments) + "INDEX");
         }
     }
 
@@ -244,73 +231,72 @@ public class HintParser {
      * Parses arguments to check if a preamble is present.
      * Returns {@code parameterName} if preamble is not present, else returns an empty Optional.
      */
-    private Optional<String> generatePreambleHint(String parameterName) {
-        String whitespace = userInput.endsWith(" ") ? "" : " ";
+    private static Optional<String> generatePreambleHint(String arguments, String parameterName) {
         if (arguments.matches("\\s+\\S+.*")) {
             return Optional.empty();
         }
-        return Optional.of(whitespace + parameterName);
+        return Optional.of(getHintPadding(arguments) + parameterName);
     }
 
     /**
-     * Returns a hint for commands that accepts only an index.
+     * Returns an empty string if {@code arguments} starts with a space,
+     * or a string containing a single space if not.
      */
-    private String generateHintForIndexedCommand(String defaultMessage) {
-        Optional<String> indexHintOptional = generateIndexHint();
-        return indexHintOptional.orElse(defaultMessage);
+    private static String getHintPadding(String arguments) {
+        return arguments.endsWith(" ") ? "" : " ";
+    }
+
+    /** Returns a hint for commands that accepts only an index. */
+    private static String generateHintForIndexedCommand(String arguments, String defaultMessage) {
+        return generateIndexHint(arguments).orElse(defaultMessage);
     }
 
     /** Returns a hint specific to the addalias command. */
-    private String generateAddAliasHint() {
-        Optional<String> preambleHintOptional = generatePreambleHint("ALIAS_NAME");
+    private static String generateAddAliasHint(String arguments) {
+        Optional<String> preambleHintOptional = generatePreambleHint(arguments, "ALIAS_NAME");
         if (preambleHintOptional.isPresent()) {
             return preambleHintOptional.get();
         }
-        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_COMMAND);
-        return endHintOptional.orElseGet(() -> offerHint(" add a command alias", PREFIX_COMMAND));
+        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(arguments, PREFIX_COMMAND);
+        return endHintOptional.orElseGet(() -> showNextParameter(arguments, " add a command alias", PREFIX_COMMAND));
     }
 
     /** Returns a hint specific to the deletealias command. */
-    private String generateDeleteAliasHint() {
-        Optional<String> preambleHintOptional = generatePreambleHint("ALIAS_NAME");
-        return preambleHintOptional.orElse(" delete a command alias");
+    private static String generateDeleteAliasHint(String arguments) {
+        return generatePreambleHint(arguments, "ALIAS_NAME").orElse(" delete a command alias");
     }
 
     /**Returns a hint specific to the edit command. */
-    private String generateEditHint() {
-        Optional<String> indexHintOptional = generateIndexHint();
+    private static String generateEditHint(String arguments) {
+        Optional<String> indexHintOptional = generateIndexHint(arguments);
         if (indexHintOptional.isPresent()) {
             return indexHintOptional.get();
         }
 
-        Optional<String> endHintOptional =
-                generatePrefixHintBasedOnEndArgs(PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING);
-        return endHintOptional.orElseGet(() -> showUnusedParameters(" edit a book", null,
-                PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING));
-
+        Prefix[] prefixes = new Prefix[]{PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING};
+        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(arguments, prefixes);
+        return endHintOptional.orElseGet(() -> showUnusedParameters(arguments, " edit a book", null, prefixes));
     }
 
     /** Returns a hint specific to the list command. */
-    private String generateListHint() {
-        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_TITLE, PREFIX_AUTHOR,
-                PREFIX_CATEGORY, PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING, PREFIX_SORT_BY);
-        return endHintOptional.orElseGet(() -> showUnusedParameters(" list, filter, and sort books", null, PREFIX_TITLE,
-                PREFIX_AUTHOR, PREFIX_CATEGORY, PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING, PREFIX_SORT_BY));
+    private static String generateListHint(String arguments) {
+        Prefix[] prefixes = new Prefix[]{PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY, PREFIX_STATUS,
+            PREFIX_PRIORITY, PREFIX_RATING, PREFIX_SORT_BY};
+        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(arguments, prefixes);
+        return endHintOptional.orElseGet(() -> showUnusedParameters(arguments,
+                " list, filter, and sort books", null, prefixes));
     }
 
-    /**
-     * Returns a hint specific to the search command.
-     */
-    private String generateSearchHint() {
-        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(PREFIX_ISBN,
-                PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY);
-        return endHintOptional.orElseGet(() -> showUnusedParameters(" search for books", "KEY_WORDS",
-                PREFIX_ISBN, PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY));
+    /** Returns a hint specific to the search command. */
+    private static String generateSearchHint(String arguments) {
+        Prefix[] prefixes = new Prefix[]{PREFIX_ISBN, PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY};
+        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(arguments, prefixes);
+        return endHintOptional.orElseGet(() -> showUnusedParameters(arguments,
+                " search for books", "KEY_WORDS", prefixes));
     }
 
     /** Returns a hint specific to the theme command. */
-    private String generateThemeHint() {
-        Optional<String> preambleHintOptional = generatePreambleHint("THEME");
-        return preambleHintOptional.orElse(" change app theme");
+    private static String generateThemeHint(String arguments) {
+        return generatePreambleHint(arguments, "THEME").orElse(" change app theme");
     }
 }

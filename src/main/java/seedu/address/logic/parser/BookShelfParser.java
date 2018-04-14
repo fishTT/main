@@ -84,13 +84,10 @@ public class BookShelfParser {
      */
     private static String buildCommand(Alias alias, String unnamedArgs, String namedArgs) {
         return Stream.of(alias.getPrefix(), unnamedArgs, alias.getNamedArgs(), namedArgs)
+                // keep trailing spaces as they may affect the command hint shown to user
+                .map(StringUtil::leftTrim)
                 .filter(str -> !str.trim().isEmpty())
-                .reduce("", (a, b) -> {
-                    if (a.length() == 0 || a.endsWith(" ") || b.startsWith(" ")) {
-                        return a + b;
-                    }
-                    return a + " " + b;
-                });
+                .reduce("", (a, b) -> StringUtil.leftTrim(a + " " + b));
     }
 
     //@@author

@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -21,6 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoStack;
 import seedu.address.model.ActiveListType;
@@ -30,6 +32,8 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.book.Book;
 import seedu.address.network.NetworkManager;
+import seedu.address.testutil.TestUtil;
+import seedu.address.ui.testutil.EventsCollectorRule;
 
 //@@author qiu-siqi
 /**
@@ -37,6 +41,9 @@ import seedu.address.network.NetworkManager;
  * {@code AddCommand}.
  */
 public class AddCommandTest {
+
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -141,6 +148,28 @@ public class AddCommandTest {
         assertCommandFailure(addCommand, model, Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
 
         // no commands in undoStack -> undoCommand fail
+        assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
+    }
+
+    @Test
+    public void execute_networkError_raisesExpectedEvent() throws Exception {
+        AddCommand addCommand = new AddCommand(INDEX_FIRST_BOOK, false);
+
+        NetworkManager networkManagerMock = mock(NetworkManager.class);
+        Book toAdd = model.getSearchResultsList().get(INDEX_FIRST_BOOK.getZeroBased());
+        when(networkManagerMock.getBookDetails(toAdd.getGid().gid))
+                .thenReturn(TestUtil.getFailedFuture());
+
+        UndoStack undoStack = new UndoStack();
+        addCommand.setData(model, networkManagerMock, new CommandHistory(), undoStack);
+        addCommand.execute();
+
+        NewResultAvailableEvent resultEvent = (NewResultAvailableEvent)
+                eventsCollectorRule.eventsCollector.getMostRecent(NewResultAvailableEvent.class);
+        assertEquals(AddCommand.MESSAGE_ADD_FAIL, resultEvent.message);
+
+        // undo -> nothing to undo
+        UndoCommand undoCommand = prepareUndoCommand(model, undoStack);
         assertCommandFailure(undoCommand, model, UndoCommand.MESSAGE_FAILURE);
     }
 

@@ -110,7 +110,7 @@ public class BookShelfParser {
      * @throws ParseException if the commandWord is not a valid command.
      */
     private Command getCommand(String commandWord, String arguments) throws ParseException {
-        switch (commandWord) {
+        switch (commandWord.toLowerCase()) {
 
         case AddAliasCommand.COMMAND_WORD:
             return new AddAliasCommandParser().parse(arguments);

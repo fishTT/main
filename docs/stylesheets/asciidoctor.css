@@ -166,10 +166,11 @@ blockquote, blockquote p { line-height: 1.5; color: #616366; }
 /* Print styles.  Inlined to avoid required HTTP connection: www.phpied.com/delay-loading-your-print-css/ Credit to Paul Irish and HTML5 Boilerplate (html5boilerplate.com)
 */
 .print-only { display: none !important; }
-@media print { * { background: transparent !important; color: #000 !important; /* Black prints faster: h5bp.com/s */ box-shadow: none !important; text-shadow: none !important; }
+@media print { html, body { font-size: 0.95em; }
+    * { background: transparent !important; box-shadow: none !important; text-shadow: none !important; }
     a, a:visited { text-decoration: underline; }
-    a[href]:after { content: " (" attr(href) ")"; }
-    abbr[title]:after { content: " (" attr(title) ")"; }
+    a[href]:after { content: ""; }
+    abbr[title]:after { content: " (" attr(title) ")"; display:inline-block; text-decoration: none; font-size: 0.8em; }
     .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
     pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
     thead { display: table-header-group; /* h5bp.com/t */ }

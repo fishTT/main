@@ -12,6 +12,7 @@ public class UserPrefs {
 
     private WindowSettings windowSettings;
     private String bookShelfFilePath = "data/bookshelf.xml";
+    private String recentBooksFilePath = "data/recentbooks.xml";
     private String aliasListFilePath = "data/aliaslist.xml";
     private String bookShelfName = "MyBookShelf";
     private Theme appTheme = Theme.DEFAULT_THEME;
@@ -38,6 +39,14 @@ public class UserPrefs {
 
     public void setBookShelfFilePath(String bookShelfFilePath) {
         this.bookShelfFilePath = bookShelfFilePath;
+    }
+
+    public String getRecentBooksFilePath() {
+        return recentBooksFilePath;
+    }
+
+    public void setRecentBooksFilePath(String recentBooksFilePath) {
+        this.recentBooksFilePath = recentBooksFilePath;
     }
 
     public String getAliasListFilePath() {
@@ -77,6 +86,7 @@ public class UserPrefs {
 
         return Objects.equals(windowSettings, o.windowSettings)
                 && Objects.equals(bookShelfFilePath, o.bookShelfFilePath)
+                && Objects.equals(recentBooksFilePath, o.recentBooksFilePath)
                 && Objects.equals(aliasListFilePath, o.aliasListFilePath)
                 && Objects.equals(bookShelfName, o.bookShelfName)
                 && Objects.equals(appTheme, o.appTheme);
@@ -84,7 +94,8 @@ public class UserPrefs {
 
     @Override
     public int hashCode() {
-        return Objects.hash(windowSettings, bookShelfFilePath, aliasListFilePath, bookShelfName, appTheme);
+        return Objects.hash(windowSettings, bookShelfFilePath, recentBooksFilePath,
+                aliasListFilePath, bookShelfName, appTheme);
     }
 
     @Override
@@ -92,6 +103,7 @@ public class UserPrefs {
         StringBuilder sb = new StringBuilder();
         sb.append("Window Settings : ").append(windowSettings.toString());
         sb.append("\nBook shelf file location : ").append(bookShelfFilePath);
+        sb.append("\nRecent books file Location : ").append(recentBooksFilePath);
         sb.append("\nAlias list file location: ").append(aliasListFilePath);
         sb.append("\nBookShelf name : ").append(bookShelfName);
         sb.append("\nTheme : ").append(appTheme);

@@ -9,8 +9,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_STATUS;
 import java.util.Objects;
 import java.util.Optional;
 
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.DeselectBookRequestEvent;
+import seedu.address.commons.events.ui.ReselectBookRequestEvent;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ActiveListType;
@@ -63,7 +66,9 @@ public class EditCommand extends UndoableCommand {
         requireAllNonNull(bookToEdit, editedBook);
 
         try {
+            EventsCenter.getInstance().post(new DeselectBookRequestEvent());
             model.updateBook(bookToEdit, editedBook);
+            EventsCenter.getInstance().post(new ReselectBookRequestEvent());
         } catch (DuplicateBookException dpe) {
             throw new AssertionError("Editing target book should not result in a duplicate");
         } catch (BookNotFoundException pnfe) {
@@ -100,6 +105,7 @@ public class EditCommand extends UndoableCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
         }
     }
+
     //@@author
     /**
      * Creates and returns a {@code Book} with the details of {@code bookToEdit}

@@ -22,10 +22,10 @@ By: `Team F14-B4`      Since: `Jan 2018`      Licence: `MIT`
 Bibliotek is a free book cataloguing application that is simple, fast and easy to use.
 You can use Bibliotek to search for books, manage your reading list and track the availability of your books.
 
-If you *prefer to use a desktop app*, like *working with a Command Line Interface* (CLI)
-while still having the benefits of a Graphical User Interface (GUI) or can *type fast*, Bibliotek is just for you!
+If you *prefer to use a desktop app*, like *working with a Command Line Interface* (<<cli, CLI>>)
+while still having the benefits of a Graphical User Interface (<<gui, GUI>>) or can *type fast*, Bibliotek is just for you!
 
-Interested? Jump to the <<Quick Start>> to get started. Enjoy!
+Interested? Jump to <<Installing Bibliotek>> to get started. Enjoy!
 
 === Using this guide
 This document is a reference for installing and using Bibliotek.
@@ -40,33 +40,65 @@ Below are some features and capabilities that Bibliotek supports:
 * View availability of books in the library
 * Undo your previous actions
 
-== Quick Start
+== Installing Bibliotek
+
+Follow the steps below to get Bibliotek up and running on your computer.
 
 .  Ensure you have Java version `1.8.0_60` or later installed in your Computer.
 +
 [NOTE]
-Having any Java 8 version is not enough. +
-This app will not work with earlier versions of Java 8.
+Having any Java 8 version is not enough. This app will not work with earlier versions of Java 8. +
+If you are unsure how to check the Java version on your computer, do check out https://www.java.com/en/download/help/version_manual.xml[this link]. +
+To download the latest Java 8 version, http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html[click here].
 +
 .  Download the latest `bibliotek.jar` link:{repoURL}/releases[here].
-.  Copy the file to the folder you want to use as the home folder for your Book Shelf.
-.  Double-click the file to start the app. The GUI should appear in a few seconds.
+.  Copy the file to the folder you want to use as the home folder for Bibliotek. +
+[TIP]
+The home folder is where the app and its data will be stored. +
+We recommend placing Bibliotek in a folder of its own, to prevent any disorganization or clutter caused by data files.
+.  Double-click on `bibliotek.jar` to start the app. The <<gui, GUI>>, similar to that shown below, should appear in a few seconds.
 +
 image::Ui.png[width="790"]
+
+== Navigating Bibliotek
+
+The interface of Bibliotek can be broken down into 4 main components.
+
+. Just below the menu bar, there is a text box which says `Enter command here...`. This is where you type commands that you wish to execute. +
 +
-.  Type the command in the command box and press kbd:[Enter] to execute it. +
-e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
-.  Some example commands you can try:
+image::CommandBox.png[width="700"]
++
+To get started, try typing `search Harry Potter` in this text box and press kbd:[Enter].
+. Below this text box, there is a region which shows text. Responses to your commands can be found here. +
++
+image::ResultBox.png[width="700"]
++
+If you performed the search, you will realise that this region currently displays some message indicating that your search is in progress, successful or unsuccessful.
+. The left panel displays a list of books, which is the result of your `search` command. These books are identified by their position in the list (given beside the book title). +
++
+image::LeftPanel.png[width="250"]
++
+Try interacting with the list by clicking on any book.
+. The right panel displays additional information about books which you ask for. +
++
+image::RightPanel.png[width="500"]
++
+When you click on books, more detailed information is shown in the right panel, such as the book description.
+
+To help you get accustomed to Bibliotek, here are some other commands you can try:
 
 * *`list`* : lists all books
-* **`search t/Babylon's Ashes c/Science Fiction`** : searches for books with `Babylon's Ashes` in their title, belonging to the category `Science Fiction`.
+* **`add 1`** : adds the 1st book shown in the current list to your book shelf
 * **`delete 3`** : deletes the 3rd book shown in the current list
 * *`exit`* : exits the app
 
-.  Refer to <<Features>> for details of each command.
+Refer to <<Features>> for details of each command.
 
-[[Features]]
-== Features
+[[Command-Format]]
+== Command Format
+
+This section contains information about the general format of our commands and how they are represented in this documentation.
+If you are new to Bibliotek, do take some time to read this section so that <<Features>> will make sense to you.
 
 ====
 *Command Format*
@@ -76,6 +108,11 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Items with `…`​ after them can be used multiple times, including zero times. For example, you can use `[a/AUTHOR]...` as `{nbsp}` (i.e. 0 times), `a/Dubner`, `a/Dubner a/Steven Levitt`, etc.
 * Parameters can be in any order. For example, if the command specifies `a/AUTHOR t/TITLE`, `t/TITLE a/AUTHOR` is acceptable.
 ====
+
+[[Features]]
+== Key Features
+
+This section documents features that are fundamental for using Bibliotek to manage your books.
 
 [[help-command]]
 === Viewing help : `help`
@@ -102,12 +139,12 @@ If you want to find any books with `Harry Potter` as keyword, enter `search Harr
 Bibliotek shows `Searching for matching books...` to indicate that your `search` is being processed.
 This may take some time since an external service is being called to fetch your search results.
 
-image::SearchCommandSearching.png[width="700"]
+image::SearchCommandSearching.png[width="675"]
 
 When your search results are ready, Bibliotek shows `Found xx matching books.` and displays your
 search results in the left panel.
 
-image::SearchCommandFound.png[width="700"]
+image::SearchCommandFound.png[width="675"]
 
 NOTE: If Bibliotek shows `Failed to retrieve information from online.`, it means your search request has timed out.
 You should try again after some time.
@@ -133,7 +170,7 @@ Format: `select INDEX`
 
 Suppose you have the following search results.
 
-image::SearchCommandFound.png[width="700"]
+image::SearchCommandFound.png[width="675"]
 
 If you are interested in `The Ivory Tower and Harry Potter` and wish to view more information,
 enter `select 3`.
@@ -141,7 +178,7 @@ enter `select 3`.
 Bibliotek shows `Selected Book: 3` to indicate that your `select` is successful. The left panel
 is auto-scrolled to the selected book and the right panel shows detailed information of the book.
 
-image::SelectCommand.png[width="700"]
+image::SelectCommand.png[width="675"]
 
 Alternatively, instead of entering `select 3`, you can directly select `The Ivory Tower and Harry Potter`
 by clicking on it in the left panel.
@@ -149,7 +186,7 @@ by clicking on it in the left panel.
 Bibliotek shows the detailed information of the book in the right panel. Note that no confirmation message
 will be shown in this case.
 
-image::SelectCommandUI.png[width="700"]
+image::SelectCommandUI.png[width="675"]
 
 Other examples:
 
@@ -180,7 +217,7 @@ You also need Internet connection.
 
 Suppose you have the following search results.
 
-image::SearchCommandFound.png[width="700"]
+image::SearchCommandFound.png[width="675"]
 
 If you want to add `Harry Potter and the Classical World` to your book shelf, enter `add 2`.
 
@@ -188,15 +225,15 @@ Bibliotek shows `Adding the book into your book shelf...` to indicate that your 
 This may take some time since an external service is being called to fetch more detailed information about
 the book before adding it to your book shelf.
 
-image::AddCommandAdding.png[width="700"]
+image::AddCommandAdding.png[width="675"]
 
 Once the necessary information is fetched and the book is added, Bibliotek shows `New book added: TITLE - Authors: AUTHORS`.
 
-image::AddCommandAdded.png[width="700"]
+image::AddCommandAdded.png[width="675"]
 
 You can verify that the book have been added by entering `list t/TITLE`. In this case, you can enter `list t/Harry Potter`.
 
-image::AddCommandAddedConfirmation.png[width="700"]
+image::AddCommandAddedConfirmation.png[width="675"]
 
 Other examples:
 
@@ -240,7 +277,7 @@ If you want to view all books in your book shelf, you can simply enter `list`.
 Bibliotek shows `Listed xx books.` to indicate that the command was successful.
 The left panel will show all the books in your book shelf.
 
-image::ListCommand.png[width="700"]
+image::ListCommand.png[width="675"]
 
 Other examples:
 
@@ -249,11 +286,12 @@ Lists books in your book shelf that contains `Andy Weir` in one of the authors' 
 * `list t/Babylon's Ashes c/Science Fiction` +
 Lists `Science Fiction` books in your book shelf that contains `Babylon's Ashes` in the title.
 
+// tag::edit[]
 [[edit-command]]
 === Editing a book : `edit` _(since v1.4)_
 
-After reading a book, you may want to give the book a rating or set the book as read. Or, you may want
-to change the priority of books to remind yourself what you should read next. These can be done using `edit`. +
+After reading a book, you may want to give the book a rating or set the book as read.
+Or, you may want to change the priority of books to remind yourself what you should read next. These can be done using `edit`. +
 Format: `edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
 
 ****
@@ -262,7 +300,7 @@ Format: `edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
 * Existing values will be updated to the input values.
 * `STATUS` must be one of the following (items in parenthesis are aliases): `read` (`r`), `unread` (`u`), or `reading` (`rd`).
 * `PRIORITY` must be one of the following (items in parenthesis are aliases): `none` (`n`), `low` (`l`), `medium` (`m`), or `high` (`h`).
-* `RATING` must be a valid rating from 0 to 5, or -1, to select unrated books.
+* `RATING` must be a valid rating from 0 to 5, or -1 to remove rating.
 ****
 
 WARNING: You can only perform `edit` when the list shown is from your book shelf.
@@ -273,6 +311,7 @@ Examples:
 Changes the priority of the 1st book to `HIGH`.
 * `edit 2 s/read r/5` +
 Marks the 2nd book as `READ` and changes its rating to `5`.
+// end::edit[]
 
 [[delete-command]]
 === Deleting a book : `delete`
@@ -293,14 +332,14 @@ They may serve as useful reference in the future.
 
 Suppose you have the following books in your book shelf.
 
-image::ListCommand.png[width="700"]
+image::ListCommand.png[width="675"]
 
 If you no longer want to read `Harry Potter and the Classical World` and wish to remove it from your book shelf, enter `delete 3`.
 
 Bibliotek shows `Deleted Book: TITLE - Authors: AUTHORS` to indicate that your `delete` is successful.
 The book no longer exist in the left panel.
 
-image::DeleteCommand.png[width="700"]
+image::DeleteCommand.png[width="675"]
 
 Other examples:
 
@@ -321,49 +360,96 @@ If you want to delete all books, enter `clear`.
 Bibliotek shows `Book shelf has been cleared!` to indicate that your `clear` is successful.
 The left panel is now empty.
 
-image::ClearCommand.png[width="700"]
+image::ClearCommand.png[width="675"]
 
-[[undo-command]]
-=== Undoing previous command : `undo`
+[[reviews-command]]
+=== Viewing book reviews : `reviews` _(since v1.3)_
 
-If you regret executing a command, use `undo` to reverse your action. +
-Format: `undo`
+If a book catches your eyes but you are not sure whether it's worth the read, use
+`reviews` to find out what other readers think. +
+Format: `reviews INDEX`
 
 ****
-* Restores the book shelf to the state before the previous _undoable_ command was executed.
+* Loads reviews of the book at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* 1, 2, 3, ...
 ****
 
-[NOTE]
-====
-Undoable commands: those commands that modify the book shelf's content (`add`, `edit`, `delete`, and `clear`).
-====
+WARNING: You can only perform `reviews` with Internet connection.
 
-Suppose you just deleted a book `Harry Potter and the Classical World`.
+Suppose you have the following search results.
 
-image::DeleteCommand.png[width="700"]
+image::SearchCommandFound.png[width="675"]
 
-If you regret your deletion and wish to undo it, enter `undo`.
+If you want to view book reviews for `The Ivory Tower and Harry Potter`, enter `reviews 3`.
 
-Bibliotek shows `Successfully undone deleting of TITLE - Authors: AUTHORS.`
-to indicate that your `undo` of the deletion is successful. `Harry Potter and the Classical World` is back in your book shelf as seen in the left panel.
+Bibliotek shows `Showing reviews for book: TITLE - Authors: AUTHORS.` and displays a browser at the right panel.
+The browser will begin loading the reviews page of the book on https://goodreads.com[goodreads, window="_blank"].
+Once the web page has loaded, you will be able to see the reviews, as shown below.
 
-image::UndoCommand.png[width="700"]
-
-NOTE: Your entire book shelf is shown in the left panel after performing `undo`.
+image::ReviewsCommandLoaded.png[width="675"]
 
 Other examples:
 
-* `select 1` +
-`list` +
-`undo` +
-The `undo` command fails as there are no undoable commands executed previously.
+* `search t/Babylon's Ashes c/Science Fiction` +
+`reviews 1` +
+Shows online reviews of 1st book in the search results.
 
-* `delete 1` +
-`clear` +
-`undo` (reverses the `clear` command) +
-`undo` (reverses the `delete 1` command) +
+[[library-command]]
+// tag::library[]
+=== Finding a book in the library : `library` _(since v1.5)_
+
+If you want to know whether a book is available in the library, use `library`. +
+Format: `library INDEX`
+
+****
+* Check for the availability of a book in a <<settings-library,pre-configured library>>.
+* Default library searched is National Library Board.
+****
+
+WARNING: You can only perform `library` with Internet connection.
+
+Suppose you have the following books in your display list.
+
+image::ListCommand.png[width="675"]
+
+If you want to search the library for `Harry Potter and the Classical World`, enter `library 3`.
+
+Bibliotek shows `Searching for the book in the library...` to indicate that your `library` command is being processed.
+This may take some time since data is being loaded from the online library catalogue.
+
+image::LibraryCommandSearching.png[width="675"]
+
+Once the data is ready, Bibliotek shows `Showing availability of book: TITLE - Authors: AUTHORS`.
+You will be able to see the availability of the book in the library in the right panel shortly after, as shown below.
+
+NOTE: You can only interact with (e.g. scroll) the right panel when loading is fully completed.
+
+TIP: In the event that loading isn't completed after a long time, you should try the command again.
+
+image::LibraryCommandAfter.png[width="675"]
+
+NOTE: If Bibliotek shows `Failed to retrieve information from online.`,
+it means your search request has timed out. You should try again after some time.
+// end::library[]
+
+[[exit-command]]
+=== Closing the app : `exit`
+
+If you want to close the app, use `exit`. +
+Format: `exit`
+
+=== Saving the data
+
+Bibliotek saves data in the hard disk automatically after any command that changes the data. +
+There is no need to save manually.
+
+== Convenience Features
+
+This section documents features that will provide you greater ease and convenience when using Bibliotek.
 
 [[recent-command]]
+// tag::recent[]
 === Listing recently viewed books : `recent` _(since v1.2)_
 
 You recently selected a book in one of your searches but did not add it into your
@@ -383,7 +469,7 @@ You can select books in the `recent` list, but this will not count as a newest s
 
 Suppose you recently selected `The Ivory Tower and Harry Potter` in your search results.
 
-image::SelectCommand.png[width="700"]
+image::SelectCommand.png[width="675"]
 
 You did not add the book into your book shelf. After performing various other selections,
 you regret not adding `The Ivory Tower and Harry Potter` into your book shelf. Instead of
@@ -393,77 +479,53 @@ Bibliotek shows `Listed all recently selected books.` to indicate that your `rec
 is successful. You can scroll down the left panel to locate `The Ivory Tower and Harry Potter`
 (index 4 in this case).
 
-image::RecentCommand.png[width="700"]
+image::RecentCommand.png[width="675"]
 
 You can then enter `add 4` to add the book into your book shelf.
 
 NOTE: If you don't see the intended book in the list, then too many book selections have been performed after
 that book.
+// end::recent[]
 
-[[reviews-command]]
-=== Viewing book reviews : `reviews` _(since v1.3)_
+[[undo-command]]
+=== Undoing previous command : `undo`
 
-If a book catches your eyes but you are not sure whether it's worth the read, use
-`reviews` to find out what other readers think. +
-Format: `reviews INDEX`
+If you regret executing a command, use `undo` to reverse your action. +
+Format: `undo`
 
 ****
-* Loads reviews of the book at the specified `INDEX`.
-* The index refers to the index number shown in the most recent listing.
-* The index *must be a positive integer* 1, 2, 3, ...
+* Restores the book shelf to the state before the previous _undoable_ command was executed.
 ****
 
-WARNING: You can only perform `reviews` with Internet connection.
+[NOTE]
+====
+Undoable commands: those commands that modify the book shelf's content (`add`, `edit`, `delete`, and `clear`).
+====
 
-Suppose you have the following search results.
+Suppose you just deleted a book `Harry Potter and the Classical World`.
 
-image::SearchCommandFound.png[width="700"]
+image::DeleteCommand.png[width="675"]
 
-If you want to view book reviews for `The Ivory Tower and Harry Potter`, enter `reviews 3`.
+If you regret your deletion and wish to undo it, enter `undo`.
 
-Bibliotek shows `Showing reviews for book: TITLE - Authors: AUTHORS.` and displays a browser at the right panel.
-The browser will begin loading the reviews page of the book on https://goodreads.com[goodreads, window="_blank"].
-Once the web page has loaded, you will be able to see the reviews, as shown below.
+Bibliotek shows `Successfully undone deleting of TITLE - Authors: AUTHORS.`
+to indicate that your `undo` of the deletion is successful. `Harry Potter and the Classical World` is back in your book shelf as seen in the left panel.
 
-image::ReviewsCommandLoaded.png[width="700"]
+image::UndoCommand.png[width="675"]
+
+NOTE: Your entire book shelf is shown in the left panel after performing `undo`.
 
 Other examples:
 
-* `search t/Babylon's Ashes c/Science Fiction` +
-`reviews 1` +
-Shows online reviews of 1st book in the search results.
+* `select 1` +
+`list` +
+`undo` +
+The `undo` command fails as there are no undoable commands executed previously.
 
-[[library-command]]
-=== Finding a book in the library : `library` _(since v1.5)_
-
-If you want to know whether a book is available in the library, use `library`. +
-Format: `library INDEX`
-
-****
-* Check for the availability of a book in a <<settings-library,pre-configured library>>.
-* Default library searched is National Library Board.
-****
-
-WARNING: You can only perform `library` with Internet connection.
-
-Suppose you have the following books in your display list.
-
-image::ListCommand.png[width="700"]
-
-If you want to search the library for `Harry Potter and the Classical World`, enter `library 3`.
-
-Bibliotek shows `Searching for the book in the library...` to indicate that your `library` command is being processed.
-This may take some time since data is being loaded from the online library catalogue.
-
-image::LibraryCommandSearching.png[width="700"]
-
-Once the data is ready, Bibliotek shows `Showing availability of book: TITLE - Authors: AUTHORS`.
-You will be able to see the availability of the book in the library in the right panel, as shown below.
-
-image::LibraryCommandAfter.png[width="700"]
-
-NOTE: If Bibliotek shows `Failed to retrieve information from online.`,
-it means your search request has timed out. You should try again after some time.
+* `delete 1` +
+`clear` +
+`undo` (reverses the `clear` command) +
+`undo` (reverses the `delete 1` command) +
 
 [[history-command]]
 === Listing entered commands : `history`
@@ -480,6 +542,7 @@ Format: `history`
 Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
 ====
 
+// tag::alias[]
 [[addalias-command]]
 === Adding a command alias : `addalias` _(since v1.5)_
 
@@ -527,7 +590,7 @@ Format: `aliases`
 After entering the `aliases` command, Bibliotek shows `Listed xx aliases.` to indicate that the command was successful.
 The right panel will display a list of all your command aliases.
 
-image::AliasesCommand.png[width="700"]
+image::AliasesCommand.png[width="675"]
 
 [[deletealias-command]]
 === Delete a command alias : `deletealias` _(since v1.5)_
@@ -546,6 +609,27 @@ Examples:
 Deletes the command alias with the name `rm`.
 * `deletealias read` +
 Deletes the command alias with the name `read`.
+// end::alias[]
+
+=== Command autocorrection _(since v1.5)_
+
+It is common to mispell words when you are typing fast, and when this happens, it is always a hassle to have to correct it and try again.
+With the command autocorrection system, this may only be one keypress away.
+
+****
+* Corrects mispelled command words which are one letter away from an actual command word, and suggests the correction to you.
+* You can execute the corrected command by pressing kbd:[Enter].
+****
+
+== Other Features
+
+This section documents some additional features in Bibliotek that do not fall into the above categories.
+
+// tag::quoteOfTheDay[]
+=== Displaying quote of the day
+
+When the right panel is empty (e.g. on start up), Bibliotek displays a default panel containing a random quote of the day about books.
+// end::quoteOfTheDay[]
 
 [[theme-command]]
 === Changing theme : `theme` _(since v1.2)_
@@ -563,35 +647,26 @@ You can change the application to the white theme using `theme white`.
 
 Bibliotek shows `Application theme changed to: white` to indicate that your theme change is successful.
 
-image::ThemeWhite.png[width="700"]
+image::ThemeWhite.png[width="675"]
 
 The same goes for `theme light`:
 
-image::ThemeLight.png[width="700"]
+image::ThemeLight.png[width="675"]
 
 And `theme dark`:
 
-image::ThemeDark.png[width="700"]
-
-[[exit-command]]
-=== Closing the program : `exit`
-
-Use `exit` to close the program. +
-Format: `exit`
-
-=== Saving the data
-
-Bibliotek saves data in the hard disk automatically after any command that changes the data. +
-There is no need to save manually.
+image::ThemeDark.png[width="675"]
 
 == Upcoming Features
+
+This section documents features which will be worked on in the future.
 
 [[watch-command]]
 === Placing a book on watchlist : `watch` _(coming in v2.0)_
 
-Interested in so many books that searching them up using `library` is time consuming?
+Interested in _so_ many books that searching them up using `library` is time consuming?
 With `watch`, you can automatically get notified when a book in your watchlist
-becomes available at the library, saving you the trouble! +
+becomes available at the library, saving you the trouble of having to check yourself! +
 Format: `watch INDEX`
 
 ****
@@ -603,7 +678,7 @@ Format: `watch INDEX`
 [NOTE]
 ====
 Bibliotek informs you of the availability of your watchlisted books in the library
-everytime you start up the application.
+every time you start up the application.
 ====
 
 [[order-command]]
@@ -650,19 +725,62 @@ Think the font size is too small or large for your liking? You can customize the
 font size to your own needs. +
 Format: `fontsize FONT_SIZE`
 
-[[setpassword-command]]
-=== Setting a password : `setpassword` _(coming in v2.0)_
+[[autpcomplete-command]]
+// tag::autocomplete[]
+=== Autocompleting commands : `Tab` _(coming in v2.0)_
 
-If you want to keep your data secure, you can opt to set a password for the application. +
-Format: `setpassword p/PASSWORD`
+Do want to type faster? Fret not! Just press 'Tab' and Bibliotek will automatically
+complete your commands for you. +
+// end::autocomplete[]
 
-[NOTE]
-====
-You will be prompted for the password upon starting up the application. You will
-not need to enter it again thereafter (ie. when using commands).
-====
+[[setKey-command]]
+=== Changing/Setting a password : `setpw` _(coming in v1.5)_
 
-TIP: Remove your password using `setpassword p/`
+If you want to keep your data secure, you can opt to set a password for Bibliotek. This password will be used to encrypt your data.
+After starting up Bibliotek, you will have to unlock it using your password before being able to perform any commands. +
+Format: `setpw old/OLDPW new/NEWPW`
+
+****
+* Changes the password from `OLDPW` to `NEWPW`.
+* `OLDPW` and `NEWPW` are case sensitive.
+* By default, there is no password.
+****
+
+NOTE: To set a password, use `setpw new/NEWPW`. +
+Similarly, to delete the password, use `setpw old/OLDPW`.
+
+TIP: You should remember your password after setting a new one.
+
+// tag::encrypt[]
+[[Encrypt-command]]
+=== Lock the app : `lock` _(coming in v1.5)_
+
+If you are going away for a moment and want to prevent others from messing with the application, you can perform `lock`. +
+Format: `lock`
+
+****
+* Locks the app. No commands can be performed other than `help` and `unlock`.
+* The app is locked upon start up if you have a password.
+****
+
+NOTE: If you perform `lock` without a password, anyone can `unlock` your application.
+
+[[Decrypt-command]]
+=== Unlock the app : `unlock` _(coming in v1.5)_
+
+If you previously performed `lock`, use `unlock` to unlock the app. +
+Format: `unlock PASSWORD`
+
+****
+* Unlocks the app.
+* `PASSWORD` is case sensitive.
+****
+
+NOTE: If you did not set a password, simply type `unlock` to unlock the app.
+
+TIP: If you really forgot your password and cannot unlock the system, you can reset Bibliotek by deleting all your data files.
+
+// end::encrypt[]
 
 [[settings-command]]
 === Changing settings: `settings` _(coming in v2.0)_
@@ -712,41 +830,60 @@ if there are other sites you wish are supported.
 *Q*: I have a problem and this guide did not help. +
 *A*: Post in our https://github.com/CS2103JAN2018-F14-B4/main/issues[issues page] and we will try our best to answer your queries.
 
+*Q*: Can I build upon Bibliotek? +
+*A*: Yes, you are free to build upon Bibliotek. The source code for Bibliotek is available on https://github.com/CS2103JAN2018-F14-B4/main[our GitHub page].
+
 == Command Summary
+
+If all you need is a quick reference on how to use certain commands, you can refer to the table below.
 
 [width="72%",options="header",]
 |=======================================================================
-|Command |Syntax
-|*Add* |`add INDEX`
+|Action |Command syntax
+|*Add book to book shelf* |`add INDEX`
 
 e.g. `add 1`
-|*Add Alias* |`addalias ALIAS_NAME cmd/COMMAND`
+|*Add a new alias* |`addalias ALIAS_NAME cmd/COMMAND`
 
 e.g. `addalias read cmd/edit s/read p/none`
-|*Aliases* |`aliases`
-|*Clear* |`clear`
-|*Delete* |`delete INDEX`
-|*Delete Alias* |`deletealias ALIAS_NAME`
-|*Edit* |`edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
+|*List existing aliases* |`aliases`
+|*Clear book shelf* |`clear`
+|*Delete book from book shelf* |`delete INDEX`
+|*Delete an existing alias* |`deletealias ALIAS_NAME`
+|*Edit book in book shelf* |`edit INDEX [s/STATUS] [p/PRIORITY] [r/RATING]`
 
 e.g. `edit 2 s/READ r/5`
-|*Exit* |`exit`
-|*Help* |`help`
-|*History* |`history`
-|*Library* |`library INDEX`
-|*List* |`list`
-|*Recent* |`recent`
-|*Reviews* |`reviews INDEX`
-|*Search* |`search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]`
+|*Close the app* |`exit`
+|*View help* |`help`
+|*View previous commands* |`history`
+|*Search for book in library* |`library INDEX`
+|*List books in book shelf* |`list [t/TITLE] [a/AUTHOR] [c/CATEGORY] [s/STATUS]` +
+`[p/PRIORITY] [r/RATING] [by/SORT_BY]`
+
+e.g. `list s/unread by/priorityd`
+|*Lock the app* |`lock`
+|*View recently selected books* |`recent`
+|*View book reviews* |`reviews INDEX`
+|*Search for books* |`search [SEARCH_TERM] [i/ISBN] [t/TITLE] [a/AUTHOR] [c/CATEGORY]`
 
 e.g. `search t/Babylon's Ashes c/Science Fiction`
-|*Select* |`select INDEX`
-|*Theme* |`theme THEME_NAME`
-|*Undo* |`undo`
+|*Set password* |`setpw [old/OLDPW] [new/NEWPW]`
+
+e.g. `setpw old/admin new/haha`
+|*Select a book* |`select INDEX`
+|*Change theme* |`theme THEME_NAME`
+|*Undo previous change* |`undo`
+|*Unlock the app* |`unlock PASSWORD`
 |=======================================================================
 
 [appendix]
 == Glossary
+
+[[cli]] Command Line Interface (CLI)::
+A user interface in which the user interacts with the system by typing in commands.
+
+[[gui]] Graphical User Interface (GUI)::
+A program interface that make use of visual elements to allow the user to interact with the system.
 
 [[isbn]] International Standard Book Number (ISBN)::
 A unique identifier given to every edition of a book published. +

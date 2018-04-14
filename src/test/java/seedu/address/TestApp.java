@@ -54,7 +54,6 @@ public class TestApp extends MainApp {
         Config config = super.initConfig(configFilePath);
         config.setAppTitle(APP_TITLE);
         config.setUserPrefsFilePath(prefFileLocation);
-        config.setRecentBooksFilePath(recentBooksFileLocation);
         return config;
     }
 
@@ -65,6 +64,7 @@ public class TestApp extends MainApp {
         double y = Screen.getPrimary().getVisualBounds().getMinY();
         userPrefs.updateLastUsedGuiSetting(new WindowSettings(800.0, 800.0, (int) x, (int) y));
         userPrefs.setBookShelfFilePath(saveFileLocation);
+        userPrefs.setRecentBooksFilePath(recentBooksFileLocation);
         userPrefs.setAliasListFilePath(aliasListFileLocation);
         userPrefs.setBookShelfName(BOOK_SHELF_NAME);
         return userPrefs;

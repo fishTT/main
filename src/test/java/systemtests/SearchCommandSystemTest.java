@@ -35,9 +35,6 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
         /* Case: no key words or named parameters -> rejected */
         assertCommandFailure("   " + SearchCommand.COMMAND_WORD + "             ", SearchCommand.MESSAGE_EMPTY_QUERY);
 
-        /* Case: mixed case command word -> rejected */
-        assertCommandFailure("SeaRcH hello", MESSAGE_UNKNOWN_COMMAND);
-
         /* Case: misspelled command word -> rejected */
         assertCommandFailure("saerch hello", MESSAGE_UNKNOWN_COMMAND);
 

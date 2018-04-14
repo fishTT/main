@@ -1,7 +1,6 @@
 package systemtests;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX;
-import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.DeleteCommand.MESSAGE_DELETE_BOOK_SUCCESS;
 import static seedu.address.testutil.TestUtil.getBook;
 import static seedu.address.testutil.TestUtil.getLastIndex;
@@ -51,18 +50,16 @@ public class DeleteCommandSystemTest extends BibliotekSystemTest {
 
         /* --------------------- Performing delete operation while a book card is selected ------------------------ */
 
-        /* Case: delete the selected book -> book list panel selects the book before the deleted book */
+        /* Case: delete the selected book -> book list panel clears selection */
         showAllBooks();
         expectedModel = getModel();
         Index selectedIndex = getLastIndex(expectedModel);
-        Index expectedIndex = Index.fromZeroBased(selectedIndex.getZeroBased() - 1);
         selectBook(selectedIndex);
         expectedModel.addRecentBook(expectedModel.getDisplayBookList().get(selectedIndex.getZeroBased()));
         command = DeleteCommand.COMMAND_WORD + " " + selectedIndex.getOneBased();
         deletedBook = removeBook(expectedModel, selectedIndex);
-        expectedModel.addRecentBook(expectedModel.getDisplayBookList().get(expectedIndex.getZeroBased()));
         expectedResultMessage = String.format(MESSAGE_DELETE_BOOK_SUCCESS, deletedBook);
-        assertCommandSuccess(command, expectedModel, expectedResultMessage, expectedIndex);
+        assertCommandSuccess(command, expectedModel, expectedResultMessage, true);
 
         /* --------------------------------- Performing invalid delete operation ------------------------------------ */
 
@@ -86,8 +83,6 @@ public class DeleteCommandSystemTest extends BibliotekSystemTest {
         /* Case: invalid arguments (extra argument) -> rejected */
         assertCommandFailure(DeleteCommand.COMMAND_WORD + " 1 abc", MESSAGE_INVALID_DELETE_COMMAND_FORMAT);
 
-        /* Case: mixed case command word -> rejected */
-        assertCommandFailure("DelETE 1", MESSAGE_UNKNOWN_COMMAND);
     }
 
     /**
@@ -123,7 +118,7 @@ public class DeleteCommandSystemTest extends BibliotekSystemTest {
      * 1. Asserts that the command box displays an empty string.<br>
      * 2. Asserts that the result display box displays {@code expectedResultMessage}.<br>
      * 3. Asserts that the model related components equal to {@code expectedModel}.<br>
-     * 4. Asserts that the selected book list card and search results card remains unchanged.<br>
+     * 4. Asserts that the selected book list card remains unchanged.<br>
      * 5. Asserts that the status bar's sync status changes.<br>
      * 6. Asserts that the command box has the default style class.<br>
      * Verifications 1 to 3 are performed by
@@ -131,22 +126,22 @@ public class DeleteCommandSystemTest extends BibliotekSystemTest {
      * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage) {
-        assertCommandSuccess(command, expectedModel, expectedResultMessage, null);
+        assertCommandSuccess(command, expectedModel, expectedResultMessage, false);
     }
 
     /**
      * Performs the same verification as {@code assertCommandSuccess(String, Model, String)} except that the selected
-     * book list card is expected to update accordingly depending on the card at {@code expectedSelectedCardIndex}.
+     * book list card is expected to update accordingly depending on {@code isSelectedCardDeselected}.
      * @see DeleteCommandSystemTest#assertCommandSuccess(String, Model, String)
      * @see BibliotekSystemTest#assertSelectedBookListCardChanged(Index)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage,
-            Index expectedSelectedCardIndex) {
+            boolean isSelectedCardDeselected) {
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
 
-        if (expectedSelectedCardIndex != null) {
-            assertSelectedBookListCardChanged(expectedSelectedCardIndex);
+        if (isSelectedCardDeselected) {
+            assertSelectedBookListCardDeselected();
         } else {
             assertSelectedBookListCardUnchanged();
         }

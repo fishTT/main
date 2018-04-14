@@ -1,6 +1,5 @@
 package seedu.address.logic.commands;
 
-import seedu.address.commons.core.Messages;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -15,16 +14,6 @@ public abstract class Command {
     protected Network network;
     protected CommandHistory history;
     protected UndoStack undoStack;
-
-    /**
-     * Constructs a feedback message to summarise an operation that displayed a listing of books.
-     *
-     * @param displaySize used to generate summary
-     * @return summary message for books displayed
-     */
-    public static String getMessageForBookListShownSummary(int displaySize) {
-        return String.format(Messages.MESSAGE_BOOKS_LISTED_OVERVIEW, displaySize);
-    }
 
     /**
      * Executes the command and returns the result message.

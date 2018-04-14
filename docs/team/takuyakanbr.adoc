@@ -1,0 +1,80 @@
+= Qiu Siyu - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+:linkattrs:
+:repoURL: https://github.com/CS2103JAN2018-F14-B4/main
+
+== PROJECT: link:{repoURL}[Bibliotek]
+
+This portfolio page showcases my contributions to the project, Bibliotek.
+To view my full portfolio, please visit https://danielteo.me/work[danielteo.me, window="_blank"].
+
+== Overview
+
+Bibliotek is a free book cataloguing application. It is targeted at heavy readers who require a hassle-free way of managing and keeping track of their read and unread books.
+
+The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+
+== Summary of contributions
+
+* *Major enhancement*: added the ability to *search for books online*: [link:{repoURL}/pull/58[#58]], [link:{repoURL}/pull/62[#62]]
+** What it does: Allows the user to search for books on Google Books.
+** Justification: This feature improves the product because it provides the user an easy way to look up details about a book, or to find new books.
+It also lays the groundwork for the updated `add` command, which no longer requires the user to enter all the fields manually.
+** Highlights: This enhancement required the addition of a new component (network component) that supports making HTTP requests to Google Book API endpoints, as well as parsing the JSON responses from these endpoints.
+Thus it required an in-depth analysis of design alternatives. The implementation also required the use of multi-threading to ensure that the UI remains responsive to the user.
+Lastly, this enhancement adds a new command `search` to allow the user to search for books.
+** Credits: the HTTP request is made using the https://github.com/AsyncHttpClient/async-http-client[AsyncHttpClient, window="_blank"] library,
+and parsing of JSON results are accomplished with the help of the https://github.com/FasterXML/jackson[Jackson, window="_blank"] library.
+
+* *Minor enhancement*: added the ability to *add, view, and delete custom command aliases*: [link:{repoURL}/pull/150[#150]]
+** Highlights: This enhancement adds three new commands `addalias`, `aliases`, and `deletealias` to add, view, and delete custom command aliases.
+It also updates the command parser to support the use of command aliases, and the storage component to enable saving the command aliases in XML format.
+
+* *Code contributed*: [link:{repoURL}/blob/master/collated/functional/takuyakanbr.md[Functional code]] [link:{repoURL}/blob/master/collated/test/takuyakanbr.md[Test code]]
+
+* *Other contributions*:
+
+** Project management:
+*** Managed releases `v1.1` - `v1.5rc` (5 releases) on GitHub
+** Product enhancements:
+*** Morphed the original contact management app into a book management app: [link:{repoURL}/pull/45[#45]], [link:{repoURL}/pull/49[#49]], [link:{repoURL}/pull/59[#59]]
+*** Replaced the default browser panel with a panel to display book details [link:{repoURL}/pull/73[#73]]
+*** Added two new themes, and a `theme` command to allow changing themes: [link:{repoURL}/pull/74[#74]], [link:{repoURL}/pull/80[#80]]
+*** Improved `list` command to allow filtering and sorting: [link:{repoURL}/pull/100[#100]]
+** Documentation:
+*** Added instructions for setting up CircleCI: [link:{repoURL}/pull/117[#117]]
+*** Changed the stylesheet used by asciidoc to generate documentation: [link:{repoURL}/pull/55[#55]]
+** Community:
+*** PRs reviewed (with non-trivial review comments): [link:{repoURL}/pull/66[#66]], [link:{repoURL}/pull/72[#72]], [link:{repoURL}/pull/86[#86]], [link:{repoURL}/pull/111[#111]], [link:{repoURL}/pull/138[#138]], [link:{repoURL}/pull/155[#155]]
+*** Reported bugs and suggestions for other teams in the class (issues https://github.com/CS2103JAN2018-W15-B2/main/issues/163[#163],
+https://github.com/CS2103JAN2018-W15-B2/main/issues/170[#170], https://github.com/CS2103JAN2018-W15-B2/main/issues/172[#172], https://github.com/CS2103JAN2018-W15-B2/main/issues/175[#175],
+https://github.com/CS2103JAN2018-W15-B2/main/issues/177[#177], https://github.com/CS2103JAN2018-W15-B2/main/issues/179[#179])
+** Tools:
+*** Integrated a third party library (AsyncHttpClient) to the project: [link:{repoURL}/pull/58[#58]]
+*** Integrated a third party testing framework (Mockito) to the project: [link:{repoURL}/pull/88[#88]]
+*** Integrated TravisCI, AppVeyor, Coveralls, Codacy, and Netlify to the team repo
+*** Integrated a new Github plugin (CircleCI) to the team repo
+*** Changed build configuration to allow running JUnit tests in parallel: [link:{repoURL}/pull/96[#96]]
+
+== Contributions to the User Guide
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+include::../UserGuide.adoc[tag=alias]
+
+== Contributions to the Developer Guide
+
+|===
+|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
+|===
+
+include::../DeveloperGuide.adoc[tag=search1]
+
+// this section is duplicated here to correct the link to the design of the network component
+As part of the implementation of the search feature, the network component was added to allow for communicating with online services.
+An overview of the network component can be found in <<../DeveloperGuide#Design-Network, the Developer Guide>>.
+
+include::../DeveloperGuide.adoc[tag=search2]

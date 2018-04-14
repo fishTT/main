@@ -113,6 +113,10 @@ public class CommandBox extends UiPart<Region> {
         }
         try {
             CommandResult commandResult = logic.execute(commandTextField.getText());
+            if (CommandResult.isEmptyResult(commandResult)) {
+                return;
+            }
+
             initHistory();
             historySnapshot.next();
             // process result of the command

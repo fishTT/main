@@ -28,13 +28,18 @@ Bibliotek is an open source project and contributors are always welcome. To get 
 [[Setting-Up]]
 == Setting up
 
+This section includes the instructions to set up your development environment.
+
 === Prerequisites
+
+Prior to setting up the project proper, make sure you have the following.
 
 . *JDK `1.8.0_60`* or later
 +
 [NOTE]
 Having any Java 8 version is not enough. +
-This app will not work with earlier versions of Java 8.
+This app will not work with earlier versions of Java 8. +
+You can get the latest Java 8 JDK at http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[this link].
 +
 
 . *IntelliJ* IDE
@@ -46,35 +51,41 @@ Do not disable them. If you have disabled them, go to `File` > `Settings` > `Plu
 
 === Setting up the project in your computer
 
-. Fork this repo, and clone the fork to your computer
-. Open IntelliJ (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project dialog first)
-. Set up the correct JDK version for Gradle
-.. Click `Configure` > `Project Defaults` > `Project Structure`
-.. Click `New...` and find the directory of the JDK
-. Click `Import Project`
-. Locate the `build.gradle` file and select it. Click `OK`
-. Click `Open as Project`
-. Click `OK` to accept the default settings
+To setup the project in IntelliJ, follow the steps below.
+
+. Fork this repo, and clone the fork to your computer.
+. Open IntelliJ (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project dialog first).
+. Set up the correct JDK version for Gradle.
+.. Click `Configure` > `Project Defaults` > `Project Structure`.
+.. Click `New...` and find the directory of the JDK.
+. Click `Import Project`.
+. Locate the `build.gradle` file and select it. Click `OK`.
+. Click `Open as Project`.
+. Click `OK` to accept the default settings.
 . Open a console and run the command `gradlew processResources` (Mac/Linux: `./gradlew processResources`). It should finish with the `BUILD SUCCESSFUL` message. +
 This will generate all resources required by the application and tests.
 
 === Verifying the setup
 
-. Run the `seedu.address.MainApp` and try a few commands
+To verify that the setup is completed successfully, you should:
+
+. Run the `seedu.address.MainApp` and try a few commands.
 . <<Testing,Run the tests>> to ensure they all pass.
 
 === Configurations to do before writing code
 
+This subsection includes configurations that you may find necessary or useful as you work on this project. We recommend that you make these configuration changes and additions before you start writing code.
+
 ==== Configuring the coding style
 
-This project follows https://github.com/oss-generic/process/blob/master/docs/CodingStandards.adoc[oss-generic coding standards]. IntelliJ's default style is mostly compliant with ours but it uses a different import order from ours. To rectify,
+This project follows https://github.com/oss-generic/process/blob/master/docs/CodingStandards.adoc[oss-generic coding standards]. IntelliJ's default style is mostly compliant with ours but it uses a different import order from ours. Follow the instructions below to rectify this.
 
-. Go to `File` > `Settings...` (Windows/Linux), or `IntelliJ IDEA` > `Preferences...` (macOS)
-. Select `Editor` > `Code Style` > `Java`
-. Click on the `Imports` tab to set the order
+. Go to `File` > `Settings...` (Windows/Linux), or `IntelliJ IDEA` > `Preferences...` (macOS).
+. Select `Editor` > `Code Style` > `Java`.
+. Click on the `Imports` tab to set the order.
 
-* For `Class count to use import with '\*'` and `Names count to use static import with '*'`: Set to `999` to prevent IntelliJ from contracting the import statements
-* For `Import Layout`: The order is `import static all other imports`, `import java.\*`, `import javax.*`, `import org.\*`, `import com.*`, `import all other imports`. Add a `<blank line>` between each `import`
+* For `Class count to use import with '\*'` and `Names count to use static import with '*'`: Set to `999` to prevent IntelliJ from contracting the import statements.
+* For `Import Layout`: The order is `import static all other imports`, `import java.\*`, `import javax.*`, `import org.\*`, `import com.*`, `import all other imports`. Add a `<blank line>` between each `import`.
 
 Optionally, you can follow the <<UsingCheckstyle#, UsingCheckstyle.adoc>> document to configure Intellij to check style-compliance as you write code.
 
@@ -94,20 +105,22 @@ Coverage reporting could be useful for a team repository that hosts the final ve
 Optionally, you can set up AppVeyor as a second CI (see <<UsingAppVeyor#, UsingAppVeyor.adoc>>).
 
 [NOTE]
-Having both Travis and AppVeyor ensures your App works on both Unix-based platforms and Windows-based platforms (Travis is Unix-based and AppVeyor is Windows-based)
+Having both Travis and AppVeyor ensures your App works on both Unix-based platforms and Windows-based platforms (Travis is Unix-based and AppVeyor is Windows-based).
 
 ==== Getting started with coding
 
-When you are ready to start coding,
+When you are ready to start coding:
 
 1. Get some sense of the overall design by reading <<Design-Architecture>>.
 2. Take a look at <<GetStartedProgramming>>.
 
 == Design
 
+This section documents the design and interaction of components in Bibliotek. Please take a moment to understand the different components before making any code changes.
+
 [[Design-Architecture]]
 === Architecture
-The *_Architecture Diagram_* (Figure 1 below) explains the high-level design of the App.
+The *_Architecture Diagram_* in Figure 1 explains the high-level design of the App.
 
 .Architecture Diagram
 image::Architecture.png[width="600"]
@@ -117,17 +130,17 @@ The `.pptx` files used to create diagrams in this document can be found in the l
 
 Given below is a quick overview of each component.
 
-`Main` has only one class called link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`]. It is responsible for,
+`Main` has only one class called link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`]. Its responsibilities are as follows.
 
 * At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 * At shut down: Shuts down the components and invokes cleanup method where necessary.
 
 <<Design-Commons,*`Commons`*>> represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
 
-* `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
+* `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design).
 * `LogsCenter` : Used by many classes to write log messages to the App's log file.
 
-The rest of the App consists of five components.
+The rest of the App consists of five components. These components and a brief summary of their responsibilities are given below.
 
 * <<Design-Ui,*`UI`*>>: The UI of the App.
 * <<Design-Logic,*`Logic`*>>: The command executor.
@@ -135,12 +148,13 @@ The rest of the App consists of five components.
 * <<Design-Storage,*`Storage`*>>: Reads data from, and writes data to, the hard disk.
 * <<Design-Network,*`Network`*>>: Makes web API calls to online services.
 
-Each of the five components
+Each of the five components:
 
 * Defines its _API_ in an `interface` with the same name as the Component.
 * Exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (Figure 2 below) defines it's API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+For example, the `Logic` component defines it's API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+The _Class Diagram_ in Figure 2 shows the interaction between different classes in the `Logic` component.
 
 .Class Diagram of the Logic Component
 image::LogicClassDiagram.png[width="800"]
@@ -148,15 +162,15 @@ image::LogicClassDiagram.png[width="800"]
 [discrete]
 ==== Events-Driven nature of the design
 
-The _Sequence Diagram_ (Figure 3 below) shows how the components interact for the scenario where the user issues the command `delete 1`.
+The _Sequence Diagram_ in Figure 3 shows how the components interact for the scenario where the user issues the command `delete 1`.
 
 .Component interactions for `delete 1` command (part 1)
 image::SDforDeleteBook.png[width="800"]
 
 [NOTE]
-Note how the `Model` simply raises a `BookShelfChangedEvent` when the Book Shelf data are changed, instead of asking the `Storage` to save the updates to the hard disk.
+Note how the `Model` simply raises a `BookShelfChangedEvent` when the `BookShelf` data is changed, instead of asking `Storage` to save the updates to the hard disk.
 
-Figure 4 below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
+Figure 4 shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
 .Component interactions for `delete 1` command (part 2)
 image::SDforDeleteBookEventHandling.png[width="800"]
@@ -169,40 +183,51 @@ The sections below give more details of each component.
 [[Design-Ui]]
 === UI component
 
+The _Class Diagram_ in Figure 5 shows the interaction between different classes in the `Ui` component.
+
 .Structure of the UI Component
 image::UiClassDiagram.png[width="800"]
 
 *API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `BookListPanel`, `StatusBarFooter`, `BookDetailsPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+The UI consists of a `MainWindow` that is made up of parts, such as `CommandBox`, `ResultDisplay`, `BookListPanel`, `StatusBarFooter`, `BookDetailsPanel`, etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
+The `Ui` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`].
 
-The `UI` component,
+The key functionalities of the `Ui` component are:
 
-* Executes user commands using the `Logic` component.
-* Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
-* Responds to events raised from various parts of the App and updates the UI accordingly.
+* Executing user commands using the `Logic` component.
+* Binding itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
+* Responding to events raised from various parts of the App and updating the UI accordingly.
 
 [[Design-Logic]]
 === Logic component
+
+The _Class Diagram_ in Figure 6 shows the interaction between different classes in the `Logic` component.
 
 [[fig-LogicClassDiagram]]
 .Structure of the Logic Component
 image::LogicClassDiagram.png[width="800"]
 
+The `Logic` component is home to various classes which extends `Command`. These classes represent supported commands that may or may not be undoable.
+The structural relationship between `Command` and `UndoableCommand` is shown in Figure 7 below.
+
 .Structure of Commands in the Logic Component. This diagram shows finer details concerning `XYZCommand` and `Command` in <<fig-LogicClassDiagram>>
 image::LogicCommandClassDiagram.png[width="800"]
 
+NOTE: An `UndoableCommand` is a command that makes changes to the book shelf data.
+
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
+
+The following is the general workflow when the user enters some input.
 
 .  `Logic` uses the `BookShelfParser` class to parse the user input.
 .  This results in a `Command` object which is executed by the `LogicManager`.
 .  The command execution can affect the `Model` (e.g. adding a book), make web API calls using the `Network`, and/or raise events.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
-Figure 8 below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
+The _Sequence Diagram_ in Figure 8 shows the interactions within the `Logic` component for the `execute("delete 1")` API call.
 
 .Interactions Inside the Logic Component for the `delete 1` Command
 image::DeleteBookSdForLogic.png[width="800"]
@@ -210,43 +235,50 @@ image::DeleteBookSdForLogic.png[width="800"]
 [[Design-Model]]
 === Model component
 
+The _Class Diagram_ in Figure 9 shows the interaction between different classes in the `Model` component.
+
 .Structure of the Model Component
 image::ModelClassDiagram.png[width="800"]
 
 *API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
-The `Model`,
+The `Model`:
 
 * stores a `UserPref` object that represents the user's preferences.
-* stores the Book Shelf data.
+* stores the `BookShelf` data.
 * stores the user added aliases.
-* exposes an unmodifiable `ObservableList<Book>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* exposes an unmodifiable `ObservableList<Book>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list changes.
 * does not depend on any of the other components.
 
 [[Design-Storage]]
 === Storage component
+
+The _Class Diagram_ in Figure 10 shows the interaction between different classes in the `Storage` component.
 
 .Structure of the Storage Component
 image::StorageClassDiagram.png[width="800"]
 
 *API* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
 
-The `Storage` component,
+The `Storage` component:
 
 * can save `UserPref` objects in json format and read it back.
 * can save the `BookShelf` data in xml format and read it back.
 * can save the recently selected books data in xml format and read it back.
 * can save the `UniqueAliasList` data in xml format and read it back.
+* does not depend on any of the other four components.
 
 [[Design-Network]]
 === Network component
+
+The _Class Diagram_ in Figure 11 shows the interaction between different classes in the `Network` component.
 
 .Structure of the Network Component
 image::NetworkClassDiagram.png[width="800"]
 
 *API*: link:{repoURL}/src/main/java/seedu/address/network/Network.java[`Network.java`]
 
-The `Network` component,
+The `Network` component:
 
 * can make asynchronous web API calls to Google Books API.
 * can make asynchronous web API calls to NLB catalogue.
@@ -255,13 +287,13 @@ The `Network` component,
 [[Design-Commons]]
 === Common classes
 
-Classes used by multiple components are in the `seedu.address.commons` package.
+Classes used by multiple components are in the `seedu.address.commons` package. This includes event and utility classes.
 
 == Implementation
 
 This section describes some noteworthy details on how certain features are implemented.
 
-// tag::search[]
+// tag::search1[]
 === Search feature
 
 The search feature allows the user to search for books on https://books.google.com/[Google Books, window="_blank"] that matches some user-specified parameters.
@@ -271,10 +303,12 @@ This allows the user to easily search for particular books, and to add them with
 
 [[Search-Network]]
 ===== Network component
+// end::search1[]
 
 As part of the implementation of the search feature, the network component was added to allow for communicating with online services.
 An overview of the network component can be found in <<Design-Network>>.
 
+// tag::search2[]
 The `Network` object is passed by `LogicManager` into each `Command`, and is available for use by default, without the need for the `Command` to override `setData`.
 
 The `Network` API exposes various methods for making web API calls to various endpoints.
@@ -283,7 +317,7 @@ Apart from those, it also provides a `stop` method that allows for graceful shut
 As an example, if a command needs to retrieve search results from https://developers.google.com/books/[Google Books API, window="_blank"], it can make a call to the `searchBooks` method of the `Network` API.
 The following sequence diagram shows what happens when `searchBooks` is called:
 
-image::SearchBooksSequenceDiagram.png[width="750"]
+image::SearchBooksSequenceDiagram.png[width="700"]
 
 The methods shown above are asynchronous - they will not wait for the completion of the HTTP request.
 In particular, note that when `Network#searchBooks` finishes execution, the HTTP request might not have completed yet.
@@ -303,7 +337,7 @@ This is most evident in the `executeGetAndApply` method, as shown below:
 
 Once the HTTP request completes, the operations in the `CompletableFuture` objects will be executed. These operations are summarized by the following activity diagram:
 
-image::SearchBooksActivityDiagram.png[width="650"]
+image::SearchBooksActivityDiagram.png[width="600"]
 
 If the HTTP request fails, the response is unexpected, or the conversion to `BookShelf` fails, then the proceeding operations
 added by the calls to `thenApply` will be skipped, and the `CompletableFuture` is considered to have completed exceptionally.
@@ -317,7 +351,7 @@ With the network component in place, the `search` command can now be implemented
 When a `search` command is entered, a `SearchCommand` object will be created if the parsing of the command was successful,
 which will make a call to `searchBooks` on the `Network` API, as shown in the sequence diagram below:
 
-image::SearchCommandSequenceDiagram.png[width="800"]
+image::SearchCommandSequenceDiagram.png[width="750"]
 
 As described in <<Search-Network>>, when the event is handled by `NetworkManager`, this will result in an asynchronous HTTP request being made to https://developers.google.com/books/[Google Books API, window="_blank"].
 Once the request and the parsing of the response completes successfully, the operation added by the `thenAccept` call in `SearchCommand` will be executed.
@@ -326,16 +360,17 @@ This results in the execution of the following method in `SearchCommand`:
 [source,java]
 ----
     private void displaySearchResults(ReadOnlyBookShelf bookShelf) {
-        Platform.runLater(() -> {
-            model.updateSearchResults(bookShelf);
-            EventsCenter.getInstance().post(new SwitchToSearchResultsRequestEvent());
-            EventsCenter.getInstance().post(new NewResultAvailableEvent(...));
-        });
+        model.updateSearchResults(bookShelf);
+        model.setActiveListType(ActiveListType.SEARCH_RESULTS);
+        EventsCenter.getInstance().post(new ActiveListChangedEvent());
+        EventsCenter.getInstance().post(new NewResultAvailableEvent(
+                String.format(SearchCommand.MESSAGE_SEARCH_SUCCESS, bookShelf.size())));
+        EventsCenter.getInstance().post(new EnableCommandBoxRequestEvent());
     }
 ----
 
-Note that the update to the model must be done on the JavaFX thread (using `Platform#runLater`),
-since updating the search results will update its observable list, which will cause the UI to be updated.
+Note that this method is run on the JavaFX thread (using `Platform#runLater`) because it will result in updates to the book list panel.
+If such updates are not done on the JavaFX thread, JavaFX will throw an `IllegalStateException`.
 
 ==== Design Considerations
 
@@ -365,8 +400,7 @@ since updating the search results will update its observable list, which will ca
 * **Alternative 2:** Convert parsed JSON directly to model type.
 ** Pros: Faster and more efficient.
 ** Cons: Code will be more complicated and tedious - we will need to traverse through the JSON node tree manually.
-
-// end:search[]
+// end::search2[]
 
 // tag::undoredo[]
 === Undo feature
@@ -476,6 +510,7 @@ image::UndoRedoActivityDiagram.png[width="550"]
 **Additional Info:** See the discussion  https://github.com/se-edu/addressbook-level4/issues/390#issuecomment-298936672[here].
 // end::undoredo[]
 
+// tag::edit[]
 === Edit status, priority, and rating of books: `edit` command
 
 ==== Current implementation
@@ -489,14 +524,27 @@ When `edit` command is entered,
 . The `Book` to edit (`bookToEdit`) is identified by the index. Another `Book` (`editedBook`) is created based on the specified parameters.
 . `editedBook` replaces `bookToEdit` in `BookShelf`.
 
+
+Sequence Diagram
+
+image::editseq.png[width="550"]
+
+Default value of the book.
+
+image::defaultbook.png[width="550"]
+
+The book after you edit (r/4, s/r, p/h).
+
+image::newbook.png[width="550"]
+
 ==== Design considerations
 
 ===== Aspect: Presentation of rating
 
-* **Alternative 1 (current choice):** Show users the rating as a number.
+* **Alternative 1:** Show users the rating as a number.
 ** Pros: Easy to implement.
 ** Cons: Not aesthetically appealing.
-* **Alternative 2:** Show users the rating as stars.
+* **Alternative 2 (current choice):** Show users the rating as stars.
 ** Pros: Difficult to implement.
 ** Cons: Improves the aesthetic appeal and clarity.
 
@@ -508,66 +556,66 @@ When `edit` command is entered,
 * **Alternative 2:** Unspecified parameters are set to default value.
 ** Pros: Easy to implement.
 ** Cons: Users need to specify all parameters to change one.
+// end::edit[]
 
+// tag::recent[]
 === View recently selected books: `recent` command
+
+The `recent` command allows the user to view books that he/she recently selected.
+This allows the user to easily look back for a particular book, and to add it into his/her book shelf without having to perform a search again.
 
 ==== Current implementation
 
-When `recent` command is entered, eventually `SwitchToRecentBooksRequestEvent` is posted to the
-`EventCenter`. The interaction between components is shown in the diagram below.
-
-image::SequenceDiagramRecentCommandLogic.png[width="650"]
-
-`SwitchToRecentBooksRequestEvent` is handled by `LogicManager` and `MainWindow`.
-
-image::SequenceDiagramRecentCommandEvent.png[width="650"]
-
-`LogicManager` sets the `ActiveListType` to `RECENT_BOOKS`. The commands that users can perform on this list may differ from others, for example users
-cannot delete books from this list. +
-`MainWindow` hides the currently shown Panel and shows `RecentBooksPanel` which is populated by the
-stored recently selected books.
-
 Recently selected books are stored in a `UniqueBookCircularList` which resides in `ModelManager`.
-Whenever a new book is selected, `ModelManager` handles the `xxxSelectionChangedEvent`
+Whenever a new book is selected, `ModelManager` handles the `BookListSelectionChangedEvent`
 and adds the book into the list.
 
+When `recent` is entered, it will be parsed into a `RecentCommand`, which when executed, sets the `ActiveListType` to `RECENT_BOOKS`.
+It then posts `ActiveListChangedEvent` to the `EventCenter` to signal this change. The interaction between components is shown in the diagram below.
+
+image::SequenceDiagramRecentCommandLogic.png[width="550"]
+
+NOTE: The commands that users can perform on different `ActiveListType` differ, for example users cannot delete books if the `ActiveListType` is `RECENT_BOOKS`.
+
+`ActiveListChangedEvent` is handled by `MainWindow`.
+
+image::SequenceDiagramRecentCommandEvent.png[width="550"]
+
+`MainWindow` sets the list shown in `BookListPanel` to the list of recently selected books.
+
 `UniqueBookCircularList` has size 50 by default. For illustration purposes, assume we have a
-`UniqueBookCircularList` of size 3 that is empty at the start. `ActiveListType` is `BOOK_SHELF`.
+`UniqueBookCircularList` of size 2 that is empty at the start. `ActiveListType` is `BOOK_SHELF`.
 
 The user performs `select 1` to view information on the 1st book in the book shelf. The
 selected book is added onto the `UniqueBookCircularList`.
 
-image::RecentCommandListOne.png[width="650"]
+image::RecentCommandListOne.png[width="450"]
 
 NOTE: If select fails to execute (eg. given index is invalid), the list will remain unchanged.
 
 The user then selects another book with `select 2`. The book is added to the front of the `UniqueBookCircularList`.
 
-image::RecentCommandListTwo.png[width="650"]
+image::RecentCommandListTwo.png[width="450"]
 
 NOTE: Selecting a book directly from the UI (without using `select` command) will also update the list according.
 
 Now if the user performs `select 1` again, the book `One`, which already exists in the list, will be removed
 from the list and added again so that it is in the first index of the list (most recently selected).
 
-image::RecentCommandListThree.png[width="650"]
+image::RecentCommandListThree.png[width="450"]
 
-The user continues to select books, and the same operations will apply.
+Note that the `UniqueBookCircularList` is currently full. When user performs `select 3`, since
+`Three` is not in the list, the book at the last index is removed to make space for `Three`.
+This is because the book at the last index (`Two` in this case) is the least recent selection.
 
-image::RecentCommandListFour.png[width="650"]
-
-The `UniqueBookCircularList` is now full (`size = 3`). When user performs `select 4`, since the book
-`Four` is not in the list, the book at the last index is removed to make space for book `Four`.
-This is because the book at the last index is the least recent selection.
-
-image::RecentCommandListFive.png[width="650"]
+image::RecentCommandListFour.png[width="450"]
 
 NOTE: `UniqueBookCircularList::equals` is order sensitive since the order determines the recency.
 
 When Bibliotek is exited, the data in the `UniqueBookCircularList` is stored in the format
 of `BookShelf`. This data is read and converted to `UniqueBookCircularList` upon opening Bibliotek.
 
-NOTE: Since `UniqueBookCircularList` only supports `addToFront(book)`, take note to add books in reverse
+NOTE: Since `UniqueBookCircularList` only supports `addToFront(Book)`, take note to add books in reverse
 order when converting from other data structures such as `BookShelf`.
 
 ==== Design considerations
@@ -600,33 +648,237 @@ by only showing these books.
 * **Alternative 2:** Use `BookShelf`.
 ** Pros: Re-use of existing data structure.
 ** Cons: BookShelf supports functionalities that are not needed to store recently selected books.
+// end::recent[]
 
-// tag::dataencryption[]
-=== [Proposed] Data Encryption
+// tag::library[]
+=== Find a book in NLB library: `library` command
 
-_{Explain here how the data encryption feature will be implemented}_
+The `library` command allows the user to easily check for the availability of books in NLB libraries.
+This eliminates the need to manually enter search information into the NLB catalogue. The user can use this information to decide when or whether to read a book.
 
-// end::dataencryption[]
+==== Current implementation
+
+When a `library` command is entered, a `LibraryCommand` will be created if the parsing of the command was successful, which will
+make a call to `searchLibraryForBook(Book)` on the `Network` API. This will result in an asynchronous HTTP request being made to
+https://catalogue.nlb.gov.sg/cgi-bin/spydus.exe/MSGTRN/EXPNOS/NLBHOME?HOMEPRMS=NLBGENPARAMS[NLB Catalogue].
+Once the HTTP request completes, the operations in the `.thenApply(...)` s, as seen in the code block below, will execute.
+
+[source,java]
+----
+    private CompletableFuture<String> execute(String url, Book book) {
+        return httpClient
+                .makeGetRequest(url)
+                .thenApply(NlbCatalogueApi::requireHtmlContentType)
+                .thenApply(NlbCatalogueApi::requireHttpStatusOk)
+                .thenApply(HttpResponse::getResponseBody)
+                .thenApply(result -> NlbResultHelper.getUrl(result, book));
+    }
+----
+
+This is summarized by the following activity diagram:
+
+image::LibraryCommandActivityDiagram.png[width="650"]
+
+The `CompletableFuture` completes exceptionally if the content type or status code is wrong.
+Else, a URL of the page showing availability of the target book, if any, is obtained. This depends on the type of the response page, which can be categorized into the following:
+
+* Full display (the page we want): The URL which the HTTP GET request was made to is returned.
+* Non-empty list of results: The URL of the top result is returned.
+* Empty list of results: A custom message, reporting that no result is found, is returned.
+
+Once the necessary result is obtained, the following method in `LibraryCommand` is executed:
+
+[java,source]
+----
+    private void onSuccessfulRequest(String result, Book book) {
+        EventsCenter.getInstance().post(new ShowLibraryResultRequestEvent(result));
+        EventsCenter.getInstance().post(new NewResultAvailableEvent(
+                String.format(MESSAGE_SUCCESS, book)));
+    }
+----
+
+`ShowLibraryResultRequestEvent` is handled by `MainWindow` and `BookInLibraryPanel` to load the URL using a `WebView` and show it.
+The loaded page is post-processed using a script to show only the relevant section.
+
+==== Design considerations
+
+===== Aspect: How to show the book availability
+
+* **Alternative 1 (current choice):** Load the webpage using a `WebView`.
+** Pros: Immune to changes in structure of that webpage.
+** Cons: Lesser flexibility in structure and content. Also subject to limitations of `WebView`.
+* **Alternative 2:** Extract the relevant information from the HTTP response and design a new panel to show the results.
+** Pros: Greater control over structure and content.
+** Cons: Vulnerable to changes in structure of that webpage.
+
+===== Aspect: Using advanced search versus basic search
+
+* **Alternative 1 (current choice):** Use basic search, using a HTTP GET request.
+** Pros: Faster response time.
+** Cons: Searched keyword seem to only be matched to title or authors.
+* **Alternative 2:** Use advanced search, using a HTTP POST request.
+** Pros: Can limit the search results using more parameters such as year or ISBN.
+** Cons: Slower response time.
+
+===== Aspect: Whether to load in `WebView` directly or pre-process through `Network` component
+
+* **Alternative 1 (current choice):** Pre-process HTTP request response in `Network` component, then send intended URL to `WebView`.
+** Pros: Processing happens behind the scene, and does not distract user.
+** Cons: User is subject to waiting times without feedback on progress. Furthermore the control flow becomes more complicated since an URL still needs to be passed to and loaded on the `WebView` eventually.
+* **Alternative 2:** Load search URL in `WebView` and navigate to intended page using script.
+** Pros: Easier to implement. Eliminate the need to modify `Network` component.
+** Cons: User will be able to see the navigation between pages.
+// end::library[]
+
+// tag::encrypt[]
+=== Data Encryption
+
+==== Current implementation
+
+* **When `encrypt` command is entered**
+
+. `EncryptCommand` is processed to set isEncrypt to be true.
+
+. The `Bibliotek` cannot be run any command except `decrypt` and `help` command.
+
+* If you enter a wrong key.
+
+image::shouldbedecryptfirst.png[width="650"]
+
+* **When the `Bibliotek` is encrypted and `decrypt` command is entered**
+
+. `DecryptCommandParser` will extract key from the user input.
+. `DecryptCommandParser` creates an `DecryptCommand` the key.
+. `DecryptCommand` is preprocessed to check that key is correct(decode the key from the storage).
+. `DecryptCommand` is processed to set isEncrypt to be false.
+
+* If your entered key is correct
+
+image::correctkey.png[width="650"]
+
+* If your entered key is wrong
+
+image::wrongkey.png[width="650"]
+
+
+* **When `setKey` command is entered**
+
+. `setKeyCommandParser` will extract the old key and new key from the user input.
+. `setKeyCommandParser` checks that  two parameters are present, and that the parameters are valid.
+. `setKeyCommandParser` creates an `setKeyCommand` with the parameters.
+. `setKeyCommand` is preprocessed to check that oldKey is correct.
+. If the oldKye is correct, `setKeyCommand` will send a setKey command to LogicManager.
+. LogicManager will send set_new_key request to ModelManger.
+. ModelManager indicate the keyChangedevent and handle it, and set the bookshelf's key to be new key.
+. ModelManager will encode the key, before indicate the keyChangedevent.
+. StorageManager handle the event by update the bibliotek with the new key(encoded key).
+
+* If you entered old key is correct.
+
+image::setsuccess.png[width="650"]
+
+* If you entered old key is incorrect.
+
+image::wrongkey(set).png[width="650"]
+
+* The encode key are implement in this way:
+[source,java]
+----
+    public static String encrypKey(String mykey) throws Exception {
+        byte[] byarray = encrypt(mykey.getBytes(ENCODE), defaultKey.getBytes(ENCODE));
+        String encryptkey = new BASE64Encoder().encode(byarray);
+        return encryptkey;
+    }
+
+    public static byte[] encrypt(byte[] mykey, byte[] key) throws Exception {
+        SecureRandom secureRandom = new SecureRandom();
+
+        DESKeySpec desKeySpec = new DESKeySpec(key);
+
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(DES);
+        SecretKey securekey = secretKeyFactory.generateSecret(desKeySpec);
+
+        Cipher cipher = Cipher.getInstance(DES);
+
+        cipher.init(Cipher.ENCRYPT_MODE, securekey, secureRandom);
+
+        return cipher.doFinal(mykey);
+    }
+----
+
+* The encode key are implement in this way:
+[source,java]
+----
+    public static String decryptKey(String yourkey) throws IOException, Exception {
+        if (yourkey == null) {
+            return null;
+        }
+        BASE64Decoder base64Decoder = new BASE64Decoder();
+        byte[] decodeBuffer = base64Decoder.decodeBuffer(yourkey);
+        byte[] bytes = decrypt(decodeBuffer, defaultKey.getBytes(ENCODE));
+        return new String(bytes, ENCODE);
+    }
+
+    private static byte[] decrypt(byte[] yourkey, byte[] key) throws Exception {
+
+        SecureRandom secureRandom = new SecureRandom();
+
+        DESKeySpec desKeySpec = new DESKeySpec(key);
+
+        SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(DES);
+        SecretKey securekey = secretKeyFactory.generateSecret(desKeySpec);
+
+        Cipher cipher = Cipher.getInstance(DES);
+
+        cipher.init(Cipher.DECRYPT_MODE, securekey, secureRandom);
+
+        return cipher.doFinal(yourkey);
+    }
+----
+The default key "admin" will be stored as:
+
+image::password_admin.png[width="650"]
+// end::encrypt[]
+
+==== Design considerations
+
+===== Aspect: Whether to use three commands instead of only one
+
+* **Alternative 1 (current choice):** Use three commands to do the encrypt, decrypt and setkey actions
+** Pros: Users can clearly know what they can do about the key.
+** Cons: Users should learn two more commands
+* **Alternative 2:** Use only one setKey command to solve all three features.
+** Pros: Seem that users can eliminate the typing.
+** Cons: Users will feel confuse, not so clear about the command.
+
+===== Aspect: Whether to encode the key before store it
+
+* **Alternative 1 (current choice):** Stores the encoded key.
+** Pros: Others cannot know users' key easily.
+** Cons: Difficult to implement.
+* **Alternative 2:** Store the text form key.
+** Pros: Easy to implement.
+** Cons: Others can know users' key easily.
 
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
 
-* The logging level can be controlled using the `logLevel` setting in the configuration file (See <<Implementation-Configuration>>)
-* The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level
-* Currently log messages are output through: `Console` and to a `.log` file.
+* The logging level can be controlled using the `logLevel` setting in the configuration file (See <<Implementation-Configuration>>).
+* The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level.
+* Currently log messages are output through `Console` and to a `.log` file.
 
-*Logging Levels*
+Below are the different *logging levels* and descriptions of when each level should be used.
 
-* `SEVERE` : Critical problem detected which may possibly cause the termination of the application
-* `WARNING` : Can continue, but with caution
-* `INFO` : Information showing the noteworthy actions by the App
-* `FINE` : Details that is not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size
+* `SEVERE` : Critical problem detected which may possibly cause the termination of the application.
+* `WARNING` : Can continue, but with caution.
+* `INFO` : Information showing the noteworthy actions by the App.
+* `FINE` : Details that is not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size.
 
 [[Implementation-Configuration]]
 === Configuration
 
-Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file (default: `config.json`).
+Certain properties of the application (e.g App name, logging level) can be controlled through the configuration file (default: `config.json` which can be found in your project folder).
 
 == Documentation
 
@@ -652,14 +904,16 @@ Here are the steps to convert the project documentation files to PDF format.
 
 .  Follow the instructions in <<UsingGradle#rendering-asciidoc-files, UsingGradle.adoc>> to convert the AsciiDoc files in the `docs/` directory to HTML format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
-.  Within Chrome, click on the `Print` option in Chrome's menu.
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings indicated in the screenshot below.
+.  Within Chrome, click on the `Print` option in Chrome's menu. You should see a pop-up similar to Figure 12 below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, follow the settings as indicated in Figure 12.
 
 .Saving documentation as PDF files in Chrome
 image::chrome_save_as_pdf.png[width="300"]
 
 [[Testing]]
 == Testing
+
+This section includes some information that may be useful for testing the project.
 
 === Running Tests
 
@@ -670,12 +924,12 @@ The most reliable way to run tests is the 3rd one. The first two methods might f
 
 *Method 1: Using IntelliJ JUnit test runner*
 
-* To run all tests, right-click on the `src/test/java` folder and choose `Run 'All Tests'`
-* To run a subset of tests, you can right-click on a test package, test class, or a test and choose `Run 'ABC'`
+* To run all tests, right-click on the `src/test/java` folder and choose `Run 'All Tests'`.
+* To run a subset of tests, you can right-click on a test package, test class, or a test and choose `Run 'ABC'`.
 
 *Method 2: Using Gradle*
 
-* Open a console and run the command `gradlew clean allTests` (Mac/Linux: `./gradlew clean allTests`)
+* Open a console and run the command `gradlew clean allTests` (Mac/Linux: `./gradlew clean allTests`).
 
 [NOTE]
 See <<UsingGradle#, UsingGradle.adoc>> for more info on how to run tests using Gradle.
@@ -684,16 +938,16 @@ See <<UsingGradle#, UsingGradle.adoc>> for more info on how to run tests using G
 
 Thanks to the https://github.com/TestFX/TestFX[TestFX, window="_blank"_] library we use, our GUI tests can be run in the _headless_ mode. In the headless mode, GUI tests do not show up on the screen. That means the developer can do other things on the Computer while the tests are running.
 
-To run tests in headless mode, open a console and run the command `gradlew clean headless allTests` (Mac/Linux: `./gradlew clean headless allTests`)
+To run tests in headless mode, open a console and run the command `gradlew clean headless allTests` (Mac/Linux: `./gradlew clean headless allTests`).
 
 === Types of tests
 
 We have two types of tests:
 
-.  *GUI Tests* - These are tests involving the GUI. They include,
+.  *GUI Tests* - These are tests involving the GUI. They include:
 .. _System Tests_ that test the entire App by simulating user actions on the GUI. These are in the `systemtests` package.
 .. _Unit tests_ that test the individual components. These are in `seedu.address.ui` package.
-.  *Non-GUI Tests* - These are tests not involving the GUI. They include,
+.  *Non-GUI Tests* - These are tests not involving the GUI. They include:
 ..  _Unit tests_ targeting the lowest level methods/classes. +
 e.g. `seedu.address.commons.StringUtilTest`
 ..  _Integration tests_ that are checking the integration of multiple code units (those code units are assumed to be working). +
@@ -708,7 +962,14 @@ e.g. `seedu.address.logic.LogicManagerTest`
 * Reason: One of its dependencies, `UserGuide.html` in `src/main/resources/docs` is missing.
 * Solution: Execute Gradle task `processResources`.
 
+**Problem: `AddCommandSystemTest` or `SearchCommandSystemTest` fails with a `GuiRobot$EventTimeoutException`.**
+
+* Reason: The required data could not be fetched from the online service within 10s. The service could be down at the moment.
+* Solution: Check that you are connected to the Internet, or if you are, try again later.
+
 == Dev Ops
+
+This section contains some information or tools that may be useful for managing the project.
 
 === Build Automation
 
@@ -733,15 +994,18 @@ Here are the steps to create a new release.
 
 .  Update the version number in link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp.java`, window="_blank"].
 .  Generate a JAR file <<UsingGradle#creating-the-jar-file, using Gradle>>.
-.  Tag the repo with the version number. e.g. `v0.1`
+.  Tag the repo with the version number, e.g. `v0.1`.
 .  https://help.github.com/articles/creating-releases/[Create a new release using GitHub, window="_blank"] and upload the JAR file you created.
 
 === Managing Dependencies
 
 A project often depends on third-party libraries. For example, Bibliotek depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library, window="_blank"_] for XML parsing.
-Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
-a. Include those libraries in the repo (this bloats the repo size) +
-b. Require developers to download those libraries manually (this creates extra work for developers)
+We make use of Gradle to manage the project dependencies. Gradle can automate the downloading of these dependencies, saving us time and effort.
+
+While strongly discouraged by us, you can nevertheless opt for one of the following alternatives.
+
+* Include those libraries in the repo (though this bloats the repo size).
+* Download those libraries manually (though this creates extra work for you).
 
 [[GetStartedProgramming]]
 [appendix]
@@ -1017,14 +1281,14 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 [discrete]
 ==== Qiu Siyu
 * **Search for books using Google Books API** (major)
-** Added the network component and a `search` command to allow the user to search for books on Google Books.
+** Added network component to support making asychronous HTTP requests.
+** Added `search` command to allow the user to search for books on Google Books.
 ** This allows the user to easily search for particular books, and add them without having to enter all the information manually (using the updated `add` command).
-* **Customize aliases to use in place of full commands** (major)
+* **Customize command aliases to use in place of full commands** (minor)
 ** Added `addalias`, `aliases` and `deletealias` commands to allow adding, viewing and deleting of aliases.
-** This allows users to reduce the typing needed.
-* **Change application theme** (minor)
-** Added a `theme` command that allows the user to switch between the various themes included with Bibliotek.
-** This allows the user to change the design of Bibliotek according to their own preferences.
+** Updated command parser to support command aliases.
+** Updated storage component to save command aliases in XML format.
+** This allows users to reduce the amount of typing needed.
 
 [discrete]
 ==== Qiu Siqi
@@ -1039,7 +1303,6 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 [discrete]
 ==== Shi Jin
 * **Mark a book as read, change the priority of a book and rate books** (major)
-** Added attributes rating, status, priority.
 ** Added `edit` command that allows user to rate, set status and change priority of
 some books.
 ** This allows the user to keep track of what to read and what have been read and give recommendations to others.

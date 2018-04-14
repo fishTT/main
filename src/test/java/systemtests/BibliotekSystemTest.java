@@ -288,6 +288,18 @@ public abstract class BibliotekSystemTest {
     }
 
     /**
+     * Checks that {@code WelcomePanel} is visible and {@code BookDetailsPanel}, {@code BookInLibraryPanel},
+     * {@code BookReviewsPanel} and {@code AliasListPanel} is not visible.
+     */
+    protected void assertWelcomePanelVisible() {
+        assertTrue(getWelcomePanel().isVisible());
+        assertFalse(getBookDetailsPanel().isVisible());
+        assertFalse(getBookInLibraryPanel().isVisible());
+        assertFalse(getBookReviewsPanel().isVisible());
+        assertFalse(getAliasListPanel().isVisible());
+    }
+
+    /**
      * Checks that {@code BookReviewsPanel} is visible, {@code BookDetailsPanel} and {@code BookInLibraryPanel}
      * is not visible.
      */

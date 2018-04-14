@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalBooks.getTypicalBookShelf;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoStack;
+import seedu.address.model.ActiveListType;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -37,6 +39,7 @@ public class RecentCommandTest {
     @Test
     public void execute_showsEmptyRecent() {
         assertCommandSuccess(recentCommand, model, String.format(RecentCommand.MESSAGE_SUCCESS, 0), expectedModel);
+        assertEquals(ActiveListType.RECENT_BOOKS, model.getActiveListType());
     }
 
     @Test
@@ -44,5 +47,15 @@ public class RecentCommandTest {
         model.addRecentBook(TypicalBooks.ARTEMIS);
         expectedModel.addRecentBook(TypicalBooks.ARTEMIS);
         assertCommandSuccess(recentCommand, model, String.format(RecentCommand.MESSAGE_SUCCESS, 1), expectedModel);
+        assertEquals(ActiveListType.RECENT_BOOKS, model.getActiveListType());
+    }
+
+    @Test
+    public void execute_repeatedRecentBook() {
+        model.addRecentBook(TypicalBooks.ARTEMIS);
+        model.addRecentBook(TypicalBooks.ARTEMIS);
+        expectedModel.addRecentBook(TypicalBooks.ARTEMIS);
+        assertCommandSuccess(recentCommand, model, String.format(RecentCommand.MESSAGE_SUCCESS, 1), expectedModel);
+        assertEquals(ActiveListType.RECENT_BOOKS, model.getActiveListType());
     }
 }

@@ -16,8 +16,7 @@ public class ConfigTest {
     public void toString_defaultObject_stringReturned() {
         String defaultConfigAsString = "App title : Bibliotek\n"
                 + "Current log level : INFO\n"
-                + "Preference file Location : preferences.json\n"
-                + "Recent books file Location : recentbooks.xml";
+                + "Preference file Location : preferences.json";
 
         assertEquals(defaultConfigAsString, new Config().toString());
     }

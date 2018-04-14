@@ -14,7 +14,6 @@ public class Config {
     private String appTitle = "Bibliotek";
     private Level logLevel = Level.INFO;
     private String userPrefsFilePath = "preferences.json";
-    private String recentBooksFilePath = "recentbooks.xml";
 
     public String getAppTitle() {
         return appTitle;
@@ -40,14 +39,6 @@ public class Config {
         this.userPrefsFilePath = userPrefsFilePath;
     }
 
-    public String getRecentBooksFilePath() {
-        return recentBooksFilePath;
-    }
-
-    public void setRecentBooksFilePath(String recentBooksFilePath) {
-        this.recentBooksFilePath = recentBooksFilePath;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -61,13 +52,12 @@ public class Config {
 
         return Objects.equals(appTitle, o.appTitle)
                 && Objects.equals(logLevel, o.logLevel)
-                && Objects.equals(userPrefsFilePath, o.userPrefsFilePath)
-                && Objects.equals(recentBooksFilePath, o.recentBooksFilePath);
+                && Objects.equals(userPrefsFilePath, o.userPrefsFilePath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(appTitle, logLevel, userPrefsFilePath, recentBooksFilePath);
+        return Objects.hash(appTitle, logLevel, userPrefsFilePath);
     }
 
     @Override
@@ -76,7 +66,6 @@ public class Config {
         sb.append("App title : " + appTitle);
         sb.append("\nCurrent log level : " + logLevel);
         sb.append("\nPreference file Location : " + userPrefsFilePath);
-        sb.append("\nRecent books file Location : " + recentBooksFilePath);
         return sb.toString();
     }
 

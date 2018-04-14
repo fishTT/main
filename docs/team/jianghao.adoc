@@ -1,0 +1,45 @@
+= JIANG HAO - Project Portfolio
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: Bibliotek
+
+---
+
+== Overview
+
+Bibliotek is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+
+== Summary of contributions
+
+* **Autocomplete commands and hint alias** (major)
+** Added tab to autocomplete commands.
+** Added a hint Command box to show hint of alias.
+** This allows the user to type commands quickly and know what to type for alias of the input command.
+* **Quotes about book** (minor)
+** Add a welcome panel to display a random quotes about books.
+** This allows users to view a random quotes on books.
+
+* *Code contributed*: [https://github.com/CS2103JAN2018-F14-B4/main/tree/master/collated/functional.fishTT.md[Functional code]] [https://github.com/CS2103JAN2018-F14-B4/main/tree/master/collated/test.fishTT.md[Test code]] _{give links to collated code files}_
+
+* *Other contributions*:
+
+** Enhancements to existing features:
+*** Add a welcome panel to display quotes about books (Pull requests https://github.com/CS2103JAN2018-F14-B4/main/pull/132[#132])
+*** Add a autocomplete function to autocomplete command.
+*** Add a hintCommandBox to show hint of input command.
+** Documentation:
+*** Did cosmetic tweaks to existing contents of the Developer Guide: https://github.com/CS2103JAN2018-F14-B4/main/pull/52[#52]
+
+
+== Contributions to the User Guide
+
+
+|===
+|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
+|===
+
+include::../UserGuide.adoc[tag=quoteOfTheDay]
+
+
+include::../UserGuide.adoc[tag=autocomplete]

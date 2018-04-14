@@ -5,8 +5,11 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
 
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.DeselectBookRequestEvent;
+import seedu.address.commons.events.ui.ReselectBookRequestEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ActiveListType;
 import seedu.address.model.book.Book;
@@ -45,7 +48,9 @@ public class DeleteCommand extends UndoableCommand {
         requireAllNonNull(model, bookToDelete);
 
         try {
+            EventsCenter.getInstance().post(new DeselectBookRequestEvent());
             model.deleteBook(bookToDelete);
+            EventsCenter.getInstance().post(new ReselectBookRequestEvent());
         } catch (BookNotFoundException pnfe) {
             throw new AssertionError("The target book cannot be missing");
         }

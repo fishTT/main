@@ -53,7 +53,7 @@ public class LogicManagerTest {
     @Test
     public void execute_closeCommand_corrected() {
         assertCommandSuccess("lst", String.format(Messages.MESSAGE_CORRECTED_COMMAND, "list"), model);
-        assertCommandSuccess("y",
+        assertCommandSuccess("",
                 String.format(ListCommand.MESSAGE_SUCCESS, model.getDisplayBookList().size()), model);
     }
 

@@ -39,7 +39,6 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         /* Case: no parameters -> all 5 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD,
                 BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
-		//@@author
         //@@author fishTT
         /* -------------------------------- Perform list operations on the mix case -------------------------- */
         /* Case: firstCharUppercase_success() -> added */
@@ -111,6 +110,5 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertStatusBarUnchanged();
         assertSelectedBookListCardDeselected();
 
-    }
-	//@@author
+    } //@@author
 }

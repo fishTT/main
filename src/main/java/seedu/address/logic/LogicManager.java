@@ -1,6 +1,9 @@
 package seedu.address.logic;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -11,6 +14,7 @@ import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.BookListSelectionChangedEvent;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.BookShelfParser;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -40,6 +44,31 @@ public class LogicManager extends ComponentManager implements Logic {
         history = new CommandHistory();
         bookShelfParser = new BookShelfParser(model.getAliasList());
         undoStack = new UndoStack();
+    }
+
+    @Override
+    public boolean isValidCommand(String commandText) {
+        try {
+            String processedText = bookShelfParser.applyCommandAlias(commandText);
+            bookShelfParser.parseCommand(processedText);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public String[] parse(String commandText) throws ParseException {
+        String processedText = bookShelfParser.applyCommandAlias(commandText);
+        final Matcher matcher = BookShelfParser.BASIC_COMMAND_FORMAT.matcher(processedText);
+        if (!matcher.matches()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
+        }
+
+        String commandWord = matcher.group("commandWord");
+        final String arguments = matcher.group("arguments");
+
+        return new String[] {commandWord, arguments};
     }
 
     @Override
@@ -106,16 +135,6 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ObservableList<Book> getDisplayBookList() {
         return model.getDisplayBookList();
-    }
-
-    @Override
-    public ObservableList<Book> getSearchResultsList() {
-        return model.getSearchResultsList();
-    }
-
-    @Override
-    public ObservableList<Book> getRecentBooksList() {
-        return model.getRecentBooksList();
     }
 
     @Override

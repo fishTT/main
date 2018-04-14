@@ -9,7 +9,6 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_BOOK;
 
 import org.junit.Test;
 
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -59,7 +58,7 @@ public class UndoableCommandTest {
         }
 
         @Override
-        public CommandResult executeUndoableCommand() throws CommandException {
+        public CommandResult executeUndoableCommand() {
             bookToDelete = model.getDisplayBookList().get(0);
             try {
                 model.deleteBook(bookToDelete);

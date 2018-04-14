@@ -66,19 +66,19 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseTitle_optionalEmpty_returnsOptionalEmpty() throws Exception {
+    public void parseTitle_optionalEmpty_returnsOptionalEmpty() {
         assertFalse(ParserUtil.parseTitle(Optional.empty()).isPresent());
     }
 
     @Test
-    public void parseTitle_validValueWithoutWhitespace_returnsTitle() throws Exception {
+    public void parseTitle_validValueWithoutWhitespace_returnsTitle() {
         Title expectedTitle = new Title(VALID_TITLE);
         assertEquals(expectedTitle, ParserUtil.parseTitle(VALID_TITLE));
         assertEquals(Optional.of(expectedTitle), ParserUtil.parseTitle(Optional.of(VALID_TITLE)));
     }
 
     @Test
-    public void parseTitle_validValueWithWhitespace_returnsTrimmedTitle() throws Exception {
+    public void parseTitle_validValueWithWhitespace_returnsTrimmedTitle() {
         String titleWithWhitespace = WHITESPACE + VALID_TITLE + WHITESPACE;
         Title expectedTitle = new Title(VALID_TITLE);
         assertEquals(expectedTitle, ParserUtil.parseTitle(titleWithWhitespace));
@@ -92,19 +92,19 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseDescription_optionalEmpty_returnsOptionalEmpty() throws Exception {
+    public void parseDescription_optionalEmpty_returnsOptionalEmpty() {
         assertFalse(ParserUtil.parseDescription(Optional.empty()).isPresent());
     }
 
     @Test
-    public void parseDescription_validValueWithoutWhitespace_returnsDescription() throws Exception {
+    public void parseDescription_validValueWithoutWhitespace_returnsDescription() {
         Description expectedDescription = new Description(VALID_DESCRIPTION);
         assertEquals(expectedDescription, ParserUtil.parseDescription(VALID_DESCRIPTION));
         assertEquals(Optional.of(expectedDescription), ParserUtil.parseDescription(Optional.of(VALID_DESCRIPTION)));
     }
 
     @Test
-    public void parseDescription_validValueWithWhitespace_returnsTrimmedDescription() throws Exception {
+    public void parseDescription_validValueWithWhitespace_returnsTrimmedDescription() {
         String descWithWhitespace = WHITESPACE + VALID_DESCRIPTION + WHITESPACE;
         Description expectedDescription = new Description(VALID_DESCRIPTION);
         assertEquals(expectedDescription, ParserUtil.parseDescription(descWithWhitespace));
@@ -112,19 +112,19 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseAuthor_null_throwsNullPointerException() throws Exception {
+    public void parseAuthor_null_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
         ParserUtil.parseAuthor(null);
     }
 
     @Test
-    public void parseAuthor_validValueWithoutWhitespace_returnsAuthor() throws Exception {
+    public void parseAuthor_validValueWithoutWhitespace_returnsAuthor() {
         Author expectedAuthor = new Author(VALID_AUTHOR_1);
         assertEquals(expectedAuthor, ParserUtil.parseAuthor(VALID_AUTHOR_1));
     }
 
     @Test
-    public void parseAuthors_collectionWithValidAuthors_returnsAuthorSet() throws Exception {
+    public void parseAuthors_collectionWithValidAuthors_returnsAuthorSet() {
         Set<Author> actualAuthorSet = ParserUtil.parseAuthors(Arrays.asList(VALID_AUTHOR_1, VALID_AUTHOR_2));
         Set<Author> expectedAuthorSet =
                 new HashSet<>(Arrays.asList(new Author(VALID_AUTHOR_1), new Author(VALID_AUTHOR_2)));
@@ -133,19 +133,19 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseCategory_null_throwsNullPointerException() throws Exception {
+    public void parseCategory_null_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
         ParserUtil.parseCategory(null);
     }
 
     @Test
-    public void parseCategory_validValueWithoutWhitespace_returnsCategory() throws Exception {
+    public void parseCategory_validValueWithoutWhitespace_returnsCategory() {
         Category expectedCategory = new Category(VALID_CATEGORY_1);
         assertEquals(expectedCategory, ParserUtil.parseCategory(VALID_CATEGORY_1));
     }
 
     @Test
-    public void parseCategorys_collectionWithValidCategorys_returnsCategorySet() throws Exception {
+    public void parseCategorys_collectionWithValidCategorys_returnsCategorySet() {
         Set<Category> actualCategorySet = ParserUtil.parseCategories(Arrays.asList(VALID_CATEGORY_1, VALID_CATEGORY_2));
         Set<Category> expectedCategorySet =
                 new HashSet<>(Arrays.asList(new Category(VALID_CATEGORY_1), new Category(VALID_CATEGORY_2)));

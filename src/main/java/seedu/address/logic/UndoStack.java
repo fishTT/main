@@ -6,8 +6,7 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.UndoableCommand;
 
 /**
- * Maintains the undo-stack (the stack of commands that can be undone) and the redo-stack (the stack of
- * commands that can be undone).
+ * Maintains the undo-stack (the stack of commands that can be undone).
  */
 public class UndoStack {
     private Stack<UndoableCommand> undoStack;

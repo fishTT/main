@@ -390,18 +390,28 @@ body {
     -fx-text-fill: #F70D1A;
 }
 
-#commandTextField {
+#commandBox {
     -fx-background-color: transparent #ECEFF1 transparent #ECEFF1;
     -fx-background-insets: 0;
     -fx-border-color: #ECEFF1 #ECEFF1 #B0BEC5 #ECEFF1;
-    -fx-border-insets: 0;
-    -fx-border-width: 1;
+    -fx-padding: 6px 10px 6px 10px;
+}
+
+#commandTextField, #commandBoxHints {
+    -fx-background-color: transparent #ECEFF1 transparent #ECEFF1;
+    -fx-background-insets: 0;
+    -fx-border-radius: 0;
     -fx-font-family: "Segoe UI Light", "Helvetica Neue Light", "HelveticaNeue-Light";
     -fx-font-size: 13pt;
     -fx-text-fill: #222;
+    -fx-padding: 0;
 }
 
-#commandTextField:readonly {
+#commandBoxHints {
+    -fx-opacity: 0.35;
+}
+
+.command-box-disabled {
     -fx-opacity: 0.8;
 }
 

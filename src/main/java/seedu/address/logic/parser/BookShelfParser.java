@@ -7,6 +7,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.AddAliasCommand;
@@ -40,14 +41,14 @@ public class BookShelfParser {
     /**
      * Used for initial separation of command word and args.
      */
-    private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+    public static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile(" *(?<commandWord>\\S+)(?<arguments>.*)");
 
     //@@author takuyakanbr
     /**
      * Used for pre-processing the user input, before the application of a command alias.
      */
     private static final Pattern ALIASED_COMMAND_FORMAT =
-            Pattern.compile("(?<aliasName>\\S+)(?<unnamedArgs>((?! [\\w]+\\/.*)[\\S ])*)(?<namedArgs>.*)");
+            Pattern.compile(" *(?<aliasName>\\S+)(?<unnamedArgs>((?! [\\w]+\\/.*)[\\S ])*)(?<namedArgs>.*)");
 
     private static final int MAX_COMMAND_WORD_LENGTH = 12;
 
@@ -82,10 +83,11 @@ public class BookShelfParser {
      * Builds and returns a command string from the given alias, unnamed arguments, and named arguments.
      */
     private static String buildCommand(Alias alias, String unnamedArgs, String namedArgs) {
-        String commandPrefix = alias.getPrefix() + " " + unnamedArgs.trim();
-        String commandNamedArgs = alias.getNamedArgs() + " " + namedArgs.trim();
-        String result = commandPrefix.trim() + " " + commandNamedArgs.trim();
-        return result.trim();
+        return Stream.of(alias.getPrefix(), unnamedArgs, alias.getNamedArgs(), namedArgs)
+                // keep trailing spaces as they may affect the command hint shown to user
+                .map(StringUtil::leftTrim)
+                .filter(str -> !str.trim().isEmpty())
+                .reduce("", (a, b) -> StringUtil.leftTrim(a + " " + b));
     }
 
     //@@author
@@ -176,7 +178,7 @@ public class BookShelfParser {
      * @throws ParseException if {@code commandText} does not match {@code commandFormat}.
      */
     private Matcher getMatcherForPattern(String commandText, Pattern commandFormat) throws ParseException {
-        final Matcher matcher = commandFormat.matcher(commandText.trim());
+        final Matcher matcher = commandFormat.matcher(commandText);
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }

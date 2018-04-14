@@ -22,9 +22,9 @@ import seedu.address.model.alias.ReadOnlyAliasList;
 public class StorageManager extends ComponentManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
-    private BookShelfStorage bookShelfStorage;
-    private UserPrefsStorage userPrefsStorage;
-    private RecentBooksStorage recentBooksStorage;
+    private final BookShelfStorage bookShelfStorage;
+    private final UserPrefsStorage userPrefsStorage;
+    private final RecentBooksStorage recentBooksStorage;
     private final AliasListStorage aliasListStorage;
 
     public StorageManager(BookShelfStorage bookShelfStorage, UserPrefsStorage userPrefsStorage,

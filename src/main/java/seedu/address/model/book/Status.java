@@ -1,5 +1,7 @@
 package seedu.address.model.book;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Represents a book's status (whether it is read, being read, or unread).
  */
@@ -33,6 +35,8 @@ public enum Status {
      * Returns {@code null} if no match was found.
      */
     public static Status findStatus(String searchTerm) {
+        requireNonNull(searchTerm);
+
         for (Status status : values()) {
             if (searchTerm.equalsIgnoreCase(status.alias) || searchTerm.equalsIgnoreCase(status.toString())) {
                 return status;

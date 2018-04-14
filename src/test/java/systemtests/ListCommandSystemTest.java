@@ -25,16 +25,18 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
     public void list() {
         /* ----------------------------------- Perform valid list operations ---------------------------------------- */
 
-        /* Case: valid filters mode -> 1 book listed */
+        /* Case: valid filters -> 1 book listed */
         assertListSuccess(ListCommand.COMMAND_WORD + " t/artemis a/andy weir c/fiction s/read p/low r/5", ARTEMIS);
 
-        /* Case: valid filters mode -> 0 books listed */
+        /* Case: valid filters -> 0 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD + " c/space s/reading r/3");
-
-        executeCommand(RecentCommand.COMMAND_WORD);
 
         /* Case: valid filters and sort mode -> 2 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD + " s/u r/-1 by/title", CONSIDER_PHLEBAS, WAKING_GODS);
+
+        /* Case: showing recent books -> switches to showing book shelf */
+        executeCommand(RecentCommand.COMMAND_WORD);
+        assertListSuccess(ListCommand.COMMAND_WORD + " t/co r/-1 by/statusd", COLLAPSING_EMPIRE, CONSIDER_PHLEBAS);
 
         /* Case: no parameters -> all 5 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD,
@@ -45,8 +47,8 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         /* Case: invalid status filter -> rejected */
         assertCommandFailure(ListCommand.COMMAND_WORD + " s/", Messages.MESSAGE_INVALID_STATUS);
 
-        /* Case: invalid priority and rating filter -> rejected */
-        assertCommandFailure(ListCommand.COMMAND_WORD + " p/null r/-100", Messages.MESSAGE_INVALID_PRIORITY);
+        /* Case: invalid priority filter -> rejected */
+        assertCommandFailure(ListCommand.COMMAND_WORD + " p/null r/2", Messages.MESSAGE_INVALID_PRIORITY);
 
         /* Case: invalid rating filter -> rejected */
         assertCommandFailure(ListCommand.COMMAND_WORD + " r/20", Messages.MESSAGE_INVALID_RATING);
@@ -63,7 +65,8 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
      * 3. Result display box displays the success message of executing list command with the expected
      * number of listed books.<br>
      * 4. {@code Model} and {@code Storage} remain unchanged.<br>
-     * 5. Status bar remains unchanged.<br>
+     * 5. {@code WelcomePanel} is visible.
+     * 6. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
@@ -76,13 +79,13 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
 
         expectedModel.updateBookListFilter(expectedBookList::contains);
         expectedModel.updateBookListSorter(getModel().getBookListSorter());
-        String expectedResultMessage = String.format(ListCommand.MESSAGE_SUCCESS, expectedBooks.length);
-        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertEquals(expectedBooks.length, getModel().getDisplayBookList().size());
+        String expectedResultMessage = String.format(ListCommand.MESSAGE_SUCCESS, expectedBooks.length);
 
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+        assertWelcomePanelVisible();
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchanged();
         assertSelectedBookListCardDeselected();
-
     }
 }

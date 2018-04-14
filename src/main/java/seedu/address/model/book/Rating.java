@@ -10,10 +10,10 @@ import java.util.Arrays;
  */
 public class Rating implements Comparable<Rating> {
 
-    public static final String MESSAGE_RATING_CONSTRAINTS = "Rating must be between -1 and 5 (both inclusive).";
-    public static final int UNRATED_RATING = -1;
-    public static final int MIN_RATING = 0;
-    public static final int MAX_RATING = 5;
+    private static final String MESSAGE_RATING_CONSTRAINTS = "Rating must be between -1 and 5 (both inclusive).";
+    private static final int UNRATED_RATING = -1;
+    private static final int MIN_RATING = 0;
+    private static final int MAX_RATING = 5;
     public static final int DEFAULT_RATING = UNRATED_RATING;
 
     private static final char STAR = '\u2B50';
@@ -24,7 +24,7 @@ public class Rating implements Comparable<Rating> {
     public final int rating;
 
     /**
-     * Contructs a {@code Rating} with the default rating.
+     * Constructs a {@code Rating} with the default rating.
      */
     public Rating() {
         this.rating = DEFAULT_RATING;
@@ -40,6 +40,7 @@ public class Rating implements Comparable<Rating> {
         this.rating = rating;
     }
 
+    //@@author
     /**
      * Returns true if the given integer is a valid rating.
      */
@@ -65,6 +66,7 @@ public class Rating implements Comparable<Rating> {
         return STYLE_CLASS_RATED;
     }
 
+    //@@author 592363789
     @Override
     public int compareTo(Rating other) {
         return Integer.compare(rating, other.rating);

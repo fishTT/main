@@ -26,6 +26,12 @@ public class ThemeTest {
     }
 
     @Test
+    public void getThemeByName_null_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        Theme.getThemeByName(null);
+    }
+
+    @Test
     public void getThemeByName_invalidName_throwsInvalidThemeException() throws Exception {
         thrown.expect(InvalidThemeException.class);
         Theme.getThemeByName("12345");

@@ -1,5 +1,7 @@
 package seedu.address.commons.core;
 
+import static java.util.Objects.requireNonNull;
+
 import seedu.address.commons.exceptions.InvalidThemeException;
 
 //@@author takuyakanbr
@@ -38,6 +40,8 @@ public enum Theme {
      * @throws InvalidThemeException if no matching theme can be found.
      */
     public static Theme getThemeByName(String themeName) throws InvalidThemeException {
+        requireNonNull(themeName);
+
         for (Theme theme : values()) {
             if (themeName.equalsIgnoreCase(theme.getThemeName())) {
                 return theme;

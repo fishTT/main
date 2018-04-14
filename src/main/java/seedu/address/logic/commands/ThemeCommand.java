@@ -6,6 +6,7 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Theme;
 import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 
+//@@author takuyakanbr
 /**
  * Changes the application theme.
  */
@@ -34,6 +35,7 @@ public class ThemeCommand extends Command {
         return new CommandResult(String.format(MESSAGE_SUCCESS, newTheme.getThemeName()));
     }
 
+    //@@author
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object

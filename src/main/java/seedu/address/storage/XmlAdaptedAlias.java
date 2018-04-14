@@ -14,7 +14,7 @@ import seedu.address.model.alias.Alias;
  */
 public class XmlAdaptedAlias {
 
-    public static final String MISSING_FIELD_MESSAGE_FORMAT = "Alias' %s field is missing!";
+    protected static final String MISSING_FIELD_MESSAGE_FORMAT = "Alias' %s field is missing!";
     protected static final String NAME_FIELD = "name";
     protected static final String PREFIX_FIELD = "prefix";
     protected static final String NAMED_ARGS_FIELD = "namedArgs";

@@ -11,6 +11,7 @@ import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.Dsl;
 
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.util.StringUtil;
 
 //@@author takuyakanbr
 /**
@@ -58,8 +59,8 @@ public class HttpClient {
         if (error != null) {
             try {
                 Thread.sleep(DELAY_ON_EXCEPTION);
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
+            } catch (InterruptedException ie) {
+                logger.warning(StringUtil.getDetails(ie));
             }
             throw new CompletionException(error);
         }

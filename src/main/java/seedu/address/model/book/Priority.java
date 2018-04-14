@@ -1,5 +1,7 @@
 package seedu.address.model.book;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Represents a book's priority or importance.
  */
@@ -34,6 +36,8 @@ public enum Priority {
      * Returns {@code null} if no match was found.
      */
     public static Priority findPriority(String searchTerm) {
+        requireNonNull(searchTerm);
+
         for (Priority priority : values()) {
             if (searchTerm.equalsIgnoreCase(priority.alias) || searchTerm.equalsIgnoreCase(priority.toString())) {
                 return priority;

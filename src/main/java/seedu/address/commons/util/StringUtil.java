@@ -114,4 +114,14 @@ public class StringUtil {
         return target.substring(0, index) + target.substring(index + 1, target.length());
     }
 
+    /**
+     * Returns a string with the leading whitespace removed.
+     */
+    public static String leftTrim(String s) {
+        int index = 0;
+        while (index < s.length() && s.charAt(index) == ' ') {
+            ++index;
+        }
+        return s.substring(index);
+    }
 }

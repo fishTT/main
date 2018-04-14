@@ -16,7 +16,7 @@ public class XmlFileStorage {
     /**
      * Saves the given bookshelf data to the specified file.
      */
-    public static void saveBookShelfDataToFile(File file, XmlSerializableBookShelf bookShelf)
+    protected static void saveBookShelfDataToFile(File file, XmlSerializableBookShelf bookShelf)
             throws FileNotFoundException {
         try {
             XmlUtil.saveDataToFile(file, bookShelf);
@@ -28,7 +28,7 @@ public class XmlFileStorage {
     /**
      * Returns book shelf in the file or an empty book shelf.
      */
-    public static XmlSerializableBookShelf loadBookShelfDataFromFile(File file) throws DataConversionException,
+    protected static XmlSerializableBookShelf loadBookShelfDataFromFile(File file) throws DataConversionException,
             FileNotFoundException {
         try {
             return XmlUtil.getDataFromFile(file, XmlSerializableBookShelf.class);
@@ -40,7 +40,7 @@ public class XmlFileStorage {
     /**
      * Saves the given alias list data to the specified file.
      */
-    public static void saveAliasListDataToFile(File file, XmlSerializableAliasList aliasList)
+    protected static void saveAliasListDataToFile(File file, XmlSerializableAliasList aliasList)
             throws FileNotFoundException {
         try {
             XmlUtil.saveDataToFile(file, aliasList);
@@ -52,7 +52,7 @@ public class XmlFileStorage {
     /**
      * Returns alias list in the file or an empty alias list.
      */
-    public static XmlSerializableAliasList loadAliasListDataFromFile(File file) throws DataConversionException,
+    protected static XmlSerializableAliasList loadAliasListDataFromFile(File file) throws DataConversionException,
             FileNotFoundException {
         try {
             return XmlUtil.getDataFromFile(file, XmlSerializableAliasList.class);

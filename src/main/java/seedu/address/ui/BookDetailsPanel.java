@@ -28,7 +28,6 @@ public class BookDetailsPanel extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
-    // Independent Ui parts residing in this Ui container
     private BookDescriptionView bookDescriptionView;
 
     @FXML

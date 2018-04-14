@@ -4,6 +4,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Comparator;
 
+//@@author takuyakanbr
 /**
  * Contains data about a single alias.
  * Guarantees: immutable.
@@ -28,6 +29,7 @@ public class Alias {
         this.prefix = prefix.trim();
         this.namedArgs = namedArgs.trim();
     }
+    //@@author
 
     public String getName() {
         return name;

@@ -32,7 +32,7 @@ public class JsonSearchResults {
 
     // This should fail if the API returns an error, due to incompatible types.
     public void setError(int error) {
-        this.error = error;
+        assert false;
     }
 
     public void setTotalItems(int totalItems) {

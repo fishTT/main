@@ -33,7 +33,7 @@ public class XmlRecentBooksStorage implements RecentBooksStorage {
      * @param filePath location of the data. Cannot be null
      * @throws DataConversionException if the file is not in the correct format.
      */
-    public Optional<ReadOnlyBookShelf> readRecentBooksList(String filePath) throws DataConversionException,
+    protected Optional<ReadOnlyBookShelf> readRecentBooksList(String filePath) throws DataConversionException,
             FileNotFoundException {
         return xmlBookShelfStorage.readBookShelf(filePath);
     }
@@ -47,7 +47,7 @@ public class XmlRecentBooksStorage implements RecentBooksStorage {
      * Similar to {@link #saveRecentBooksList(ReadOnlyBookShelf)}
      * @param filePath location of the data. Cannot be null
      */
-    public void saveRecentBooksList(ReadOnlyBookShelf recentBooksList, String filePath) throws IOException {
+    protected void saveRecentBooksList(ReadOnlyBookShelf recentBooksList, String filePath) throws IOException {
         xmlBookShelfStorage.saveBookShelf(recentBooksList, filePath);
     }
 }

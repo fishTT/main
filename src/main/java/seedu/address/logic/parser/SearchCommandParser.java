@@ -6,8 +6,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TITLE;
 
 import seedu.address.logic.commands.SearchCommand;
+import seedu.address.logic.commands.SearchCommand.SearchDescriptor;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+//@@author takuyakanbr
 /**
  * Parses input arguments and creates a new SearchCommand object.
  */
@@ -23,10 +25,10 @@ public class SearchCommandParser implements Parser<SearchCommand> {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_ISBN, PREFIX_TITLE, PREFIX_AUTHOR, PREFIX_CATEGORY);
 
-        SearchCommand.SearchDescriptor searchDescriptor = new SearchCommand.SearchDescriptor();
+        SearchDescriptor searchDescriptor = new SearchDescriptor();
 
         String keyWords = argMultimap.getPreamble();
-        if (keyWords.length() > 0) {
+        if (keyWords.trim().length() > 0) {
             searchDescriptor.setKeyWords(keyWords);
         }
 

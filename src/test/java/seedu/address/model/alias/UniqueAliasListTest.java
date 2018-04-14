@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+//@@author takuyakanbr
 public class UniqueAliasListTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -45,7 +46,7 @@ public class UniqueAliasListTest {
     }
 
     @Test
-    public void add_existingAlias_aliasReplaced() {
+    public void add_existingAliasName_aliasReplaced() {
         UniqueAliasList aliasList = new UniqueAliasList();
         aliasList.add(new Alias("1", "1", "1"));
         aliasList.add(new Alias("1", "updated", "updated"));

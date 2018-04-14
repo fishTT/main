@@ -26,7 +26,7 @@ public class EditCommandParserTest {
     private EditCommandParser parser = new EditCommandParser();
 
     @Test
-    public void parse_indexSpecified_success() throws Exception {
+    public void parse_indexSpecified_success() {
         // edit status
         Index targetIndex = INDEX_FIRST_BOOK;
         String userInput = targetIndex.getOneBased() + " " + PREFIX_STATUS + STATUS_UNREAD;
@@ -54,7 +54,7 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_missingCompulsoryField_failure() throws Exception {
+    public void parse_missingCompulsoryField_failure() {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
 
         // no parameters

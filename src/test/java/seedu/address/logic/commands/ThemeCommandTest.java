@@ -35,6 +35,7 @@ public class ThemeCommandTest {
 
     @Test
     public void execute_validTheme_success() {
+        assertExecutionSuccess(Theme.WHITE);
         assertExecutionSuccess(Theme.LIGHT);
         assertExecutionSuccess(Theme.DARK);
     }

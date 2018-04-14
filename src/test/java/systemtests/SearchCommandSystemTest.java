@@ -5,6 +5,7 @@ import static seedu.address.logic.commands.CommandTestUtil.AUTHOR_DESC_ARTEMIS;
 import static seedu.address.logic.commands.CommandTestUtil.CATEGORY_DESC_ARTEMIS;
 import static seedu.address.logic.commands.CommandTestUtil.ISBN_DESC_ARTEMIS;
 import static seedu.address.logic.commands.CommandTestUtil.TITLE_DESC_ARTEMIS;
+import static seedu.address.logic.commands.CommandTestUtil.TITLE_DESC_BABYLON;
 
 import org.junit.Test;
 
@@ -33,7 +34,7 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
         assertCommandFailure(SearchCommand.COMMAND_WORD, SearchCommand.MESSAGE_EMPTY_QUERY);
 
         /* Case: no key words or named parameters -> rejected */
-        assertCommandFailure("   " + SearchCommand.COMMAND_WORD + "             ", SearchCommand.MESSAGE_EMPTY_QUERY);
+        assertCommandFailure("    " + SearchCommand.COMMAND_WORD + "    ", SearchCommand.MESSAGE_EMPTY_QUERY);
 
         /* Case: misspelled command word -> rejected */
         assertCommandFailure("saerch hello", MESSAGE_UNKNOWN_COMMAND);
@@ -50,7 +51,7 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
                 + AUTHOR_DESC_ARTEMIS);
 
         /* Case: search for non-existant book -> return 0 results */
-        assertSearchSuccess(SearchCommand.COMMAND_WORD + TITLE_DESC_ARTEMIS + CATEGORY_DESC_ARTEMIS
+        assertSearchSuccess(SearchCommand.COMMAND_WORD + TITLE_DESC_BABYLON + CATEGORY_DESC_ARTEMIS
                 + ISBN_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS);
 
         /* ----------------------------------- Perform commands on search results ----------------------------------- */
@@ -67,7 +68,8 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
      * 2. Command box has the default style class.<br>
      * 3. Result display box displays the search successful message.<br>
      * 4. {@code Storage} and{@code BookListPanel} remain unchanged.<br>
-     * 5. Status bar remains unchanged.<br>
+     * 5. {@code WelcomePanel} is visible.
+     * 6. Status bar remains unchanged.<br>
      * Verifications 1, 3 and 4 are performed by
      * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
@@ -91,6 +93,7 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
 
         assertApplicationDisplaysExpected("",
                 String.format(SearchCommand.MESSAGE_SEARCH_SUCCESS, searchResults.size()), expectedModel);
+        assertWelcomePanelVisible();
         assertCommandBoxShowsDefaultStyle();
         assertCommandBoxEnabled();
         assertStatusBarUnchanged();

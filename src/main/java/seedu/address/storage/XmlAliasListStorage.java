@@ -35,7 +35,7 @@ public class XmlAliasListStorage implements AliasListStorage {
     /**
      * @see #readAliasList()
      */
-    public Optional<ReadOnlyAliasList> readAliasList(String filePath) throws DataConversionException, IOException {
+    protected Optional<ReadOnlyAliasList> readAliasList(String filePath) throws DataConversionException, IOException {
         File aliasListFile = new File(filePath);
 
         if (!aliasListFile.exists()) {
@@ -60,7 +60,7 @@ public class XmlAliasListStorage implements AliasListStorage {
     /**
      * @see #saveAliasList(ReadOnlyAliasList)
      */
-    public void saveAliasList(ReadOnlyAliasList aliasList, String filePath) throws IOException {
+    protected void saveAliasList(ReadOnlyAliasList aliasList, String filePath) throws IOException {
         requireNonNull(aliasList);
         requireNonNull(filePath);
 

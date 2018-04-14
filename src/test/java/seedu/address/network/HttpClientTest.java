@@ -1,5 +1,7 @@
 package seedu.address.network;
 
+import java.util.concurrent.ExecutionException;
+
 import org.asynchttpclient.Dsl;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,6 +15,13 @@ public class HttpClientTest {
     public void constructor_null_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
         new HttpClient(null);
+    }
+
+    @Test
+    public void makeGetRequest_invalidUrl_throwsExecutionException() throws ExecutionException, InterruptedException {
+        HttpClient httpClient = new HttpClient(Dsl.asyncHttpClient());
+        thrown.expect(ExecutionException.class);
+        httpClient.makeGetRequest("http://this.is.an.invalid.url").get();
     }
 
     @Test

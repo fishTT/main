@@ -58,6 +58,8 @@ public class SearchCommand extends Command {
      */
     protected SearchCommand(SearchDescriptor searchDescriptor, boolean useJavafxThread) {
         requireNonNull(searchDescriptor);
+        assert searchDescriptor.isValid();
+
         this.searchDescriptor = new SearchDescriptor(searchDescriptor);
         this.useJavafxThread = useJavafxThread;
     }

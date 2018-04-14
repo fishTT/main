@@ -52,7 +52,33 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
         /* Case: search for non-existant book -> return 0 results */
         assertSearchSuccess(SearchCommand.COMMAND_WORD + TITLE_DESC_ARTEMIS + CATEGORY_DESC_ARTEMIS
                 + ISBN_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS);
+        //@@author
 
+        //@@author fishTT
+        /* -------------------------------- Perform search operations on the mix case -------------------------- */
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = SearchCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertSearchSuccess(firstCharUppercaseCommand + " hello");
+
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertSearchSuccess(lastCharUppercaseCommand + " hello");
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertSearchSuccess(middleCharUppercaseCommand + " hello");
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = SearchCommand.COMMAND_WORD.toUpperCase();
+        assertSearchSuccess(allCharUppercaseCommand + " hello");
+        //@@author
+
+        //@@author takuyakanbr
         /* ----------------------------------- Perform commands on search results ----------------------------------- */
 
         /* Case: trying to clear or delete result items -> rejected */

@@ -30,7 +30,33 @@ public class ReviewsCommandSystemTest extends BibliotekSystemTest {
         Index bookCount = Index.fromOneBased(getModel().getDisplayBookList().size());
         command = ReviewsCommand.COMMAND_WORD + " " + bookCount.getOneBased();
         assertCommandSuccess(command, getModel().getDisplayBookList().get(bookCount.getZeroBased()), getModel());
+        //@@author qiu-siqi
 
+        //@@author fishTT
+        /* ----------- Perform reviews operations on the mix case command -------------------------- */
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = ReviewsCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord)+ " " + bookCount.getOneBased();
+        assertCommandSuccess(firstCharUppercaseCommand, getModel().getDisplayBookList().get(bookCount.getZeroBased()), getModel());
+
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord)+ " " + bookCount.getOneBased();
+        assertCommandSuccess(lastCharUppercaseCommand, getModel().getDisplayBookList().get(bookCount.getZeroBased()), getModel());
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord)+ " " + bookCount.getOneBased();
+        assertCommandSuccess(middleCharUppercaseCommand, getModel().getDisplayBookList().get(bookCount.getZeroBased()), getModel());
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = ReviewsCommand.COMMAND_WORD.toUpperCase()+ " " + bookCount.getOneBased();
+        assertCommandSuccess(allCharUppercaseCommand, getModel().getDisplayBookList().get(bookCount.getZeroBased()), getModel());
+        //@@author
+
+        //@@author qiu-siqi
         /* ------------ Perform invalid reviews operations ------------ */
         /* Case: invalid index (0) -> rejected */
         assertCommandFailure(ReviewsCommand.COMMAND_WORD + " " + 0,

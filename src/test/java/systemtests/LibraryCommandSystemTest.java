@@ -50,7 +50,33 @@ public class LibraryCommandSystemTest extends BibliotekSystemTest {
         assertCommandSuccess(LibraryCommand.COMMAND_WORD + " 1", bookList.get(0));
         assertCommandFailure(LibraryCommand.COMMAND_WORD + " " + (bookList.size() + 1),
                 Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
+        //@@author
 
+        //@@author fishTT
+        /* -------------------------------- Perform list operations on the mix case -------------------------- */
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = LibraryCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertCommandSuccess(firstCharUppercaseCommand  + " 1", bookList.get(0));
+
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertCommandSuccess(lastCharUppercaseCommand  + " 1", bookList.get(0));
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertCommandSuccess(middleCharUppercaseCommand  + " 1", bookList.get(0));
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = LibraryCommand.COMMAND_WORD.toUpperCase();
+        assertCommandSuccess(allCharUppercaseCommand  + " 1", bookList.get(0));
+        //@@author
+
+        //@@author qiu si-qi
         /* ---------- Negative test cases ------------- */
 
         assertCommandFailure(LibraryCommand.COMMAND_WORD + " 0",

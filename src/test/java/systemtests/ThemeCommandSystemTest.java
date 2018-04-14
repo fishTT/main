@@ -6,6 +6,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import org.junit.Test;
 
 import seedu.address.commons.core.Theme;
+import seedu.address.logic.commands.SearchCommand;
 import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.model.Model;
 
@@ -33,9 +34,36 @@ public class ThemeCommandSystemTest extends BibliotekSystemTest {
         assertThemeCommandSuccess(ThemeCommand.COMMAND_WORD + " light", Theme.LIGHT);
         assertThemeCommandSuccess(ThemeCommand.COMMAND_WORD + " DARK", Theme.DARK);
         assertThemeCommandSuccess(ThemeCommand.COMMAND_WORD + " WhitE", Theme.WHITE);
+        //@@author
+
+        //@@author fishTT
+        /* -------------------------------- Perform theme operations on the mix case -------------------------- */
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = ThemeCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertThemeCommandSuccess(firstCharUppercaseCommand + " light", Theme.LIGHT);
+
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertThemeCommandSuccess(lastCharUppercaseCommand + " light", Theme.LIGHT);
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertThemeCommandSuccess(middleCharUppercaseCommand + " light", Theme.LIGHT);
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = ThemeCommand.COMMAND_WORD.toUpperCase();
+        assertThemeCommandSuccess(allCharUppercaseCommand + " light", Theme.LIGHT);
+        //@@author
     }
 
-    //@@author
+
+
+
     /**
      * Executes {@code command} and verifies that the command box displays an empty string, the result display
      * box displays {@code ThemeCommand#MESSAGE_SUCCESS} and the model related components remain unchanged.

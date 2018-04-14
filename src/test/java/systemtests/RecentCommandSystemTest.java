@@ -45,6 +45,35 @@ public class RecentCommandSystemTest extends BibliotekSystemTest {
         /* Case: Selecting a book in recent book list should not change the list */
         executeCommand(SelectCommand.COMMAND_WORD + " 2");
         assertRecentCommandSuccess(expectedModel);
+        //@@author
+
+        //@@author fishTT
+        /* -------------------------------- Perform list operations on the mix case -------------------------- */
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = RecentCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord);
+        executeCommand(firstCharUppercaseCommand  + " 2");
+        assertRecentCommandSuccess(expectedModel);
+
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord);
+        executeCommand(firstCharUppercaseCommand  + " 2");
+        assertRecentCommandSuccess(expectedModel);
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord);
+        executeCommand(middleCharUppercaseCommand  + " 2");
+        assertRecentCommandSuccess(expectedModel);
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = RecentCommand.COMMAND_WORD.toUpperCase();
+        executeCommand(allCharUppercaseCommand  + " 2");
+        assertRecentCommandSuccess(expectedModel);
+        //@@author
 
     }
 

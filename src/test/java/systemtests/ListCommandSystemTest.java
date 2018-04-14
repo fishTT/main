@@ -39,7 +39,37 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         /* Case: no parameters -> all 5 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD,
                 BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
+		//@@author
+		
+        //@@author fishTT
+        /* -------------------------------- Perform list operations on the mix case -------------------------- */
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = ListCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertListSuccess(firstCharUppercaseCommand,
+                BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
 
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertListSuccess(lastCharUppercaseCommand,
+                BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertListSuccess(middleCharUppercaseCommand,
+				BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = ListCommand.COMMAND_WORD.toUpperCase();
+        assertListSuccess(allCharUppercaseCommand,
+				BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
+        //@@author
+		
+		//@@author takuyakanbr
         /* ----------------------------------- Perform invalid list operations -------------------------------------- */
 
         /* Case: invalid status filter -> rejected */
@@ -55,7 +85,6 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertCommandFailure(ListCommand.COMMAND_WORD + " by/123", Messages.MESSAGE_INVALID_SORT_BY);
     }
 
-    //@@author
     /**
      * Executes {@code command} and asserts that the,<br>
      * 1. Command box displays an empty string.<br>
@@ -85,4 +114,5 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertSelectedBookListCardDeselected();
 
     }
+	//@@author
 }

@@ -59,6 +59,30 @@ public class SelectCommandSystemTest extends BibliotekSystemTest {
         command = SelectCommand.COMMAND_WORD + " " + bookCount.getOneBased();
         assertSelectSuccess(command, bookCount);
 
+        //@@author fishTT
+        /* -------------------------------- Perform select operations on the mix case -------------------------- */
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = SelectCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord) + " " + INDEX_FIRST_BOOK.getOneBased();
+        assertSelectSuccess(firstCharUppercaseCommand, INDEX_FIRST_BOOK);
+
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord) + " " + INDEX_FIRST_BOOK.getOneBased();
+        assertSelectSuccess(lastCharUppercaseCommand, INDEX_FIRST_BOOK);
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord) + " " + INDEX_FIRST_BOOK.getOneBased();
+        assertSelectSuccess(middleCharUppercaseCommand, INDEX_FIRST_BOOK);
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = SelectCommand.COMMAND_WORD.toUpperCase() + " " + INDEX_FIRST_BOOK.getOneBased();
+        assertSelectSuccess(allCharUppercaseCommand, INDEX_FIRST_BOOK);
+        //@@author
+
         /* ----------------------------------- Perform invalid select operations ------------------------------------ */
 
         /* Case: invalid index (0) -> rejected */

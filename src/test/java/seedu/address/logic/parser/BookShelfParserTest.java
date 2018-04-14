@@ -14,6 +14,8 @@ import static seedu.address.testutil.TypicalAliases.UNREAD;
 import static seedu.address.testutil.TypicalAliases.getTypicalAliasList;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_BOOK;
 
+import java.util.List;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -28,6 +30,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.LibraryCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ReviewsCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -47,6 +50,30 @@ public class BookShelfParserTest {
     public void constructor_null_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
         new BookShelfParser(null);
+    }
+
+    //@@author fishTT
+    @Test
+    public void caseInsensitive_success() throws Exception {
+        /* Case: firstCharUppercase_success() -> added */
+        char[] commandWord = ListCommand.COMMAND_WORD.toCharArray();
+        commandWord[0] = Character.toUpperCase(commandWord[0]);
+        String firstCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertTrue(parser.parseCommand(firstCharUppercaseCommand) instanceof ListCommand);
+
+        /* Case: lastCharUppercase_success() -> added */
+        commandWord[commandWord.length - 1] = Character.toUpperCase(commandWord[commandWord.length - 1]);
+        String lastCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertTrue(parser.parseCommand(lastCharUppercaseCommand) instanceof ListCommand);
+
+        /* Case: middleCharUppercase_success() -> added */
+        commandWord[commandWord.length / 2] = Character.toUpperCase(commandWord[commandWord.length / 2]);
+        String middleCharUppercaseCommand = String.copyValueOf(commandWord);
+        assertTrue(parser.parseCommand(middleCharUppercaseCommand) instanceof ListCommand);
+
+        /* Case: AllCharUppercase_success() -> added */
+        String allCharUppercaseCommand = ListCommand.COMMAND_WORD.toUpperCase();
+        assertTrue(parser.parseCommand(allCharUppercaseCommand) instanceof ListCommand);
     }
 
     @Test

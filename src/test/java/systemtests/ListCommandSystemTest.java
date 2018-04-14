@@ -67,8 +67,7 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertListSuccess(allCharUppercaseCommand,
 				BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
         //@@author
-		
-		//@@author takuyakanbr
+        // @@author takuyakanbr
         /* ----------------------------------- Perform invalid list operations -------------------------------------- */
 
         /* Case: invalid status filter -> rejected */

@@ -40,7 +40,6 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         assertListSuccess(ListCommand.COMMAND_WORD,
                 BABYLON_ASHES, COLLAPSING_EMPIRE, CONSIDER_PHLEBAS, WAKING_GODS, ARTEMIS);
 		//@@author
-		
         //@@author fishTT
         /* -------------------------------- Perform list operations on the mix case -------------------------- */
         /* Case: firstCharUppercase_success() -> added */

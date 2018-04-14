@@ -276,9 +276,7 @@ public class HintParser {
         return preambleHintOptional.orElse(" delete a command alias");
     }
 
-    /**
-     * Returns a hint specific to the edit command.
-     */
+    /**Returns a hint specific to the edit command. */
     private String generateEditHint() {
         Optional<String> indexHintOptional = generateIndexHint();
         if (indexHintOptional.isPresent()) {

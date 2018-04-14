@@ -7,7 +7,7 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.parser.HintParser;
 
 /**
- * The UI component that is responsible for displaying hints
+ * The UI component that is responsible for displaying hints.
  */
 public class CommandBoxHints extends UiPart<TextField> {
 

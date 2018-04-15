@@ -14,6 +14,7 @@ public class UserPrefs {
     private String bookShelfFilePath = "data/bookshelf.xml";
     private String recentBooksFilePath = "data/recentbooks.xml";
     private String aliasListFilePath = "data/aliaslist.xml";
+    private String passwordHash = "";
     private String bookShelfName = "MyBookShelf";
     private Theme appTheme = Theme.DEFAULT_THEME;
 
@@ -55,6 +56,14 @@ public class UserPrefs {
 
     public void setAliasListFilePath(String aliasListFilePath) {
         this.aliasListFilePath = aliasListFilePath;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getBookShelfName() {

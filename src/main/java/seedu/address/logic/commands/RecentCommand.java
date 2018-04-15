@@ -21,6 +21,6 @@ public class RecentCommand extends Command {
 
         model.setActiveListType(ActiveListType.RECENT_BOOKS);
         EventsCenter.getInstance().post(new ActiveListChangedEvent());
-        return new CommandResult(String.format(MESSAGE_SUCCESS, model.getRecentBooksList().size()));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, model.getActiveList().size()));
     }
 }

@@ -5,7 +5,6 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.model.alias.Alias.ALIAS_NAME_COMPARATOR;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -18,6 +17,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AliasListChangedEvent;
 import seedu.address.commons.events.model.BookShelfChangedEvent;
+import seedu.address.logic.LockManager;
 import seedu.address.model.alias.Alias;
 import seedu.address.model.alias.ReadOnlyAliasList;
 import seedu.address.model.alias.UniqueAliasList;
@@ -39,7 +39,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final SortedList<Book> sortedBookList;
     private final ObservableList<Book> displayBookList;
     private final BookShelf searchResults;
-    private final UniqueBookCircularList recentBooks;
+    private UniqueBookCircularList recentBooks;
     private final UniqueAliasList aliases;
     private final ObservableList<Alias> displayAliasList;
 
@@ -60,15 +60,13 @@ public class ModelManager extends ComponentManager implements Model {
         this.sortedBookList = new SortedList<>(this.filteredBookList, DEFAULT_BOOK_COMPARATOR);
         this.displayBookList = sortedBookList;
         this.searchResults = new BookShelf();
-
-        this.recentBooks = new UniqueBookCircularList();
-        List<Book> list = recentBooksList.getBookList();
-        for (int index = list.size() - 1; index >= 0; index--) {
-            this.recentBooks.addToFront(list.get(index));
-        }
-
+        this.recentBooks = new UniqueBookCircularList(recentBooksList.getBookList());
         this.aliases = new UniqueAliasList(aliasList);
         this.displayAliasList = new SortedList<>(this.aliases.asObservableList(), ALIAS_NAME_COMPARATOR);
+
+        if (LockManager.getInstance().isPasswordProtected()) {
+            updateBookListFilter(PREDICATE_HIDE_ALL_BOOKS);
+        }
     }
 
     public ModelManager(ReadOnlyBookShelf bookShelf, UserPrefs userPrefs) {
@@ -198,6 +196,11 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public ObservableList<Book> getRecentBooksList() {
         return FXCollections.unmodifiableObservableList(recentBooks.asObservableList());
+    }
+
+    @Override
+    public void resetRecentBooks(ReadOnlyBookShelf newData) {
+        recentBooks = new UniqueBookCircularList(newData.getBookList());
     }
 
     public ReadOnlyBookShelf getRecentBooksListAsBookShelf() {

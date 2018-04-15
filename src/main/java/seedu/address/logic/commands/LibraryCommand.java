@@ -1,12 +1,13 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowLibraryResultRequestEvent;
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.book.Book;
 
@@ -39,29 +40,12 @@ public class LibraryCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        requireNonNull(model);
+        requireAllNonNull(model, targetIndex);
 
-        checkValidIndex();
+        CommandUtil.checkValidIndex(model, targetIndex);
 
-        makeAsyncBookInLibraryRequest(getBook(targetIndex));
+        makeAsyncBookInLibraryRequest(CommandUtil.getBook(model, targetIndex));
         return new CommandResult(MESSAGE_SEARCHING);
-    }
-
-    /**
-     * Throws a {@link CommandException} if the given index is not valid.
-     */
-    private void checkValidIndex() throws CommandException {
-        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
-        }
-    }
-
-    /**
-     * Assumes: {@code targetIndex} is a valid index.
-     * Returns the book to search for.
-     */
-    private Book getBook(Index targetIndex) {
-        return model.getActiveList().get(targetIndex.getZeroBased());
     }
 
     /**
@@ -81,8 +65,7 @@ public class LibraryCommand extends Command {
      */
     private void onSuccessfulRequest(String result, Book book) {
         EventsCenter.getInstance().post(new ShowLibraryResultRequestEvent(result));
-        EventsCenter.getInstance().post(new NewResultAvailableEvent(
-                String.format(MESSAGE_SUCCESS, book)));
+        EventsCenter.getInstance().post(new NewResultAvailableEvent(String.format(MESSAGE_SUCCESS, book)));
     }
 
     @Override

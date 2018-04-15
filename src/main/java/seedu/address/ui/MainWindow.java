@@ -145,11 +145,11 @@ public class MainWindow extends UiPart<Stage> {
         mainContentPlaceholder.getChildren().add(bookReviewsPanel.getRoot());
         mainContentPlaceholder.getChildren().add(bookInLibraryPanel.getRoot());
         mainContentPlaceholder.getChildren().add(aliasListPanel.getRoot());
-        bookReviewsPanel.getRoot().setVisible(false);
-        bookInLibraryPanel.getRoot().setVisible(false);
+        bookReviewsPanel.hide();
+        bookInLibraryPanel.hide();
         bookDetailsPanel.setStyleSheet(prefs.getAppTheme().getCssFile());
 
-        bookListPanel = new BookListPanel(logic.getDisplayBookList());
+        bookListPanel = new BookListPanel(logic.getActiveList());
         bookListPanelPlaceholder.getChildren().add(bookListPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();

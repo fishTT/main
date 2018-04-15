@@ -10,11 +10,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.DeselectBookRequestEvent;
 import seedu.address.commons.events.ui.ReselectBookRequestEvent;
 import seedu.address.commons.util.CollectionUtil;
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ActiveListType;
 import seedu.address.model.book.Book;
@@ -23,6 +23,7 @@ import seedu.address.model.book.Rating;
 import seedu.address.model.book.Status;
 import seedu.address.model.book.exceptions.BookNotFoundException;
 import seedu.address.model.book.exceptions.DuplicateBookException;
+
 //@@author 592363789
 /**
  * Edits the status, priority, and rating of an existing book.
@@ -82,9 +83,9 @@ public class EditCommand extends UndoableCommand {
         requireNonNull(model);
 
         checkActiveListType();
-        checkValidIndex();
+        CommandUtil.checkValidIndex(model, index);
 
-        bookToEdit = model.getActiveList().get(index.getZeroBased());
+        bookToEdit = CommandUtil.getBook(model, index);
         editedBook = createEditedBook(bookToEdit, editDescriptor);
     }
 
@@ -94,15 +95,6 @@ public class EditCommand extends UndoableCommand {
     private void checkActiveListType() throws CommandException {
         if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
             throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
-    }
-
-    /**
-     * Throws a {@link CommandException} if the given index is not valid.
-     */
-    private void checkValidIndex() throws CommandException {
-        if (index.getZeroBased() >= model.getActiveList().size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
         }
     }
 

@@ -12,6 +12,8 @@ import seedu.address.commons.events.model.AliasListChangedEvent;
 import seedu.address.commons.events.model.BookShelfChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
+import seedu.address.logic.LockManager;
+import seedu.address.model.BookShelf;
 import seedu.address.model.ReadOnlyBookShelf;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.alias.ReadOnlyAliasList;
@@ -26,6 +28,7 @@ public class StorageManager extends ComponentManager implements Storage {
     private final UserPrefsStorage userPrefsStorage;
     private final RecentBooksStorage recentBooksStorage;
     private final AliasListStorage aliasListStorage;
+    private boolean isBookShelfLoaded = false;
 
     public StorageManager(BookShelfStorage bookShelfStorage, UserPrefsStorage userPrefsStorage,
                           RecentBooksStorage recentBooksStorage, AliasListStorage aliasListStorage) {
@@ -56,12 +59,24 @@ public class StorageManager extends ComponentManager implements Storage {
     // ================ BookShelf methods ===============================
 
     @Override
+    public boolean isBookShelfLoaded() {
+        return isBookShelfLoaded;
+    }
+
+    @Override
     public String getBookShelfFilePath() {
         return bookShelfStorage.getBookShelfFilePath();
     }
 
     @Override
     public Optional<ReadOnlyBookShelf> readBookShelf() throws DataConversionException, IOException {
+        // don't attempt loading if we don't have the user's password yet
+        LockManager lockManager = LockManager.getInstance();
+        if (lockManager.isPasswordProtected() && !lockManager.hasLoggedIn()) {
+            return Optional.of(new BookShelf());
+        }
+
+        isBookShelfLoaded = true;
         return readBookShelf(bookShelfStorage.getBookShelfFilePath());
     }
 
@@ -102,6 +117,12 @@ public class StorageManager extends ComponentManager implements Storage {
 
     @Override
     public Optional<ReadOnlyBookShelf> readRecentBooksList() throws DataConversionException, IOException {
+        // don't attempt loading if we don't have the user's password yet
+        LockManager lockManager = LockManager.getInstance();
+        if (lockManager.isPasswordProtected() && !lockManager.hasLoggedIn()) {
+            return Optional.of(new BookShelf());
+        }
+
         return recentBooksStorage.readRecentBooksList();
     }
 

@@ -3,9 +3,9 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.JumpToBookListIndexRequestEvent;
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ActiveListType;
 
@@ -22,7 +22,6 @@ public class SelectCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_SELECT_BOOK_SUCCESS = "Selected Book: %1$s";
-    public static final String MESSAGE_WRONG_ACTIVE_LIST = "Items from the current list cannot be selected.";
 
     private final Index targetIndex;
 
@@ -34,7 +33,7 @@ public class SelectCommand extends Command {
     public CommandResult execute() throws CommandException {
         requireNonNull(model);
 
-        checkValidIndex();
+        CommandUtil.checkValidIndex(model, targetIndex);
         updateRecentBooksList();
 
         EventsCenter.getInstance().post(new JumpToBookListIndexRequestEvent(targetIndex));
@@ -45,15 +44,6 @@ public class SelectCommand extends Command {
     private void updateRecentBooksList() {
         if (model.getActiveListType() != ActiveListType.RECENT_BOOKS) {
             model.addRecentBook(model.getActiveList().get(targetIndex.getZeroBased()));
-        }
-    }
-
-    /**
-     * Throws a {@link CommandException} if the given index is not valid.
-     */
-    private void checkValidIndex() throws CommandException {
-        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
         }
     }
 

@@ -27,8 +27,9 @@ import systemtests.ModelHelper;
  */
 public class TestApp extends MainApp {
 
-    public static final String APP_TITLE = "Test App";
-    protected static final String BOOK_SHELF_NAME = "Test";
+    private static final String APP_TITLE = "Test App";
+    private static final String BOOK_SHELF_NAME = "Test";
+    private static final String PASSWORD_HASH = "";
 
     private String saveFileLocation;
     private final String recentBooksFileLocation;
@@ -67,6 +68,7 @@ public class TestApp extends MainApp {
         userPrefs.setRecentBooksFilePath(recentBooksFileLocation);
         userPrefs.setAliasListFilePath(aliasListFileLocation);
         userPrefs.setBookShelfName(BOOK_SHELF_NAME);
+        userPrefs.setPasswordHash(PASSWORD_HASH);
         return userPrefs;
     }
 

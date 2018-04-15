@@ -1,4 +1,134 @@
 # takuyakanbr
+###### \java\seedu\address\logic\commands\AddAliasCommandTest.java
+``` java
+/**
+ * Contains integration tests (interaction with the Model) and unit tests for
+ * {@code AddAliasCommand}.
+ */
+public class AddAliasCommandTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    private Model model;
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(new BookShelf(), new UserPrefs(), new BookShelf(), getTypicalAliasList());
+    }
+
+    @Test
+    public void constructor_nullAlias_throwsNullPointerException() {
+        thrown.expect(NullPointerException.class);
+        new AddAliasCommand(null);
+    }
+
+    @Test
+    public void execute_nonExistingAlias_aliasAdded() {
+        Alias alias = new Alias("test", "test", "e/test f/test");
+        AddAliasCommand command = prepareCommand(alias);
+
+        ModelManager expectedModel = new ModelManager(new BookShelf(),
+                new UserPrefs(), new BookShelf(), getTypicalAliasList());
+        expectedModel.addAlias(alias);
+
+        assertCommandSuccess(command, model, String.format(AddAliasCommand.MESSAGE_NEW, alias), expectedModel);
+    }
+
+    @Test
+    public void execute_existingAlias_aliasUpdated() {
+        Alias alias = new Alias(UNREAD.getName(), UNREAD.getPrefix(), "e/test f/test");
+        AddAliasCommand command = prepareCommand(alias);
+
+        ModelManager expectedModel = new ModelManager(new BookShelf(),
+                new UserPrefs(), new BookShelf(), getTypicalAliasList());
+        expectedModel.addAlias(alias);
+
+        assertCommandSuccess(command, model, String.format(AddAliasCommand.MESSAGE_UPDATE, alias), expectedModel);
+    }
+
+```
+###### \java\seedu\address\logic\commands\AliasesCommandTest.java
+``` java
+public class AliasesCommandTest {
+
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
+
+    private Model model;
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(new BookShelf(), new UserPrefs(), new BookShelf(), getTypicalAliasList());
+    }
+
+    @Test
+    public void execute_aliases_success() {
+        CommandResult result = prepareCommand().execute();
+
+        assertEquals(String.format(AliasesCommand.MESSAGE_SUCCESS, model.getAliasList().size()), result.feedbackToUser);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ShowAliasListRequestEvent);
+        assertEquals(1, eventsCollectorRule.eventsCollector.getSize());
+    }
+
+    private AliasesCommand prepareCommand() {
+        AliasesCommand command = new AliasesCommand();
+        command.setData(model, mock(NetworkManager.class), new CommandHistory(), new UndoStack());
+        return command;
+    }
+}
+```
+###### \java\seedu\address\logic\commands\DeleteAliasCommandTest.java
+``` java
+/**
+ * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteAliasCommand}.
+ */
+public class DeleteAliasCommandTest {
+
+    private Model model;
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(new BookShelf(), new UserPrefs(), new BookShelf(), getTypicalAliasList());
+    }
+
+    @Test
+    public void execute_validName_success() {
+        Alias aliasToDelete = TypicalAliases.UNREAD;
+        DeleteAliasCommand command = prepareCommand(aliasToDelete.getName());
+
+        String expectedMessage = String.format(DeleteAliasCommand.MESSAGE_SUCCESS, aliasToDelete);
+        ModelManager expectedModel = new ModelManager(model.getBookShelf(),
+                new UserPrefs(), new BookShelf(), model.getAliasList());
+        expectedModel.removeAlias(aliasToDelete.getName());
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_mixedCaseAndSpacePaddedName_success() {
+        Alias aliasToDelete = TypicalAliases.UNREAD;
+        DeleteAliasCommand command = prepareCommand("   URd     ");
+
+        String expectedMessage = String.format(DeleteAliasCommand.MESSAGE_SUCCESS, aliasToDelete);
+        ModelManager expectedModel = new ModelManager(model.getBookShelf(),
+                new UserPrefs(), new BookShelf(), model.getAliasList());
+        expectedModel.removeAlias(aliasToDelete.getName());
+
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_invalidName_doesNotModifyList() {
+        String toDelete = "non_existing_alias";
+        DeleteAliasCommand command = prepareCommand(toDelete);
+
+        String expectedMessage = String.format(DeleteAliasCommand.MESSAGE_NOT_FOUND, toDelete);
+        ModelManager expectedModel = new ModelManager(model.getBookShelf(),
+                new UserPrefs(), new BookShelf(), model.getAliasList());
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+    }
+
+```
 ###### \java\seedu\address\logic\commands\ListCommandTest.java
 ``` java
 /**
@@ -133,6 +263,8 @@ public class ListCommandTest {
 public class SearchCommandTest {
 
     @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
+    @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     private Model model;
@@ -149,29 +281,47 @@ public class SearchCommandTest {
     }
 
     @Test
-    public void execute_allFieldsSpecifiedWithSearchTerm_success() {
+    public void execute_allFieldsSpecifiedWithKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1")
-                .withCategory("1").withIsbn("1").withAuthor("1").withSearchTerm("searchterm").build();
+                .withCategory("1").withIsbn("1").withAuthor("1").withKeyWords("searchterm").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_allFieldsSpecifiedNoSearchTerm_success() {
+    public void execute_allFieldsSpecifiedNoKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1")
                 .withCategory("1").withIsbn("1").withAuthor("1").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_someFieldsSpecifiedNoSearchTerm_success() {
+    public void execute_someFieldsSpecifiedNoKeyWord_success() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle("1").withIsbn("1").build();
         assertExecutionSuccess(searchDescriptor);
     }
 
     @Test
-    public void execute_noFieldSpecifiedNoSearchTerm_success() {
+    public void execute_noFieldSpecifiedNoKeyWord_throwsAssertionError() {
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().build();
+        thrown.expect(AssertionError.class);
         assertExecutionSuccess(searchDescriptor);
+    }
+
+    @Test
+    public void execute_networkError_raisesExpectedEvent() {
+        SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withKeyWords("error").build();
+        SearchCommand searchCommand = new SearchCommand(searchDescriptor, false);
+
+        NetworkManager networkManagerMock = mock(NetworkManager.class);
+        when(networkManagerMock.searchBooks(searchDescriptor.toSearchString()))
+                .thenReturn(TestUtil.getFailedFuture());
+
+        searchCommand.setData(model, networkManagerMock, new CommandHistory(), new UndoStack());
+        searchCommand.execute();
+
+        NewResultAvailableEvent resultEvent = (NewResultAvailableEvent)
+                eventsCollectorRule.eventsCollector.getMostRecent(NewResultAvailableEvent.class);
+        assertEquals(SearchCommand.MESSAGE_SEARCH_FAIL, resultEvent.message);
     }
 
     @Test
@@ -222,6 +372,45 @@ public class SearchCommandTest {
         SearchCommand searchCommand = new SearchCommand(descriptor, false);
         searchCommand.setData(model, mock(NetworkManager.class), new CommandHistory(), new UndoStack());
         return searchCommand;
+    }
+}
+```
+###### \java\seedu\address\logic\parser\AddAliasCommandParserTest.java
+``` java
+public class AddAliasCommandParserTest {
+    private AddAliasCommandParser parser = new AddAliasCommandParser();
+
+    @Test
+    public void parse_validArgs_success() {
+        // command without named argument
+        assertParseSuccess(parser, "s " + PREFIX_COMMAND + "search",
+                new AddAliasCommand(new Alias("s", "search", "")));
+
+        // command with named argument
+        assertParseSuccess(parser, "e " + PREFIX_COMMAND + "edit s/reading",
+                new AddAliasCommand(new Alias("e", "edit", "s/reading")));
+
+        // leading and trailing spaces should be removed
+        assertParseSuccess(parser, "      e      " + PREFIX_COMMAND + "        edit s/reading        ",
+                new AddAliasCommand(new Alias("e", "edit", "s/reading")));
+    }
+
+    @Test
+    public void parse_invalidArgs_throwsParseException() {
+        // no args
+        assertParseFailure(parser, "", String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
+
+        // empty alias name
+        assertParseFailure(parser, "     " + PREFIX_COMMAND + "edit s/reading",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
+
+        // invalid alias name
+        assertParseFailure(parser, " hello world " + PREFIX_COMMAND + "edit s/reading",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
+
+        // empty aliased command
+        assertParseFailure(parser, " e " + PREFIX_COMMAND + "     ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
     }
 }
 ```
@@ -359,23 +548,23 @@ public class ListCommandParserTest {
 ###### \java\seedu\address\logic\parser\SearchCommandParserTest.java
 ``` java
 public class SearchCommandParserTest {
-    private static final String DEFAULT_SEARCH_TERM = "search term";
+    private static final String DEFAULT_KEY_WORDS = "key words";
 
     private SearchCommandParser parser = new SearchCommandParser();
 
     @Test
     public void parse_noFieldSpecified_failure() {
-        // no search term and no parameters specified
+        // no key words and no named parameters specified
         assertParseFailure(parser, "", SearchCommand.MESSAGE_EMPTY_QUERY);
     }
 
     @Test
     public void parse_allFieldsSpecified_success() {
-        String userInput = DEFAULT_SEARCH_TERM + TITLE_DESC_ARTEMIS + CATEGORY_DESC_ARTEMIS
+        String userInput = DEFAULT_KEY_WORDS + TITLE_DESC_ARTEMIS + CATEGORY_DESC_ARTEMIS
                 + ISBN_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS;
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle(VALID_TITLE_ARTEMIS)
                 .withCategory(VALID_CATEGORY_ARTEMIS).withIsbn(VALID_ISBN_ARTEMIS)
-                .withAuthor(VALID_AUTHOR_ARTEMIS).withSearchTerm(DEFAULT_SEARCH_TERM).build();
+                .withAuthor(VALID_AUTHOR_ARTEMIS).withKeyWords(DEFAULT_KEY_WORDS).build();
         SearchCommand expectedCommand = new SearchCommand(searchDescriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -383,9 +572,9 @@ public class SearchCommandParserTest {
 
     @Test
     public void parse_someFieldsSpecified_success() {
-        String userInput = DEFAULT_SEARCH_TERM + TITLE_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS;
+        String userInput = DEFAULT_KEY_WORDS + TITLE_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS;
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle(VALID_TITLE_ARTEMIS)
-                .withAuthor(VALID_AUTHOR_ARTEMIS).withSearchTerm(DEFAULT_SEARCH_TERM).build();
+                .withAuthor(VALID_AUTHOR_ARTEMIS).withKeyWords(DEFAULT_KEY_WORDS).build();
         SearchCommand expectedCommand = new SearchCommand(searchDescriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -393,8 +582,8 @@ public class SearchCommandParserTest {
 
     @Test
     public void parse_oneFieldSpecified_success() {
-        String userInput = DEFAULT_SEARCH_TERM;
-        SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withSearchTerm(DEFAULT_SEARCH_TERM).build();
+        String userInput = DEFAULT_KEY_WORDS;
+        SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withKeyWords(DEFAULT_KEY_WORDS).build();
         SearchCommand expectedCommand = new SearchCommand(searchDescriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
@@ -421,15 +610,84 @@ public class SearchCommandParserTest {
 
     @Test
     public void parse_multipleRepeatedFields_acceptsLast() {
-        String userInput = DEFAULT_SEARCH_TERM + TITLE_DESC_ARTEMIS + TITLE_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS
+        String userInput = DEFAULT_KEY_WORDS + TITLE_DESC_ARTEMIS + TITLE_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS
                 + AUTHOR_DESC_ARTEMIS + TITLE_DESC_BABYLON + AUTHOR_DESC_BABYLON;
         SearchDescriptor searchDescriptor = new SearchDescriptorBuilder().withTitle(VALID_TITLE_BABYLON)
-                .withAuthor(VALID_AUTHOR_BABYLON).withSearchTerm(DEFAULT_SEARCH_TERM).build();
+                .withAuthor(VALID_AUTHOR_BABYLON).withKeyWords(DEFAULT_KEY_WORDS).build();
         SearchCommand expectedCommand = new SearchCommand(searchDescriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 
+}
+```
+###### \java\seedu\address\model\alias\UniqueAliasListTest.java
+``` java
+public class UniqueAliasListTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void constructor_null_throwsNullPointerException() {
+        thrown.expect(NullPointerException.class);
+        new UniqueAliasList(null);
+    }
+
+    @Test
+    public void constructor_emptyList_newEmptyList() {
+        UniqueAliasList aliasList = new UniqueAliasList();
+        UniqueAliasList aliasListCopy = new UniqueAliasList(aliasList);
+        assertEquals(0, aliasListCopy.size());
+
+        // check that the copied list is independent of the existing list
+        aliasList.add(new Alias("3", "3", "3"));
+        assertEquals(0, aliasListCopy.size());
+    }
+
+    @Test
+    public void constructor_nonEmptyList_aliasesCopied() {
+        UniqueAliasList aliasList = new UniqueAliasList();
+        aliasList.add(new Alias("1", "1", "1"));
+        aliasList.add(new Alias("2", "2", "2"));
+        UniqueAliasList aliasListCopy = new UniqueAliasList(aliasList);
+        assertEquals(2, aliasListCopy.size());
+        assertTrue(aliasList.getAliasByName("1").isPresent());
+        assertTrue(aliasList.getAliasByName("2").isPresent());
+
+        // check that the copied list is independent of the existing list
+        aliasList.add(new Alias("3", "3", "3"));
+        assertEquals(2, aliasListCopy.size());
+    }
+
+    @Test
+    public void add_existingAliasName_aliasReplaced() {
+        UniqueAliasList aliasList = new UniqueAliasList();
+        aliasList.add(new Alias("1", "1", "1"));
+        aliasList.add(new Alias("1", "updated", "updated"));
+        assertEquals(1, aliasList.size());
+        Alias updatedAlias = aliasList.getAliasByName("1").get();
+        assertEquals("updated", updatedAlias.getPrefix());
+        assertEquals("updated", updatedAlias.getNamedArgs());
+    }
+
+    @Test
+    public void remove_validAlias_success() {
+        UniqueAliasList aliasList = new UniqueAliasList();
+        aliasList.add(new Alias("11", "11", "11"));
+        aliasList.add(new Alias("22", "22", "22"));
+        aliasList.remove("11");
+        assertEquals(1, aliasList.size());
+        assertFalse(aliasList.getAliasByName("11").isPresent());
+        assertTrue(aliasList.getAliasByName("22").isPresent());
+    }
+
+    @Test
+    public void remove_invalidAlias_doesNothing() {
+        UniqueAliasList aliasList = new UniqueAliasList();
+        aliasList.add(new Alias("x", "x", "x"));
+        aliasList.remove("y");
+        assertEquals(1, aliasList.size());
+    }
 }
 ```
 ###### \java\seedu\address\network\api\google\GoogleBooksApiTest.java
@@ -563,6 +821,8 @@ public class JsonDeserializerTest {
             new File(TEST_DATA_SEARCH_FOLDER + "ValidResponseDuplicateBooks.json");
     public static final File VALID_SEARCH_RESPONSE_FILE = new File(TEST_DATA_SEARCH_FOLDER + "ValidResponse.json");
 
+    private static final int MAXIMUM_BOOK_COUNT = 30;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -610,7 +870,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_validResponse_success() throws Exception {
         String json = FileUtil.readFromFile(VALID_SEARCH_RESPONSE_FILE);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals(3, bookShelf.size());
         assertEquals("The Book Without a Title", book1.getTitle().title);
@@ -620,7 +880,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_validResponseDuplicateBooks_success() throws Exception {
         String json = FileUtil.readFromFile(VALID_SEARCH_RESPONSE_DUPLICATE_BOOKS);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals(1, bookShelf.size());
         assertEquals("The Book Without a Title", book1.getTitle().title);
@@ -630,7 +890,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_validResponseNoId_success() throws Exception {
         String json = FileUtil.readFromFile(VALID_SEARCH_RESPONSE_NO_ID_FILE);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals("The Book Without a Title", book1.getTitle().title);
         assertEquals("", book1.getDescription().description);
@@ -642,7 +902,7 @@ public class JsonDeserializerTest {
     @Test
     public void convertJsonStringToBookShelf_invalidResponseNoIsbn_ignoresBookWithoutIsbn() throws Exception {
         String json = FileUtil.readFromFile(INVALID_SEARCH_RESPONSE_NO_ISBN_FILE);
-        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json);
+        ReadOnlyBookShelf bookShelf = deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
         Book book1 = bookShelf.getBookList().get(0);
         assertEquals("The Book Without a Title 2", book1.getTitle().title);
         Book book2 = bookShelf.getBookList().get(1);
@@ -653,14 +913,14 @@ public class JsonDeserializerTest {
     public void convertJsonStringToBookShelf_invalidResponseWrongType_throwsCompletionException() throws Exception {
         thrown.expect(CompletionException.class);
         String json = FileUtil.readFromFile(INVALID_SEARCH_RESPONSE_WRONG_TYPE_FILE);
-        deserializer.convertJsonStringToBookShelf(json);
+        deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
     }
 
     @Test
     public void convertJsonStringToBookShelf_errorResponse_throwsCompletionException() throws Exception {
         thrown.expect(CompletionException.class);
         String json = FileUtil.readFromFile(ERROR_SEARCH_RESPONSE_FILE);
-        deserializer.convertJsonStringToBookShelf(json);
+        deserializer.convertJsonStringToBookShelf(json, MAXIMUM_BOOK_COUNT);
     }
 
 }
@@ -672,16 +932,22 @@ public class NetworkManagerTest {
     private static final String PARAM_SUCCESS = "12345";
     private static final String PARAM_FAILURE = "failure";
 
+    private static final Book BOOK_SUCESS = TypicalBooks.ARTEMIS;
+    private static final String BOOK_SUCCESS_RESULT = "Success";
+    private static final Book BOOK_FAILURE = TypicalBooks.BABYLON_ASHES;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     private NetworkManager networkManager;
     private GoogleBooksApi mockGoogleBooksApi;
+    private NlbCatalogueApi mockNlbCatalogueApi;
 
     @Before
     public void setUp() {
         mockGoogleBooksApi = mock(GoogleBooksApi.class);
-        networkManager = new NetworkManager(mock(HttpClient.class), mockGoogleBooksApi);
+        mockNlbCatalogueApi = mock(NlbCatalogueApi.class);
+        networkManager = new NetworkManager(mock(HttpClient.class), mockGoogleBooksApi, mockNlbCatalogueApi);
     }
 
     @Test
@@ -709,7 +975,7 @@ public class NetworkManagerTest {
     @Test
     public void handleGoogleApiSearchRequestEvent_failure() throws Exception {
         when(mockGoogleBooksApi.searchBooks(PARAM_FAILURE))
-                .thenReturn(getFailedFuture());
+                .thenReturn(TestUtil.getFailedFuture());
 
         CompletableFuture<ReadOnlyBookShelf> bookShelf = networkManager.searchBooks(PARAM_FAILURE);
         verify(mockGoogleBooksApi).searchBooks(PARAM_FAILURE);
@@ -732,7 +998,7 @@ public class NetworkManagerTest {
     @Test
     public void handleGoogleApiBookDetailsRequestEvent_failure() throws Exception {
         when(mockGoogleBooksApi.getBookDetails(PARAM_FAILURE))
-                .thenReturn(getFailedFuture());
+                .thenReturn(TestUtil.getFailedFuture());
 
         CompletableFuture<Book> book = networkManager.getBookDetails(PARAM_FAILURE);
         verify(mockGoogleBooksApi).getBookDetails(PARAM_FAILURE);
@@ -741,15 +1007,181 @@ public class NetworkManagerTest {
         book.get();
     }
 
+```
+###### \java\seedu\address\testutil\TestUtil.java
+``` java
     /**
-     * Returns a {@link CompletableFuture} that has already completed exceptionally.
+     * Returns a {@link CompletableFuture} that has already completed exceptionally
+     * with an {@code IOException}.
      */
-    private static <T> CompletableFuture<T> getFailedFuture() {
+    public static <T> CompletableFuture<T> getFailedFuture() {
         return CompletableFuture.completedFuture(null).thenApply(obj -> {
             throw new CompletionException(new IOException());
         });
     }
 
+    /**
+     * Returns a random 8 character string to be used as a prefix to a filename.
+     */
+    private static String generateRandomPrefix() {
+        byte[] randomBytes = new byte[RANDOM_BYTE_LENGTH];
+        new Random().nextBytes(randomBytes);
+        byte[] encodedBytes = Base64.getEncoder().encode(randomBytes);
+        return new String(encodedBytes).replace("/", "-");
+    }
+}
+```
+###### \java\systemtests\AddAliasCommandSystemTest.java
+``` java
+public class AddAliasCommandSystemTest extends BibliotekSystemTest {
+
+    @Test
+    public void addAlias() {
+        /* --------------------------------- Performing valid add operation ----------------------------------------- */
+
+        /* case: add a new alias without named args -> added */
+        Alias alias = new Alias("s", "select", "");
+        assertCommandSuccess(AddAliasCommand.COMMAND_WORD + " s " + PREFIX_COMMAND + "select",
+                alias, String.format(AddAliasCommand.MESSAGE_NEW, alias));
+
+        executeCommand(AliasesCommand.COMMAND_WORD);
+        assertTrue(getAliasListPanel().isVisible());
+
+        /* case: add a new alias with named args -> added */
+        alias = new Alias("read", "edit", "s/read");
+        assertCommandSuccess(AddAliasCommand.COMMAND_WORD + " read " + PREFIX_COMMAND + "edit s/read",
+                alias, String.format(AddAliasCommand.MESSAGE_NEW, alias));
+
+        /* case: replace an existing alias -> replaced */
+        alias = new Alias("read", "list", "s/read by/title");
+        assertCommandSuccess(AddAliasCommand.COMMAND_WORD + " read " + PREFIX_COMMAND + "list s/read by/title",
+                alias, String.format(AddAliasCommand.MESSAGE_UPDATE, alias));
+
+        /* --------------------------------- Performing invalid add operation --------------------------------------- */
+
+        /* case: no args -> rejected */
+        assertCommandFailure(AddAliasCommand.COMMAND_WORD + "",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
+
+        /* case: empty alias name -> rejected */
+        assertCommandFailure(AddAliasCommand.COMMAND_WORD + "  " + PREFIX_COMMAND + "edit s/read",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
+
+        /* case: invalid alias name -> rejected */
+        assertCommandFailure(AddAliasCommand.COMMAND_WORD + " hello world " + PREFIX_COMMAND + "edit s/read",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
+
+        /* case: empty aliased command -> rejected */
+        assertCommandFailure(AddAliasCommand.COMMAND_WORD + " read " + PREFIX_COMMAND + "  ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddAliasCommand.MESSAGE_USAGE));
+
+        /* --------------------------------- Performing commands using aliases -------------------------------------- */
+
+        Model model = getModel();
+
+        /* case: perform select command using alias */
+        executeCommand("s " + INDEX_FIRST_BOOK.getOneBased());
+        model.addRecentBook(model.getDisplayBookList().get(INDEX_FIRST_BOOK.getZeroBased()));
+        assertTrue(getBookDetailsPanel().isVisible());
+        assertFalse(getAliasListPanel().isVisible());
+        assertApplicationDisplaysExpected("",
+                String.format(SelectCommand.MESSAGE_SELECT_BOOK_SUCCESS, INDEX_FIRST_BOOK.getOneBased()), model);
+
+        /* case: perform list command using alias */
+        executeCommand("read");
+        model.updateBookListFilter(book -> book.getStatus() == Status.READ);
+        assertApplicationDisplaysExpected("", String.format(ListCommand.MESSAGE_SUCCESS, 1), model);
+
+        /* case: perform list command using alias, with overridden named parameter */
+        executeCommand("read s/unread");
+        model.updateBookListFilter(book -> book.getStatus() == Status.UNREAD);
+        assertApplicationDisplaysExpected("", String.format(ListCommand.MESSAGE_SUCCESS, 2), model);
+    }
+
+    /**
+     * Executes the addalias {@code command} and verifies that,<br>
+     * 1. Command box displays an empty string.<br>
+     * 2. Command box has the default style class.<br>
+     * 3. Result display box displays the expected message.<br>
+     * 4. {@code Model} and {@code Storage} equal to the corresponding components after adding.<br>
+     * 5. If the alias list is visible, the aliases in the list matches the expected alias list.<br>
+     * 6. Status bar remains unchanged.<br>
+     * Verifications 1, 3 and 4 are performed by
+     * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandSuccess(String command, Alias toAdd, String expectedMessage) {
+        Model expectedModel = getModel();
+        expectedModel.addAlias(toAdd);
+
+        executeCommand(command);
+        assertCommandBoxShowsDefaultStyle();
+
+        assertApplicationDisplaysExpected("", expectedMessage, expectedModel);
+        if (getAliasListPanel().isVisible()) {
+            assertAliasListDisplaysExpected(expectedModel);
+        }
+
+        assertStatusBarUnchanged();
+    }
+}
+```
+###### \java\systemtests\DeleteAliasCommandSystemTest.java
+``` java
+public class DeleteAliasCommandSystemTest extends BibliotekSystemTest {
+
+    @Test
+    public void deleteAlias() {
+        executeCommand(AddAliasCommand.COMMAND_WORD + " s cmd/select");
+        executeCommand(AddAliasCommand.COMMAND_WORD + " read cmd/list s/read by/title");
+
+        /* --------------------------------- Performing valid delete operation -------------------------------------- */
+
+        /* case: delete an existing alias -> deleted */
+        Alias alias = new Alias("s", "select", "");
+        assertCommandSuccess(DeleteAliasCommand.COMMAND_WORD + " s", alias.getName(),
+                String.format(DeleteAliasCommand.MESSAGE_SUCCESS, alias));
+
+        executeCommand(AliasesCommand.COMMAND_WORD);
+        assertTrue(getAliasListPanel().isVisible());
+
+        /* case: delete an existing alias -> deleted and alias list updated */
+        alias = new Alias("read", "list", "s/read by/title");
+        assertCommandSuccess(DeleteAliasCommand.COMMAND_WORD + "   ReaD   ", alias.getName(),
+                String.format(DeleteAliasCommand.MESSAGE_SUCCESS, alias));
+
+        /* case: delete a non-existing alias -> ignored */
+        alias = new Alias("notfound", "notfound", "notfound");
+        assertCommandSuccess(DeleteAliasCommand.COMMAND_WORD + " notfound", alias.getName(),
+                String.format(DeleteAliasCommand.MESSAGE_NOT_FOUND, "notfound"));
+    }
+
+    /**
+     * Executes the deletealias {@code command} and verifies that,<br>
+     * 1. Command box displays an empty string.<br>
+     * 2. Command box has the default style class.<br>
+     * 3. Result display box displays the expected message.<br>
+     * 4. {@code Model} and {@code Storage} equal to the corresponding components after deleting.<br>
+     * 5. If the alias list is visible, the aliases in the list matches the expected alias list.<br>
+     * 6. Status bar remains unchanged.<br>
+     * Verifications 1, 3 and 4 are performed by
+     * {@code BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * @see BibliotekSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandSuccess(String command, String toDelete, String expectedMessage) {
+        Model expectedModel = getModel();
+        expectedModel.removeAlias(toDelete);
+
+        executeCommand(command);
+        assertCommandBoxShowsDefaultStyle();
+
+        assertApplicationDisplaysExpected("", expectedMessage, expectedModel);
+        if (getAliasListPanel().isVisible()) {
+            assertAliasListDisplaysExpected(expectedModel);
+        }
+
+        assertStatusBarUnchanged();
+    }
 }
 ```
 ###### \java\systemtests\ListCommandSystemTest.java
@@ -760,16 +1192,18 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
     public void list() {
         /* ----------------------------------- Perform valid list operations ---------------------------------------- */
 
-        /* Case: valid filters mode -> 1 book listed */
+        /* Case: valid filters -> 1 book listed */
         assertListSuccess(ListCommand.COMMAND_WORD + " t/artemis a/andy weir c/fiction s/read p/low r/5", ARTEMIS);
 
-        /* Case: valid filters mode -> 0 books listed */
+        /* Case: valid filters -> 0 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD + " c/space s/reading r/3");
-
-        executeCommand(RecentCommand.COMMAND_WORD);
 
         /* Case: valid filters and sort mode -> 2 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD + " s/u r/-1 by/title", CONSIDER_PHLEBAS, WAKING_GODS);
+
+        /* Case: showing recent books -> switches to showing book shelf */
+        executeCommand(RecentCommand.COMMAND_WORD);
+        assertListSuccess(ListCommand.COMMAND_WORD + " t/co r/-1 by/statusd", COLLAPSING_EMPIRE, CONSIDER_PHLEBAS);
 
         /* Case: no parameters -> all 5 books listed */
         assertListSuccess(ListCommand.COMMAND_WORD,
@@ -780,8 +1214,8 @@ public class ListCommandSystemTest extends BibliotekSystemTest {
         /* Case: invalid status filter -> rejected */
         assertCommandFailure(ListCommand.COMMAND_WORD + " s/", Messages.MESSAGE_INVALID_STATUS);
 
-        /* Case: invalid priority and rating filter -> rejected */
-        assertCommandFailure(ListCommand.COMMAND_WORD + " p/null r/-100", Messages.MESSAGE_INVALID_PRIORITY);
+        /* Case: invalid priority filter -> rejected */
+        assertCommandFailure(ListCommand.COMMAND_WORD + " p/null r/2", Messages.MESSAGE_INVALID_PRIORITY);
 
         /* Case: invalid rating filter -> rejected */
         assertCommandFailure(ListCommand.COMMAND_WORD + " r/20", Messages.MESSAGE_INVALID_RATING);
@@ -798,31 +1232,33 @@ public class SearchCommandSystemTest extends BibliotekSystemTest {
     public void search() throws Exception {
         /* ----------------------------------- Perform invalid search operations ------------------------------------ */
 
-        /* Case: no search term or parameters -> rejected */
+        /* Case: close command word -> corrected */
+        executeCommand("searchh hello");
+        assertApplicationDisplaysExpected("",
+                String.format(Messages.MESSAGE_CORRECTED_COMMAND, "search hello"), getModel());
+
+        /* Case: no key words or named parameters -> rejected */
         assertCommandFailure(SearchCommand.COMMAND_WORD, SearchCommand.MESSAGE_EMPTY_QUERY);
 
-        /* Case: no search term or parameters -> rejected */
-        assertCommandFailure("   " + SearchCommand.COMMAND_WORD + "             ", SearchCommand.MESSAGE_EMPTY_QUERY);
-
-        /* Case: mixed case command word -> rejected */
-        assertCommandFailure("SeaRcH hello", MESSAGE_UNKNOWN_COMMAND);
+        /* Case: no key words or named parameters -> rejected */
+        assertCommandFailure("    " + SearchCommand.COMMAND_WORD + "    ", SearchCommand.MESSAGE_EMPTY_QUERY);
 
         /* Case: misspelled command word -> rejected */
-        assertCommandFailure("searchh hello", MESSAGE_UNKNOWN_COMMAND);
+        assertCommandFailure("saerch hello", MESSAGE_UNKNOWN_COMMAND);
 
         /* ----------------------------------- Perform valid search operations -------------------------------------- */
 
         // Note: these tests require network connection.
 
-        /* Case: search for books given search term -> success */
+        /* Case: search for books given key word -> success */
         assertSearchSuccess(SearchCommand.COMMAND_WORD + " hello");
 
-        /* Case: search for books given search parameters -> success */
+        /* Case: search for books given named parameters -> success */
         assertSearchSuccess(SearchCommand.COMMAND_WORD + TITLE_DESC_ARTEMIS + CATEGORY_DESC_ARTEMIS
                 + AUTHOR_DESC_ARTEMIS);
 
         /* Case: search for non-existant book -> return 0 results */
-        assertSearchSuccess(SearchCommand.COMMAND_WORD + TITLE_DESC_ARTEMIS + CATEGORY_DESC_ARTEMIS
+        assertSearchSuccess(SearchCommand.COMMAND_WORD + TITLE_DESC_BABYLON + CATEGORY_DESC_ARTEMIS
                 + ISBN_DESC_ARTEMIS + AUTHOR_DESC_ARTEMIS);
 
         /* ----------------------------------- Perform commands on search results ----------------------------------- */

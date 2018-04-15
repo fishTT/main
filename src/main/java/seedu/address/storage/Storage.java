@@ -22,6 +22,8 @@ public interface Storage extends AliasListStorage, BookShelfStorage, UserPrefsSt
     @Override
     void saveUserPrefs(UserPrefs userPrefs) throws IOException;
 
+    boolean isBookShelfLoaded();
+
     @Override
     String getBookShelfFilePath();
 

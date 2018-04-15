@@ -7,11 +7,11 @@ import java.util.Objects;
 
 import javafx.application.Platform;
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.DisableCommandBoxRequestEvent;
 import seedu.address.commons.events.ui.EnableCommandBoxRequestEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ActiveListType;
 import seedu.address.model.book.Book;
@@ -113,9 +113,9 @@ public class AddCommand extends UndoableCommand {
         requireNonNull(model);
 
         checkActiveListType();
-        checkValidIndex();
+        CommandUtil.checkValidIndex(model, targetIndex);
 
-        toAdd = model.getActiveList().get(targetIndex.getZeroBased());
+        toAdd = CommandUtil.getBook(model, targetIndex);
         checkDuplicate();
     }
 
@@ -127,17 +127,6 @@ public class AddCommand extends UndoableCommand {
 
         if (model.getActiveListType() == ActiveListType.BOOK_SHELF) {
             throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
-    }
-
-    /**
-     * Throws a {@link CommandException} if the given index is not valid.
-     */
-    private void checkValidIndex() throws CommandException {
-        requireAllNonNull(model, targetIndex);
-
-        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
         }
     }
 

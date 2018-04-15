@@ -6,10 +6,10 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Objects;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.DeselectBookRequestEvent;
 import seedu.address.commons.events.ui.ReselectBookRequestEvent;
+import seedu.address.commons.util.CommandUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.ActiveListType;
 import seedu.address.model.book.Book;
@@ -61,9 +61,9 @@ public class DeleteCommand extends UndoableCommand {
     @Override
     protected void preprocessUndoableCommand() throws CommandException {
         checkActiveListType();
-        checkValidIndex();
+        CommandUtil.checkValidIndex(model, targetIndex);
 
-        bookToDelete = model.getActiveList().get(targetIndex.getZeroBased());
+        bookToDelete = CommandUtil.getBook(model, targetIndex);
     }
 
     /**
@@ -74,17 +74,6 @@ public class DeleteCommand extends UndoableCommand {
 
         if (model.getActiveListType() != ActiveListType.BOOK_SHELF) {
             throw new CommandException(MESSAGE_WRONG_ACTIVE_LIST);
-        }
-    }
-
-    /**
-     * Throws a {@link CommandException} if the given index is not valid.
-     */
-    private void checkValidIndex() throws CommandException {
-        requireAllNonNull(model, targetIndex);
-
-        if (targetIndex.getZeroBased() >= model.getActiveList().size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_BOOK_DISPLAYED_INDEX);
         }
     }
 

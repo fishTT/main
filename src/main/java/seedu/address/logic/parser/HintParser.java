@@ -8,6 +8,10 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_COMMAND;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COMMAND_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ISBN_STRING;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW_STRING;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_OLD;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_OLD_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY_STRING;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RATING;
@@ -35,12 +39,15 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.LibraryCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.LockCommand;
 import seedu.address.logic.commands.RecentCommand;
 import seedu.address.logic.commands.ReviewsCommand;
 import seedu.address.logic.commands.SearchCommand;
 import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.SetPasswordCommand;
 import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.logic.commands.UnlockCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 //@@author fishTT
@@ -100,6 +107,8 @@ public class HintParser {
             return generateHintForIndexedCommand(arguments, " find book in library");
         case ListCommand.COMMAND_WORD:
             return generateListHint(arguments);
+        case LockCommand.COMMAND_WORD:
+            return " lock the app";
         case RecentCommand.COMMAND_WORD:
             return " view recently selected books";
         case ReviewsCommand.COMMAND_WORD:
@@ -108,10 +117,14 @@ public class HintParser {
             return generateSearchHint(arguments);
         case SelectCommand.COMMAND_WORD:
             return generateHintForIndexedCommand(arguments, " select a book");
+        case SetPasswordCommand.COMMAND_WORD:
+            return generateSetPasswordHint(arguments);
         case ThemeCommand.COMMAND_WORD:
             return generateThemeHint(arguments);
         case UndoCommand.COMMAND_WORD:
             return " undo last modification";
+        case UnlockCommand.COMMAND_WORD:
+            return generateUnlockHint(arguments);
         default:
             return "";
         }
@@ -146,19 +159,26 @@ public class HintParser {
                                                String preamble, Prefix... prefixes) {
         ArgumentMultimap argumentMultimap = ArgumentTokenizer.tokenize(arguments, prefixes);
 
+        boolean hasPrefixes = false;
         StringBuilder sb = new StringBuilder();
-        if (preamble != null && argumentMultimap.getPreamble().trim().isEmpty()) {
-            sb.append("[").append(preamble).append("] ");
-        }
-
         for (Prefix p : prefixes) {
             Optional<String> parameterOptional = argumentMultimap.getValue(p);
-            if (!parameterOptional.isPresent()) {
-                sb.append("[").append(p.getPrefix()).append(prefixIntoParameter(p)).append("] ");
+            if (parameterOptional.isPresent()) {
+                hasPrefixes = true;
+                continue;
             }
+            if (sb.length() > 0) {
+                sb.append(" ");
+            }
+            sb.append("[").append(p.getPrefix()).append(prefixIntoParameter(p)).append("]");
         }
+
+        if (!hasPrefixes && preamble != null && argumentMultimap.getPreamble().trim().isEmpty()) {
+            sb.insert(0, "[" + preamble + "] ");
+        }
+
         if (sb.length() == 0) {
-            return getHintPadding(arguments) + defaultHint;
+            return defaultHint;
         }
         return getHintPadding(arguments) + sb.toString();
     }
@@ -178,7 +198,7 @@ public class HintParser {
                 return getHintPadding(arguments) + p.getPrefix() + prefixIntoParameter(p);
             }
         }
-        return getHintPadding(arguments) + defaultHint;
+        return defaultHint;
     }
 
     /**
@@ -202,6 +222,10 @@ public class HintParser {
             return "RATING";
         case PREFIX_SORT_BY_STRING:
             return "SORT_BY";
+        case PREFIX_OLD_STRING:
+            return "OLD_PASSWORD";
+        case PREFIX_NEW_STRING:
+            return "NEW_PASSWORD";
         case PREFIX_COMMAND_STRING:
             return "COMMAND";
         default:
@@ -295,8 +319,21 @@ public class HintParser {
                 " search for books", "KEY_WORDS", prefixes));
     }
 
+    /** Returns a hint specific to the setpw command. */
+    private static String generateSetPasswordHint(String arguments) {
+        Prefix[] prefixes = new Prefix[]{PREFIX_OLD, PREFIX_NEW};
+        Optional<String> endHintOptional = generatePrefixHintBasedOnEndArgs(arguments, prefixes);
+        return endHintOptional.orElseGet(() -> showUnusedParameters(arguments,
+                " change the password", null, prefixes));
+    }
+
     /** Returns a hint specific to the theme command. */
     private static String generateThemeHint(String arguments) {
         return generatePreambleHint(arguments, "THEME").orElse(" change app theme");
+    }
+
+    /** Returns a hint specific to the unlock command. */
+    private static String generateUnlockHint(String arguments) {
+        return generatePreambleHint(arguments, "PASSWORD").orElse(" unlock the app");
     }
 }

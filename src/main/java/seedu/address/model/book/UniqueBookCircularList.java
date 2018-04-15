@@ -2,6 +2,8 @@ package seedu.address.model.book;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+
 import seedu.address.model.UniqueList;
 
 //@@author qiu-siqi
@@ -18,6 +20,16 @@ public class UniqueBookCircularList extends UniqueList<Book> {
 
     public UniqueBookCircularList() {
         this.size = 50;
+    }
+
+    /**
+     * Creates a new {@code UniqueBookCircularList} with books from {@code bookList}.
+     */
+    public UniqueBookCircularList(List<Book> bookList) {
+        this.size = 50;
+        for (int index = bookList.size() - 1; index >= 0; index--) {
+            addToFront(bookList.get(index));
+        }
     }
 
     /**

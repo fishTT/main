@@ -34,9 +34,6 @@ public interface Logic {
     /** Returns an unmodifiable view of the list that is currently active. */
     ObservableList<Book> getActiveList();
 
-    /** Returns an unmodifiable view of the filtered and sorted list of books */
-    ObservableList<Book> getDisplayBookList();
-
     /** Returns an unmodifiable view of the list of aliases. */
     ObservableList<Alias> getDisplayAliasList();
 

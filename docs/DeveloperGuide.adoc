@@ -369,7 +369,7 @@ This results in the execution of the following method in `SearchCommand`:
     }
 ----
 
-Note that this method is run on the JavaFX thread (using `Platform#runLater`) because it will result in updates to the book list panel.
+NOTE: The above method is run on the JavaFX thread (using `Platform#runLater`) because it will result in updates to the book list panel.
 If such updates are not done on the JavaFX thread, JavaFX will throw an `IllegalStateException`.
 
 ==== Design Considerations
@@ -567,21 +567,18 @@ This allows the user to easily look back for a particular book, and to add it in
 ==== Current implementation
 
 Recently selected books are stored in a `UniqueBookCircularList` which resides in `ModelManager`.
-Whenever a new book is selected, `ModelManager` handles the `BookListSelectionChangedEvent`
-and adds the book into the list.
+`Model` exposes a method `addRecentBook(Book)` to add new book selections. Whenever a new book is selected, `LogicManager` handles the `BookListSelectionChangedEvent` and adds the book into the list using `addRecentBook(Book)`.
 
 When `recent` is entered, it will be parsed into a `RecentCommand`, which when executed, sets the `ActiveListType` to `RECENT_BOOKS`.
 It then posts `ActiveListChangedEvent` to the `EventCenter` to signal this change. The interaction between components is shown in the diagram below.
 
 image::SequenceDiagramRecentCommandLogic.png[width="550"]
 
-NOTE: The commands that users can perform on different `ActiveListType` differ, for example users cannot delete books if the `ActiveListType` is `RECENT_BOOKS`.
+NOTE: `ActiveListType` is needed because the commands that users can perform on different lists differ. For example, users cannot delete books if the `ActiveListType` is `RECENT_BOOKS`.
 
-`ActiveListChangedEvent` is handled by `MainWindow`.
+`ActiveListChangedEvent` is handled by `MainWindow`, which updates the list displayed in `BookListPanel`.
 
-image::SequenceDiagramRecentCommandEvent.png[width="550"]
-
-`MainWindow` sets the list shown in `BookListPanel` to the list of recently selected books.
+image::SequenceDiagramRecentCommandEvent.png[width="450"]
 
 `UniqueBookCircularList` has size 50 by default. For illustration purposes, assume we have a
 `UniqueBookCircularList` of size 2 that is empty at the start. `ActiveListType` is `BOOK_SHELF`.
@@ -605,8 +602,7 @@ from the list and added again so that it is in the first index of the list (most
 image::RecentCommandListThree.png[width="450"]
 
 Note that the `UniqueBookCircularList` is currently full. When user performs `select 3`, since
-`Three` is not in the list, the book at the last index is removed to make space for `Three`.
-This is because the book at the last index (`Two` in this case) is the least recent selection.
+`Three` is not in the list, the book at the last index (the least recent selection) is removed to make space for `Three` (`Two` in this case).
 
 image::RecentCommandListFour.png[width="450"]
 
@@ -615,19 +611,7 @@ NOTE: `UniqueBookCircularList::equals` is order sensitive since the order determ
 When Bibliotek is exited, the data in the `UniqueBookCircularList` is stored in the format
 of `BookShelf`. This data is read and converted to `UniqueBookCircularList` upon opening Bibliotek.
 
-NOTE: Since `UniqueBookCircularList` only supports `addToFront(Book)`, take note to add books in reverse
-order when converting from other data structures such as `BookShelf`.
-
 ==== Design considerations
-
-===== Aspect: Whether to store recently selected books
-
-* **Alternative 1 (current choice):** Stores the recently selected books upon closing Bibliotek.
-** Pros: Users can look up books selected in the last session.
-** Cons: Extra file dependency and data clutter if unused.
-* **Alternative 2:** Don't store recently selected books.
-** Pros: Eliminate the need to modify `Storage` component.
-** Cons: Recently selected books list is limited to selections in the current session.
 
 ===== Aspect: Type of selected books that are shown
 
@@ -643,15 +627,15 @@ by only showing these books.
 ===== Aspect: Data structure to hold the recently selected books data
 
 * **Alternative 1 (current choice):** Make a new type of book list `UniqueBookCircularList`.
-** Pros: Can make the size limit and add mechanism as a property of the new list.
+** Pros: Can make the size limit and add mechanism a property of the new list.
 ** Cons: Have to deal with multiple data structures to hold data for different purposes.
 * **Alternative 2:** Use `BookShelf`.
 ** Pros: Re-use of existing data structure.
-** Cons: BookShelf supports functionalities that are not needed to store recently selected books.
+** Cons: `BookShelf` supports functionalities that are not needed to store recently selected books.
 // end::recent[]
 
 // tag::library[]
-=== Find a book in NLB library: `library` command
+=== Check for availability of book in NLB library: `library` command
 
 The `library` command allows the user to easily check for the availability of books in NLB libraries.
 This eliminates the need to manually enter search information into the NLB catalogue. The user can use this information to decide when or whether to read a book.
@@ -661,7 +645,7 @@ This eliminates the need to manually enter search information into the NLB catal
 When a `library` command is entered, a `LibraryCommand` will be created if the parsing of the command was successful, which will
 make a call to `searchLibraryForBook(Book)` on the `Network` API. This will result in an asynchronous HTTP request being made to
 https://catalogue.nlb.gov.sg/cgi-bin/spydus.exe/MSGTRN/EXPNOS/NLBHOME?HOMEPRMS=NLBGENPARAMS[NLB Catalogue].
-Once the HTTP request completes, the operations in the `.thenApply(...)` s, as seen in the code block below, will execute.
+Once the HTTP request completes, the operations in the `.thenApply(...)`, shown in the code block below, will execute.
 
 [source,java]
 ----
@@ -677,10 +661,11 @@ Once the HTTP request completes, the operations in the `.thenApply(...)` s, as s
 
 This is summarized by the following activity diagram:
 
-image::LibraryCommandActivityDiagram.png[width="650"]
+image::LibraryCommandActivityDiagram.png[width="600"]
 
 The `CompletableFuture` completes exceptionally if the content type or status code is wrong.
-Else, a URL of the page showing availability of the target book, if any, is obtained. This depends on the type of the response page, which can be categorized into the following:
+Else, a URL of the page showing availability of the target book, if any, is obtained.
+This depends on the response HTML, which can be categorized into the following:
 
 * Full display (the page we want): The URL which the HTTP GET request was made to is returned.
 * Non-empty list of results: The URL of the top result is returned.
@@ -688,21 +673,20 @@ Else, a URL of the page showing availability of the target book, if any, is obta
 
 Once the necessary result is obtained, the following method in `LibraryCommand` is executed:
 
-[java,source]
+[source,java]
 ----
     private void onSuccessfulRequest(String result, Book book) {
         EventsCenter.getInstance().post(new ShowLibraryResultRequestEvent(result));
-        EventsCenter.getInstance().post(new NewResultAvailableEvent(
-                String.format(MESSAGE_SUCCESS, book)));
+        EventsCenter.getInstance().post(new NewResultAvailableEvent(String.format(MESSAGE_SUCCESS, book)));
     }
 ----
 
-`ShowLibraryResultRequestEvent` is handled by `MainWindow` and `BookInLibraryPanel` to load the URL using a `WebView` and show it.
+`ShowLibraryResultRequestEvent` is handled by `MainWindow` and `BookInLibraryPanel` to load the URL using a `WebView` and display the webpage.
 The loaded page is post-processed using a script to show only the relevant section.
 
 ==== Design considerations
 
-===== Aspect: How to show the book availability
+===== Aspect: How to show availability of the book
 
 * **Alternative 1 (current choice):** Load the webpage using a `WebView`.
 ** Pros: Immune to changes in structure of that webpage.
@@ -713,25 +697,111 @@ The loaded page is post-processed using a script to show only the relevant secti
 
 ===== Aspect: Using advanced search versus basic search
 
-* **Alternative 1 (current choice):** Use basic search, using a HTTP GET request.
+* **Alternative 1 (current choice):** Perform basic search, which uses a HTTP GET request.
 ** Pros: Faster response time.
-** Cons: Searched keyword seem to only be matched to title or authors.
-* **Alternative 2:** Use advanced search, using a HTTP POST request.
-** Pros: Can limit the search results using more parameters such as year or ISBN.
+** Cons: Searched keyword seems to be matched to title or authors only.
+* **Alternative 2:** Perform advanced search, which uses a HTTP POST request.
+** Pros: Able to limit the search results using more parameters such as publication year or ISBN.
 ** Cons: Slower response time.
 
 ===== Aspect: Whether to load in `WebView` directly or pre-process through `Network` component
 
-* **Alternative 1 (current choice):** Pre-process HTTP request response in `Network` component, then send intended URL to `WebView`.
-** Pros: Processing happens behind the scene, and does not distract user.
-** Cons: User is subject to waiting times without feedback on progress. Furthermore the control flow becomes more complicated since an URL still needs to be passed to and loaded on the `WebView` eventually.
+* **Alternative 1 (current choice):** Pre-process HTTP response in `Network` component, then send intended URL to `WebView`.
+** Pros: Processing happens behind the scene, and does not distract the user.
+** Cons: User is subject to waiting times without feedback on progress. Furthermore, the control flow becomes more complicated since a URL still needs to be passed to and loaded on the `WebView` eventually.
 * **Alternative 2:** Load search URL in `WebView` and navigate to intended page using script.
 ** Pros: Easier to implement. Eliminate the need to modify `Network` component.
 ** Cons: User will be able to see the navigation between pages.
 // end::library[]
 
+// tag::alias[]
+=== Command aliasing
+
+The command aliasing system allows the user to specify short command aliases to use in place of the original commands.
+This improves the user experience by reducing the amount of typing the user needs to do.
+
+==== Current Implementation
+
+The user can customize their command aliases using the `addalias` and `deletealias` commands.
+These commands allow the user to add and delete aliases respectively.
+
+===== Adding command aliases
+
+When the user attempts to add a new command alias using `addalias ALIAS_NAME cmd/COMMAND`, the user input will first be
+validated and pre-processed by `AddAliasCommandParser`.
+
+`AddAliasCommandParser` verifies that both the `ALIAS_NAME` and `COMMAND` are non-empty, before
+searching the `COMMAND` for the first occurrence of an empty space that is followed by a named command parameter.
+Using this point, the parser will split the `COMMAND` into two parts - the prefix, and the named arguments.
+The figure below shows an example for the `edit 12 s/reading p/high` command.
+
+image::AliasSampleCommand.png[width="300"]
+
+The searching and splitting is accomplished using the following regular expression.
+
+[source,java]
+----
+    private static final Pattern COMMAND_FORMAT = Pattern.compile("(?<prefix>((?! \\w+\\/.*)[\\S ])+)(?<namedArgs>.*)");
+----
+
+Following this pre-processing step, a new `Alias` will be created using the alias name, command prefix, and named arguments.
+
+[source,java]
+----
+    private static Alias createAlias(String aliasName, Matcher commandMatcher) {
+        return new Alias(aliasName, commandMatcher.group("prefix"), commandMatcher.group("namedArgs"));
+    }
+----
+
+The `Alias` is then added to the `UniqueAliasList` in `ModelManager`, and this update will cause an `AliasListChangedEvent` to be posted.
+The event is handled by `StorageManager`, which saves the updated alias list to `data/aliaslist.xml`.
+
+NOTE: There are currently no checks in place to prevent the user from adding a command alias that refers to an invalid or non-existent built-in command.
+
+===== Using command aliases
+
+The user can use command aliases in the same way they use normal commands. In this section, we assume that the user added `rd` as an alias for `edit s/reading`.
+
+Whenever a command is entered into the command box, the command will be passed by `LogicManager` into `BookShelfParser#applyCommandAlias`,
+where an attempt will be made to apply a matching command alias.
+
+The application of a command alias begins by splitting the input into three parts - the alias name (first word in the input), unnamed arguments, and named arguments.
+The figure below shows an example for the `rd 12 p/high` command.
+
+image::AliasSampleCommand2.png[width="300"]
+
+This splitting is accomplished using the following regular expression.
+
+[source,java]
+----
+    private static final Pattern ALIASED_COMMAND_FORMAT =
+            Pattern.compile(" *(?<aliasName>\\S+)(?<unnamedArgs>((?! [\\w]+\\/.*)[\\S ])*)(?<namedArgs>.*)");
+----
+
+If the alias name matches that of an existing alias, then the alias will be applied.
+Otherwise, the input will be returned unchanged. In this case, the alias named `rd` will be applied.
+
+The result of the application of the alias is a new command that is formed by splicing parts of the user input into the aliased command.
+Using `rd 12 p/high` as the user input, this process is demonstrated in the figure below.
+
+image::AliasApplication.png[width="560"]
+
+The resulting command, `edit 12 s/reading p/high`, will then be parsed and executed, instead of the original user input.
+
+==== Design Considerations
+
+===== Aspect: Inclusion of command parameters in aliases
+
+* **Alternative 1 (current choice):** Allow aliasing of command parameters, together with the command word.
+** Pros: Increases the usefulness of the command aliasing system.
+** Cons: Less straightforward to implement, especially considering that some commands may require an index that comes before the named parameters.
+* **Alternative 2:** Only allow command words to be aliased.
+** Pros: More straightforward to implement.
+** Cons: Limits the usefulness of the command aliasing system, especially for users who may need to use certain commands that contain parameters regularly, e.g. `list s/high by/status`.
+// end::alias[]
+
 // tag::encrypt[]
-=== Data Encryption
+=== Data encryption
 
 ==== Current implementation
 
@@ -765,9 +835,9 @@ image::wrongkey.png[width="650"]
 
 . `setKeyCommandParser` will extract the old key and new key from the user input.
 . `setKeyCommandParser` checks that  two parameters are present, and that the parameters are valid.
-. `setKeyCommandParser` creates an `setKeyCommand` with the parameters.
-. `setKeyCommand` is preprocessed to check that oldKey is correct.
-. If the oldKye is correct, `setKeyCommand` will send a setKey command to LogicManager.
+. `setKeyCommandParser` creates an `setPasswordCommand` with the parameters.
+. `setPasswordCommand` is preprocessed to check that oldPassword is correct.
+. If the oldKye is correct, `setPasswordCommand` will send a setKey command to LogicManager.
 . LogicManager will send set_new_key request to ModelManger.
 . ModelManager indicate the keyChangedevent and handle it, and set the bookshelf's key to be new key.
 . ModelManager will encode the key, before indicate the keyChangedevent.

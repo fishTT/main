@@ -53,11 +53,6 @@ public class CommandBox extends UiPart<Region> {
         commandBox.widthProperty().addListener((ob, o, n) -> resizeCommandTextField());
         commandTextField.textProperty().addListener((ob, o, n) -> resizeCommandTextField());
 
-        commandBoxItems.setOnMouseClicked((event) -> {
-            commandTextField.requestFocus();
-            commandTextField.positionCaret(commandTextField.getText().length());
-        });
-
         commandBoxHints = new CommandBoxHints(logic, commandTextField);
         commandBoxItems.getChildren().add(commandBoxHints.getRoot());
         HBox.setHgrow(commandBoxHints.getRoot(), Priority.ALWAYS);

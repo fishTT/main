@@ -1,8 +1,5 @@
 package seedu.address.logic.parser;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Contains Command Line Interface (CLI) syntax definitions common to multiple commands
  */
@@ -17,6 +14,8 @@ public class CliSyntax {
     protected static final String PREFIX_PRIORITY_STRING = "p/";
     protected static final String PREFIX_RATING_STRING = "r/";
     protected static final String PREFIX_SORT_BY_STRING = "by/";
+    protected static final String PREFIX_OLD_STRING = "old/";
+    protected static final String PREFIX_NEW_STRING = "new/";
     protected static final String PREFIX_COMMAND_STRING = "cmd/";
 
     // Prefix definitions
@@ -28,8 +27,7 @@ public class CliSyntax {
     public static final Prefix PREFIX_PRIORITY = new Prefix(PREFIX_PRIORITY_STRING);
     public static final Prefix PREFIX_RATING = new Prefix(PREFIX_RATING_STRING);
     public static final Prefix PREFIX_SORT_BY = new Prefix(PREFIX_SORT_BY_STRING);
+    public static final Prefix PREFIX_OLD = new Prefix(PREFIX_OLD_STRING);
+    public static final Prefix PREFIX_NEW = new Prefix(PREFIX_NEW_STRING);
     public static final Prefix PREFIX_COMMAND = new Prefix(PREFIX_COMMAND_STRING);
-
-    protected static final List<Prefix> LIST_OF_PREFIXES = Arrays.asList(PREFIX_AUTHOR, PREFIX_CATEGORY,
-            PREFIX_ISBN, PREFIX_TITLE, PREFIX_STATUS, PREFIX_PRIORITY, PREFIX_RATING, PREFIX_SORT_BY);
 }
